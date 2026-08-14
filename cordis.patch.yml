@@ -1,0 +1,17 @@
+# dsh-deepseek-usage bundle patch: the plugin's own layer.
+#
+# Declared via package.json `dsh.bundle.patch`, so installing the package
+# with `dsh plugin --profile web add <package|git-url>` activates the row
+# automatically — no manual patch editing on the consumer side.
+#
+# Consumers can still override row config from their own profile patch by
+# id-targeting this row, e.g.:
+#   - id: deepseek-usage
+#     config:
+#       maxSessions: 200
+- insert:
+    - id: deepseek-usage
+      name: '@xavier711/dsh-deepseek-usage'
+      config:
+        balanceTtlMs: 60000
+        maxSessions: 100
