@@ -69,9 +69,26 @@
   .du-subtitle{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px}
   .du-iconButton{width:28px;height:28px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;border-radius:999px;justify-content:center;align-items:center;padding:0;display:inline-flex}
   .du-body{flex:1;min-width:0;min-height:0;padding:10px 12px 14px;overflow-x:hidden;overflow-y:auto}
-  .du-group{color:var(--dsw-alias-label-caption);text-transform:uppercase;letter-spacing:.04em;margin:12px 0 6px;font-size:11px;font-weight:500;line-height:16px}
+  .du-body{scrollbar-width:thin;scrollbar-color:transparent transparent}
+  .du-body::-webkit-scrollbar{width:8px;height:8px}
+  .du-body::-webkit-scrollbar-track{background:transparent}
+  .du-body::-webkit-scrollbar-thumb{background:transparent;border-radius:999px}
+  .du-body:hover,.du-body:active{scrollbar-color:var(--dsw-alias-scrollbar-bg-l2) transparent}
+  .du-body:hover::-webkit-scrollbar-thumb,.du-body:active::-webkit-scrollbar-thumb{background:var(--dsw-alias-scrollbar-bg-l2)}
+  .du-body:hover::-webkit-scrollbar-thumb:hover{background:var(--dsw-alias-scrollbar-hover-l2)}
+  .du-tabs{box-sizing:border-box;border-bottom:1px solid var(--dsw-alias-border-l2);flex:none;align-items:center;gap:2px;padding:0 12px;display:flex}
+  .du-tab{box-sizing:border-box;height:32px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;position:relative;padding:0 10px;font-family:inherit;font-size:12px;line-height:32px}
+  .du-tab:hover{color:var(--dsw-alias-label-primary)}
+  .du-tabActive{box-sizing:border-box;height:32px;color:var(--dsw-alias-label-primary);cursor:pointer;background:0 0;border:none;position:relative;padding:0 10px;font-family:inherit;font-size:12px;font-weight:500;line-height:32px}
+  .du-tabActive::after{background:var(--dsw-alias-state-business-primary);content:"";border-radius:1px 1px 0 0;height:2px;position:absolute;bottom:0;left:10px;right:10px}
+  .du-footer{border-top:1px solid var(--dsw-alias-border-l2);flex:none;color:var(--dsw-alias-label-caption);padding:8px 12px;font-size:11px;line-height:16px}
   .du-card{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;flex-direction:column;gap:8px;min-width:0;padding:12px;display:flex;margin:10px auto}
+  .du-body > .du-card:first-child{margin-top:0}
   .du-cardTitle{color:var(--dsw-alias-label-secondary);flex:none;align-items:center;gap:8px;font-size:12px;font-weight:500;line-height:18px;display:flex}
+  .du-cardHead{flex:none;align-items:center;justify-content:space-between;gap:8px;display:flex}
+  .du-seg{flex:none;align-items:center;gap:2px;background:var(--dsw-alias-fill-l2);border-radius:8px;padding:2px;display:flex}
+  .du-segBtn{box-sizing:border-box;height:22px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;border-radius:6px;padding:0 8px;font-family:inherit;font-size:11px;line-height:22px}
+  .du-segActive{box-sizing:border-box;height:22px;color:var(--dsw-alias-label-primary);background:var(--dsw-alias-bg-base);border:1px solid var(--dsw-alias-border-l2);border-radius:6px;padding:0 8px;font-family:inherit;font-size:11px;line-height:20px;box-shadow:var(--dsw-shadow-lv1,0 1px 2px rgba(0,0,0,.2))}
   .du-cardRow{flex:none;align-items:center;justify-content:space-between;gap:8px;display:flex}
   .du-cardRowLabel{color:var(--dsw-alias-label-tertiary);flex:none;font-size:12px;line-height:18px}
   .du-cardRowValue{color:var(--dsw-alias-label-primary);font-variant-numeric:tabular-nums;text-align:right;font-size:12px;line-height:18px}
@@ -102,6 +119,23 @@
   .du-compositionBar{background:var(--dsw-alias-fill-l2);border-radius:999px;flex:none;height:12px;overflow:hidden;display:flex}
   .du-compositionSeg{height:100%;transition:opacity .12s}
   .du-compositionSeg:hover{opacity:.8}
+  .du-activity{flex-direction:column;gap:4px;display:flex}
+  .du-activitySubtitle{color:var(--dsw-alias-label-caption);font-size:10px;font-weight:400;line-height:14px}
+  .du-summaryRow{flex:none;align-items:center;gap:6px;font-size:11px;line-height:16px;display:flex;flex-wrap:wrap}
+  .du-summaryLabel{color:var(--dsw-alias-label-caption);flex:none}
+  .du-summaryValue{color:var(--dsw-alias-label-secondary);font-variant-numeric:tabular-nums;flex:none;font-weight:500}
+  .du-summarySep{color:var(--dsw-alias-label-caption);flex:none;opacity:.6}
+  .du-activityMonths{flex:none;position:relative;height:12px;margin-left:26px;display:block}
+  .du-activityMonth{position:absolute;top:0;color:var(--dsw-alias-label-caption);font-size:9px;line-height:12px}
+  .du-activityBody{flex:none;align-items:flex-start;gap:8px;display:flex}
+  .du-activityLabels{flex:none;flex-direction:column;gap:1px;width:26px;display:flex}
+  .du-activityLabels span{color:var(--dsw-alias-label-caption);height:6px;text-align:center;font-size:9px;line-height:6px;flex:none}
+  .du-activityGrid{flex:none;gap:1px;display:flex}
+  .du-activityWeek{flex:none;flex-direction:column;gap:1px;display:flex}
+  .du-activityCell{width:6px;height:6px;border-radius:1.5px;flex:none;position:relative}
+  .du-activityCaption{color:var(--dsw-alias-label-caption);font-size:10px;line-height:14px}
+  .du-calLegend{flex:none;align-items:center;gap:6px;color:var(--dsw-alias-label-caption);font-size:10px;line-height:14px;display:flex}
+  .du-calSwatch{width:12px;height:12px;border-radius:3px;flex:none}
   .du-legend{flex:none;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none;display:flex}
   .du-legendRow{flex:none;align-items:center;gap:8px;display:flex}
   .du-legendDot{width:8px;height:8px;border-radius:2px;flex:none}
@@ -164,7 +198,6 @@
         <code class="du-updateCommand">dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.2.0</code>
         <a class="du-updateLink" href="#">查看发布页</a>
       </div>
-      <div class="du-group">账户余额</div>
       <div class="du-card">
         <div class="du-balanceTop">
           <div class="du-rowCol"><div class="du-balanceLabel">总余额</div><div class="du-balanceBig">128.45<span class="du-currency">CNY</span></div></div>
@@ -173,32 +206,10 @@
         <div class="du-balanceBar"><span style="width:0%"></span></div>
         <div class="du-balanceRows"><span>充值余额 <b>128.45</b></span><span>赠送余额 <b>0.00</b></span></div>
       </div>
-      <div class="du-group">本地用量</div>
       <div class="du-statGrid">
         <div class="du-statCard"><div class="du-statTitle">今日</div><div class="du-statTokens">2.4M</div><div class="du-statMeta">128 次调用</div><div class="du-statCost">¥3.86</div></div>
         <div class="du-statCard"><div class="du-statTitle">近 7 天</div><div class="du-statTokens">9.1M</div><div class="du-statMeta">512 次调用</div><div class="du-statCost">¥14.52</div></div>
         <div class="du-statCard"><div class="du-statTitle">累计</div><div class="du-statTokens">23.7M</div><div class="du-statMeta">1,204 次调用</div><div class="du-statCost">¥38.90</div></div>
-      </div>
-      <div class="du-card"><div class="du-cardRow"><span class="du-cardRowLabel">统计会话</span><span class="du-cardRowValue">3 个</span></div></div>
-      <div class="du-card">
-        <div class="du-cardTitle">近 7 天用量</div>
-        <svg viewBox="0 0 380 150" class="du-chart du-bars" role="img" aria-label="近 7 天用量">
-          <line x1="0" y1="118" x2="380" y2="118" style="stroke:var(--dsw-alias-border-l2);stroke-width:1"></line>
-          <g class="du-barGroup"><rect x="14" y="109" width="26" height="9" rx="3" style="fill:var(--du-cacheRead)"></rect><rect x="14" y="106" width="26" height="3" rx="3" style="fill:var(--du-input)"></rect><rect x="14" y="101" width="26" height="5" rx="3" style="fill:var(--du-output)"></rect><rect x="14" y="99" width="26" height="2" rx="3" style="fill:var(--du-reasoning)"></rect><text x="27" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:10px">一</text></g>
-          <g class="du-barGroup"><rect x="68" y="87" width="26" height="31" rx="3" style="fill:var(--du-cacheRead)"></rect><rect x="68" y="78" width="26" height="9" rx="3" style="fill:var(--du-input)"></rect><rect x="68" y="69" width="26" height="9" rx="3" style="fill:var(--du-output)"></rect><rect x="68" y="66" width="26" height="3" rx="3" style="fill:var(--du-reasoning)"></rect><text x="81" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:10px">二</text></g>
-          <g class="du-barGroup"><rect x="122" y="99" width="26" height="19" rx="3" style="fill:var(--du-cacheRead)"></rect><rect x="122" y="93" width="26" height="6" rx="3" style="fill:var(--du-input)"></rect><rect x="122" y="87" width="26" height="6" rx="3" style="fill:var(--du-output)"></rect><rect x="122" y="85" width="26" height="2" rx="3" style="fill:var(--du-reasoning)"></rect><text x="135" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:10px">三</text></g>
-          <g class="du-barGroup"><rect x="177" y="71" width="26" height="47" rx="3" style="fill:var(--du-cacheRead)"></rect><rect x="177" y="59" width="26" height="12" rx="3" style="fill:var(--du-input)"></rect><rect x="177" y="48" width="26" height="11" rx="3" style="fill:var(--du-output)"></rect><rect x="177" y="43" width="26" height="5" rx="3" style="fill:var(--du-reasoning)"></rect><text x="190" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:10px">四</text></g>
-          <g class="du-barGroup"><rect x="231" y="59" width="26" height="59" rx="3" style="fill:var(--du-cacheRead)"></rect><rect x="231" y="43" width="26" height="16" rx="3" style="fill:var(--du-input)"></rect><rect x="231" y="27" width="26" height="16" rx="3" style="fill:var(--du-output)"></rect><rect x="231" y="21" width="26" height="6" rx="3" style="fill:var(--du-reasoning)"></rect><text x="244" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:10px">五</text></g>
-          <g class="du-barGroup"><rect x="285" y="81" width="26" height="37" rx="3" style="fill:var(--du-cacheRead)"></rect><rect x="285" y="72" width="26" height="9" rx="3" style="fill:var(--du-input)"></rect><rect x="285" y="63" width="26" height="9" rx="3" style="fill:var(--du-output)"></rect><rect x="285" y="58" width="26" height="5" rx="3" style="fill:var(--du-reasoning)"></rect><text x="298" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:10px">六</text></g>
-          <g class="du-barGroup"><rect x="340" y="95" width="26" height="23" rx="3" style="fill:var(--du-cacheRead)"></rect><rect x="340" y="89" width="26" height="6" rx="3" style="fill:var(--du-input)"></rect><rect x="340" y="83" width="26" height="6" rx="3" style="fill:var(--du-output)"></rect><rect x="340" y="81" width="26" height="2" rx="3" style="fill:var(--du-reasoning)"></rect><text x="353" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:10px">今</text></g>
-        </svg>
-        <div class="du-barLegend">
-          <span class="du-barLegendItem"><span class="du-barLegendDot" style="background:var(--du-cacheRead)"></span>缓存命中</span>
-          <span class="du-barLegendItem"><span class="du-barLegendDot" style="background:var(--du-input)"></span>输入</span>
-          <span class="du-barLegendItem"><span class="du-barLegendDot" style="background:var(--du-output)"></span>输出</span>
-          <span class="du-barLegendItem"><span class="du-barLegendDot" style="background:var(--du-reasoning)"></span>思考</span>
-          <span class="du-barLegendItem"><span class="du-barLegendDot" style="background:var(--du-cacheWrite)"></span>缓存写入</span>
-        </div>
       </div>
       <div class="du-card">
         <div class="du-cardTitle">今日构成</div>
@@ -217,18 +228,44 @@
         </ul>
       </div>
       <div class="du-card">
+        <div class="du-cardHead">
+          <div class="du-cardTitle">用量趋势</div>
+        <div class="du-summaryRow">
+          <span class="du-summaryLabel">累计总量</span><b class="du-summaryValue">450M</b>
+          <span class="du-summarySep">·</span>
+          <span class="du-summaryLabel">单日峰值</span><b class="du-summaryValue">136M</b>
+          <span class="du-summarySep">·</span>
+          <span class="du-summaryLabel">连续天数</span><b class="du-summaryValue">12 天 (最长 54 天)</b>
+        </div>
+          <div class="du-seg" role="tablist" aria-label="用量趋势">
+            <button type="button" role="tab" aria-selected="true" class="du-segActive">近 7 天</button>
+            <button type="button" role="tab" aria-selected="false" class="du-segBtn">近 30 天</button>
+            <button type="button" role="tab" aria-selected="false" class="du-segBtn">近 12 个月</button>
+          </div>
+        </div>
+        <svg viewBox="0 0 380 150" class="du-chart du-bars" role="img" aria-label="用量趋势">
+          <line x1="0" y1="118" x2="380" y2="118" style="stroke:var(--dsw-alias-border-l2);stroke-width:1"></line>
+          <g class="du-barGroup"><rect x="3.3" y="114.7" width="6" height="3.3" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="3.3" y="113.9" width="6" height="0.8" rx="1.5" style="fill:var(--du-input)"></rect><rect x="3.3" y="112.8" width="6" height="1.1" rx="1.5" style="fill:var(--du-output)"></rect><text x="6.3" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:8px">18</text></g><g class="du-barGroup"><rect x="16.0" y="113.1" width="6" height="4.9" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="16.0" y="111.8" width="6" height="1.2" rx="1.5" style="fill:var(--du-input)"></rect><rect x="16.0" y="110.2" width="6" height="1.6" rx="1.5" style="fill:var(--du-output)"></rect></g><g class="du-barGroup"><rect x="28.7" y="111.2" width="6" height="6.8" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="28.7" y="109.5" width="6" height="1.7" rx="1.5" style="fill:var(--du-input)"></rect><rect x="28.7" y="107.2" width="6" height="2.3" rx="1.5" style="fill:var(--du-output)"></rect><rect x="28.7" y="106.6" width="6" height="0.6" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="41.3" y="109.2" width="6" height="8.8" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="41.3" y="107.0" width="6" height="2.2" rx="1.5" style="fill:var(--du-input)"></rect><rect x="41.3" y="104.1" width="6" height="2.9" rx="1.5" style="fill:var(--du-output)"></rect><rect x="41.3" y="103.3" width="6" height="0.7" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="54.0" y="107.4" width="6" height="10.6" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="54.0" y="104.7" width="6" height="2.7" rx="1.5" style="fill:var(--du-input)"></rect><rect x="54.0" y="101.1" width="6" height="3.5" rx="1.5" style="fill:var(--du-output)"></rect><rect x="54.0" y="100.3" width="6" height="0.9" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="66.7" y="105.8" width="6" height="12.2" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="66.7" y="102.8" width="6" height="3.0" rx="1.5" style="fill:var(--du-input)"></rect><rect x="66.7" y="98.7" width="6" height="4.1" rx="1.5" style="fill:var(--du-output)"></rect><rect x="66.7" y="97.7" width="6" height="1.0" rx="1.5" style="fill:var(--du-reasoning)"></rect><text x="69.7" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:8px">23</text></g><g class="du-barGroup"><rect x="79.3" y="104.7" width="6" height="13.3" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="79.3" y="101.4" width="6" height="3.3" rx="1.5" style="fill:var(--du-input)"></rect><rect x="79.3" y="97.0" width="6" height="4.4" rx="1.5" style="fill:var(--du-output)"></rect><rect x="79.3" y="95.9" width="6" height="1.1" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="92.0" y="104.3" width="6" height="13.7" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="92.0" y="100.8" width="6" height="3.4" rx="1.5" style="fill:var(--du-input)"></rect><rect x="92.0" y="96.2" width="6" height="4.6" rx="1.5" style="fill:var(--du-output)"></rect><rect x="92.0" y="95.1" width="6" height="1.1" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="104.7" y="104.4" width="6" height="13.6" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="104.7" y="101.0" width="6" height="3.4" rx="1.5" style="fill:var(--du-input)"></rect><rect x="104.7" y="96.5" width="6" height="4.5" rx="1.5" style="fill:var(--du-output)"></rect><rect x="104.7" y="95.3" width="6" height="1.1" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="117.3" y="105.1" width="6" height="12.9" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="117.3" y="101.9" width="6" height="3.2" rx="1.5" style="fill:var(--du-input)"></rect><rect x="117.3" y="97.6" width="6" height="4.3" rx="1.5" style="fill:var(--du-output)"></rect><rect x="117.3" y="96.5" width="6" height="1.1" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="130.0" y="106.2" width="6" height="11.8" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="130.0" y="103.3" width="6" height="2.9" rx="1.5" style="fill:var(--du-input)"></rect><rect x="130.0" y="99.3" width="6" height="3.9" rx="1.5" style="fill:var(--du-output)"></rect><rect x="130.0" y="98.4" width="6" height="1.0" rx="1.5" style="fill:var(--du-reasoning)"></rect><text x="133.0" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:8px">28</text></g><g class="du-barGroup"><rect x="142.7" y="106.9" width="6" height="11.1" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="142.7" y="104.1" width="6" height="2.8" rx="1.5" style="fill:var(--du-input)"></rect><rect x="142.7" y="100.4" width="6" height="3.7" rx="1.5" style="fill:var(--du-output)"></rect><rect x="142.7" y="99.5" width="6" height="0.9" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="155.3" y="107.7" width="6" height="10.3" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="155.3" y="105.1" width="6" height="2.6" rx="1.5" style="fill:var(--du-input)"></rect><rect x="155.3" y="101.7" width="6" height="3.4" rx="1.5" style="fill:var(--du-output)"></rect><rect x="155.3" y="100.8" width="6" height="0.9" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="168.0" y="108.1" width="6" height="9.9" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="168.0" y="105.7" width="6" height="2.5" rx="1.5" style="fill:var(--du-input)"></rect><rect x="168.0" y="102.4" width="6" height="3.3" rx="1.5" style="fill:var(--du-output)"></rect><rect x="168.0" y="101.6" width="6" height="0.8" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="180.7" y="107.9" width="6" height="10.1" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="180.7" y="105.4" width="6" height="2.5" rx="1.5" style="fill:var(--du-input)"></rect><rect x="180.7" y="102.0" width="6" height="3.4" rx="1.5" style="fill:var(--du-output)"></rect><rect x="180.7" y="101.2" width="6" height="0.8" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="193.3" y="106.6" width="6" height="11.4" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="193.3" y="103.7" width="6" height="2.9" rx="1.5" style="fill:var(--du-input)"></rect><rect x="193.3" y="99.9" width="6" height="3.8" rx="1.5" style="fill:var(--du-output)"></rect><rect x="193.3" y="98.9" width="6" height="1.0" rx="1.5" style="fill:var(--du-reasoning)"></rect><text x="196.3" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:8px">33</text></g><g class="du-barGroup"><rect x="206.0" y="103.9" width="6" height="14.1" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="206.0" y="100.4" width="6" height="3.5" rx="1.5" style="fill:var(--du-input)"></rect><rect x="206.0" y="95.7" width="6" height="4.7" rx="1.5" style="fill:var(--du-output)"></rect><rect x="206.0" y="94.5" width="6" height="1.2" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="218.7" y="99.8" width="6" height="18.2" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="218.7" y="95.3" width="6" height="4.5" rx="1.5" style="fill:var(--du-input)"></rect><rect x="218.7" y="89.2" width="6" height="6.1" rx="1.5" style="fill:var(--du-output)"></rect><rect x="218.7" y="87.7" width="6" height="1.5" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="231.3" y="94.5" width="6" height="23.5" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="231.3" y="88.6" width="6" height="5.9" rx="1.5" style="fill:var(--du-input)"></rect><rect x="231.3" y="80.7" width="6" height="7.8" rx="1.5" style="fill:var(--du-output)"></rect><rect x="231.3" y="78.8" width="6" height="2.0" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="244.0" y="88.1" width="6" height="29.9" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="244.0" y="80.6" width="6" height="7.5" rx="1.5" style="fill:var(--du-input)"></rect><rect x="244.0" y="70.7" width="6" height="10.0" rx="1.5" style="fill:var(--du-output)"></rect><rect x="244.0" y="68.2" width="6" height="2.5" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="256.7" y="81.3" width="6" height="36.7" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="256.7" y="72.1" width="6" height="9.2" rx="1.5" style="fill:var(--du-input)"></rect><rect x="256.7" y="59.8" width="6" height="12.2" rx="1.5" style="fill:var(--du-output)"></rect><rect x="256.7" y="56.8" width="6" height="3.1" rx="1.5" style="fill:var(--du-reasoning)"></rect><text x="259.7" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:8px">38</text></g><g class="du-barGroup"><rect x="269.3" y="74.5" width="6" height="43.5" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="269.3" y="63.6" width="6" height="10.9" rx="1.5" style="fill:var(--du-input)"></rect><rect x="269.3" y="49.1" width="6" height="14.5" rx="1.5" style="fill:var(--du-output)"></rect><rect x="269.3" y="45.5" width="6" height="3.6" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="282.0" y="68.5" width="6" height="49.5" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="282.0" y="56.1" width="6" height="12.4" rx="1.5" style="fill:var(--du-input)"></rect><rect x="282.0" y="39.6" width="6" height="16.5" rx="1.5" style="fill:var(--du-output)"></rect><rect x="282.0" y="35.5" width="6" height="4.1" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="294.7" y="63.8" width="6" height="54.2" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="294.7" y="50.3" width="6" height="13.5" rx="1.5" style="fill:var(--du-input)"></rect><rect x="294.7" y="32.3" width="6" height="18.1" rx="1.5" style="fill:var(--du-output)"></rect><rect x="294.7" y="27.7" width="6" height="4.5" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="307.3" y="61.0" width="6" height="57.0" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="307.3" y="46.8" width="6" height="14.2" rx="1.5" style="fill:var(--du-input)"></rect><rect x="307.3" y="27.8" width="6" height="19.0" rx="1.5" style="fill:var(--du-output)"></rect><rect x="307.3" y="23.1" width="6" height="4.7" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="320.0" y="60.4" width="6" height="57.6" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="320.0" y="46.0" width="6" height="14.4" rx="1.5" style="fill:var(--du-input)"></rect><rect x="320.0" y="26.8" width="6" height="19.2" rx="1.5" style="fill:var(--du-output)"></rect><rect x="320.0" y="22.0" width="6" height="4.8" rx="1.5" style="fill:var(--du-reasoning)"></rect><text x="323.0" y="142" text-anchor="middle" style="fill:var(--dsw-alias-label-caption);font-size:8px">43</text></g><g class="du-barGroup"><rect x="332.7" y="62.0" width="6" height="56.0" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="332.7" y="48.0" width="6" height="14.0" rx="1.5" style="fill:var(--du-input)"></rect><rect x="332.7" y="29.3" width="6" height="18.7" rx="1.5" style="fill:var(--du-output)"></rect><rect x="332.7" y="24.6" width="6" height="4.7" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="345.3" y="65.6" width="6" height="52.4" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="345.3" y="52.4" width="6" height="13.1" rx="1.5" style="fill:var(--du-input)"></rect><rect x="345.3" y="35.0" width="6" height="17.5" rx="1.5" style="fill:var(--du-output)"></rect><rect x="345.3" y="30.6" width="6" height="4.4" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="358.0" y="70.7" width="6" height="47.3" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="358.0" y="58.8" width="6" height="11.8" rx="1.5" style="fill:var(--du-input)"></rect><rect x="358.0" y="43.0" width="6" height="15.8" rx="1.5" style="fill:var(--du-output)"></rect><rect x="358.0" y="39.1" width="6" height="3.9" rx="1.5" style="fill:var(--du-reasoning)"></rect></g><g class="du-barGroup"><rect x="370.7" y="76.6" width="6" height="41.4" rx="1.5" style="fill:var(--du-cacheRead)"></rect><rect x="370.7" y="66.2" width="6" height="10.4" rx="1.5" style="fill:var(--du-input)"></rect><rect x="370.7" y="52.4" width="6" height="13.8" rx="1.5" style="fill:var(--du-output)"></rect><rect x="370.7" y="49.0" width="6" height="3.5" rx="1.5" style="fill:var(--du-reasoning)"></rect></g>
+        </svg>
+        <div class="du-barLegend">
+          <span class="du-barLegendItem"><span class="du-barLegendDot" style="background:var(--du-cacheRead)"></span>缓存命中</span>
+          <span class="du-barLegendItem"><span class="du-barLegendDot" style="background:var(--du-input)"></span>输入</span>
+          <span class="du-barLegendItem"><span class="du-barLegendDot" style="background:var(--du-output)"></span>输出</span>
+          <span class="du-barLegendItem"><span class="du-barLegendDot" style="background:var(--du-reasoning)"></span>思考</span>
+          <span class="du-barLegendItem"><span class="du-barLegendDot" style="background:var(--du-cacheWrite)"></span>缓存写入</span>
+        </div>
+      </div>
+<div class="du-card">
+              <div class="du-card">
+        <div class="du-card">
         <div class="du-cardTitle">按模型统计</div>
         <div class="du-modelRow"><div class="du-modelHead"><span class="du-modelName" title="deepseek-v4-flash">deepseek-v4-flash</span><span class="du-modelMeta">22.3M tok · 1,105 次 · ¥33.24</span></div><div class="du-modelBar"><span style="width:100%"></span></div></div>
         <div class="du-modelRow"><div class="du-modelHead"><span class="du-modelName" title="deepseek-v4-pro">deepseek-v4-pro</span><span class="du-modelMeta">1.4M tok · 99 次 · ¥5.66</span></div><div class="du-modelBar"><span style="width:17%"></span></div></div>
       </div>
-      <button type="button" class="du-sessionToggle">查看 3 个会话</button>
-      <ul class="du-sessionList">
-        <li class="du-sessionRow"><div class="du-sessionHead"><span class="du-sessionTitle" title="优化支付网关性能">优化支付网关性能</span><span class="du-sessionMeta">12.1M tok · 618 次 · 08-14 09:12</span></div><div class="du-sessionBar"><span style="width:100%"></span></div></li>
-        <li class="du-sessionRow"><div class="du-sessionHead"><span class="du-sessionTitle" title="整理项目文档">整理项目文档</span><span class="du-sessionMeta">8.4M tok · 402 次 · 08-13 18:45</span></div><div class="du-sessionBar"><span style="width:69%"></span></div></li>
-        <li class="du-sessionRow"><div class="du-sessionHead"><span class="du-sessionTitle" title="修复 CI 流水线">修复 CI 流水线</span><span class="du-sessionMeta">3.2M tok · 184 次 · 08-12 11:30</span></div><div class="du-sessionBar"><span style="width:26%"></span></div></li>
-      </ul>
-      <p class="du-note">费用按 DeepSeek 官方定价分模型估算（8/17 起 V4 系列按北京时间峰谷计价）。</p>
+      
+      
     </div>
+    <div class="du-footer">费用按 DeepSeek 官方定价分模型估算（8/17 起 V4 系列按北京时间峰谷计价）。</div>
   </div>
 </body>
 </html>
