@@ -128,8 +128,8 @@ const sample = {
   '/dsh-usage/version': {
     ok: true,
     checkedAt: Date.now(),
-    installed: '0.2.0',
-    latest: '0.3.0',
+    installed: '0.1.0',
+    latest: '0.2.0',
     updateAvailable: true,
     url: 'https://github.com/xavier711/dsh-deepseek-usage/releases'
   }
