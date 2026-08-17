@@ -46,7 +46,7 @@ cd dsh-deepseek-usage
 ./install.sh     # auto-uses npx when dsh is not on PATH
 ```
 
-### Option C: npm (once published)
+### Option C: npm
 
 ```sh
 dsh plugin --profile web add @xavier711/dsh-deepseek-usage
@@ -110,7 +110,10 @@ Override row config by id in `~/.dsh/profiles/web/cordis.patch.yml`:
 
 ## Updating
 
-You installed a pinned snapshot, so updates are **not** automatic — but you
+**npm installs:** run `dsh plugin --profile web update @xavier711/dsh-deepseek-usage`
+(or re-add with the new version: `... add @xavier711/dsh-deepseek-usage@X.Y.Z`).
+
+**Git installs:** you installed a pinned snapshot, so updates are **not** automatic — but you
 don't need to check for them: the plugin queries the GitHub releases feed
 (hours-cached) whenever you open the usage panel and shows a **「New version
 available」** banner with the exact update command. Simply run it, restart

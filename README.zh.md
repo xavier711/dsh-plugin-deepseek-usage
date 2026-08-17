@@ -53,7 +53,7 @@ cd dsh-deepseek-usage
 ./install.sh
 ```
 
-### 方式 C：npm 安装（发布后可用）
+### 方式 C：npm 安装
 
 ```sh
 dsh plugin --profile web add @xavier711/dsh-deepseek-usage
@@ -117,7 +117,9 @@ install.sh         一键安装脚本
 
 ## 更新
 
-你安装的是固定 tag 的快照，**不会自动更新**——但你也不用自己去查：插件每次打开用量面板时（带小时级缓存）会查询 GitHub 最新发布，如果有新版本，面板顶部会显示**「发现新版本」**提示条和完整的更新命令。照命令执行、重启 `dsh web`、刷新页面即可：
+**npm 安装的用户**：执行 `dsh plugin --profile web update @xavier711/dsh-deepseek-usage`（或按新版本号重新 add，如 `... add @xavier711/dsh-deepseek-usage@X.Y.Z`）。
+
+**Git 安装的用户**：你安装的是固定 tag 的快照，**不会自动更新**——但你也不用自己去查：插件每次打开用量面板时（带小时级缓存）会查询 GitHub 最新发布，如果有新版本，面板顶部会显示**「发现新版本」**提示条和完整的更新命令。照命令执行、重启 `dsh web`、刷新页面即可：
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
