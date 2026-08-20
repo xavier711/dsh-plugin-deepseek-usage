@@ -9,7 +9,7 @@
  *   node gen-render-test.js          # writes render-test.html
  *   # then headless-chrome screenshots (see AGENTS.md §3.6)
  */
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -82,6 +82,37 @@ const bucket = (date, tokens, calls) => ({
 });
 const days7 = [6, 5, 4, 3, 2, 1, 0].map((off, i) => bucket(day(off), [1.2, 3.4, 2.1, 4.8, 6.2, 3.9, 2.4][i] * 1e6, 60 + i * 12));
 
+// ── current Beijing pricing period (mirrors lib/index.js beijingPeriod) ────
+const BEIJING_OFFSET = 480;
+const periodNow = Date.now();
+const periodMinutes = ((periodNow + BEIJING_OFFSET * 60_000) % 864e5) / 60_000;
+const periodWindows = [[9 * 60, 12 * 60], [14 * 60, 18 * 60]];
+const periodBoundaries = [0, 1440, ...periodWindows.flat()].sort((a, b) => a - b);
+let periodRange = null;
+for (let i = 0; i < periodBoundaries.length - 1; i += 1) {
+  if (periodMinutes >= periodBoundaries[i] && periodMinutes < periodBoundaries[i + 1]) {
+    periodRange = [periodBoundaries[i], periodBoundaries[i + 1]];
+    break;
+  }
+}
+if (periodRange === null) periodRange = [periodBoundaries[periodBoundaries.length - 1], 1440];
+const periodIsPeak = periodWindows.some(([s, e]) => periodMinutes >= s && periodMinutes < e);
+let periodNext = null;
+for (const b of periodBoundaries) {
+  if (b > periodMinutes && (periodNext === null || b < periodNext)) periodNext = b;
+}
+if (periodNext === null) periodNext = periodBoundaries[0] + 1440;
+const periodPayload = {
+  ok: true,
+  now: periodNow,
+  period: periodIsPeak ? 'peak' : 'offPeak',
+  range: periodRange,
+  nextAt: periodNow + (periodNext - periodMinutes) * 60_000,
+  newPricingAt: Date.UTC(2026, 7, 16, 16, 0, 0),
+  peakHours: [[9, 12], [14, 18]],
+  timezoneOffsetMinutes: BEIJING_OFFSET
+};
+
 const sample = {
   '/dsh-usage/balance': {
     ok: true,
@@ -129,10 +160,11 @@ const sample = {
     ok: true,
     checkedAt: Date.now(),
     installed: '0.1.0',
-    latest: '0.2.0',
+    latest: '0.3.0',
     updateAvailable: true,
     url: 'https://github.com/xavier711/dsh-deepseek-usage/releases'
-  }
+  },
+  '/dsh-usage/period': periodPayload
 };
 const sampleJson = JSON.stringify(sample, null, 1).replaceAll('</', '<\\/');
 
@@ -291,7 +323,17 @@ ${zhSource}
 `;
 
 mkdirSync(join(here, 'vendor'), { recursive: true });
-copyFileSync(join(process.env.HOME, '.dsh', 'profiles', 'node_modules', 'react', 'umd', 'react.production.min.js'), join(here, 'vendor', 'react.production.min.js'));
-copyFileSync(join(process.env.HOME, '.dsh', 'profiles', 'node_modules', 'react-dom', 'umd', 'react-dom.production.min.js'), join(here, 'vendor', 'react-dom.production.min.js'));
+// Vendor UMD builds are copied once and then kept in the repo; skip the copy
+// when the destination already exists so regeneration works on machines where
+// the profile node_modules path has moved (react UMD builds are stable).
+const vendorPairs = [
+  ['react', 'react.production.min.js'],
+  ['react-dom', 'react-dom.production.min.js']
+];
+for (const [pkg, file] of vendorPairs) {
+  const dest = join(here, 'vendor', file);
+  if (existsSync(dest)) continue;
+  copyFileSync(join(process.env.HOME, '.dsh', 'profiles', 'node_modules', pkg, 'umd', file), dest);
+}
 writeFileSync(join(here, 'render-test.html'), html);
 console.log('render-test.html written (bundle inlined, vendor react copied)');

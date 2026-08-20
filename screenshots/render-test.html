@@ -81,6 +81,12 @@ window.__ZH = {
       "trigger.label": "用量",
       "panel.title": "DeepSeek 用量",
       "panel.subtitle": "余额 · Token 统计",
+      "period.label": "当前",
+      "period.peak": "高峰",
+      "period.offPeak": "空闲",
+      "period.flat": "统一价",
+      "period.next": "{time} 后转 {period}",
+      "period.tomorrow": "次日",
       "local.trend": "用量趋势",
       "local.range7d": "近 7 天",
       "local.range30d": "近 30 天",
@@ -156,7 +162,7 @@ window.__ZH = {
       "local.empty": "暂无会话记录",
       "update.available": "发现新版本 v{version}",
       "update.releases": "查看发布页",
-      "panel.note": "费用按 DeepSeek 官方定价分模型估算（8/17 起 V4 系列按北京时间峰谷计价）。"
+      "panel.note": "费用按 DeepSeek 官方定价分模型估算。"
     };
 </script>
 <script src="../lib/client.js"></script>
@@ -175,7 +181,7 @@ window.__ZH = {
   const SAMPLE = {
  "/dsh-usage/balance": {
   "ok": true,
-  "fetchedAt": 1786949908928,
+  "fetchedAt": 1787187954689,
   "isAvailable": true,
   "currency": "CNY",
   "totalBalance": "128.45",
@@ -184,13 +190,13 @@ window.__ZH = {
  },
  "/dsh-usage/local": {
   "ok": true,
-  "fetchedAt": 1786949908928,
+  "fetchedAt": 1787187954689,
   "sessionCount": 3,
   "errorSessions": 0,
   "pricing": {
    "currency": "CNY",
    "note": "official",
-   "newPricingAt": 1786949908928,
+   "newPricingAt": 1787187954689,
    "peakHours": [
     [
      9,
@@ -204,7 +210,7 @@ window.__ZH = {
   },
   "buckets": {
    "today": {
-    "date": "2026-08-17",
+    "date": "2026-08-20",
     "calls": 132,
     "inputTokens": 384000,
     "outputTokens": 408000,
@@ -214,7 +220,7 @@ window.__ZH = {
     "cost": 2.4
    },
    "week": {
-    "date": "2026-08-17",
+    "date": "2026-08-20",
     "calls": 512,
     "inputTokens": 3840000,
     "outputTokens": 4080000,
@@ -224,7 +230,7 @@ window.__ZH = {
     "cost": 24
    },
    "total": {
-    "date": "2026-08-17",
+    "date": "2026-08-20",
     "calls": 1204,
     "inputTokens": 72000000,
     "outputTokens": 76500000,
@@ -236,7 +242,7 @@ window.__ZH = {
   },
   "days": [
    {
-    "date": "2026-08-11",
+    "date": "2026-08-14",
     "calls": 60,
     "inputTokens": 192000,
     "outputTokens": 204000,
@@ -246,7 +252,7 @@ window.__ZH = {
     "cost": 1.2
    },
    {
-    "date": "2026-08-12",
+    "date": "2026-08-15",
     "calls": 72,
     "inputTokens": 544000,
     "outputTokens": 578000,
@@ -256,7 +262,7 @@ window.__ZH = {
     "cost": 3.4
    },
    {
-    "date": "2026-08-13",
+    "date": "2026-08-16",
     "calls": 84,
     "inputTokens": 336000,
     "outputTokens": 357000,
@@ -266,7 +272,7 @@ window.__ZH = {
     "cost": 2.1
    },
    {
-    "date": "2026-08-14",
+    "date": "2026-08-17",
     "calls": 96,
     "inputTokens": 768000,
     "outputTokens": 816000,
@@ -276,7 +282,7 @@ window.__ZH = {
     "cost": 4.8
    },
    {
-    "date": "2026-08-15",
+    "date": "2026-08-18",
     "calls": 108,
     "inputTokens": 992000,
     "outputTokens": 1054000,
@@ -286,7 +292,7 @@ window.__ZH = {
     "cost": 6.199999999999999
    },
    {
-    "date": "2026-08-16",
+    "date": "2026-08-19",
     "calls": 120,
     "inputTokens": 624000,
     "outputTokens": 663000,
@@ -296,7 +302,7 @@ window.__ZH = {
     "cost": 3.9
    },
    {
-    "date": "2026-08-17",
+    "date": "2026-08-20",
     "calls": 132,
     "inputTokens": 384000,
     "outputTokens": 408000,
@@ -3986,8 +3992,8 @@ window.__ZH = {
    {
     "id": "s1",
     "title": "优化支付网关性能",
-    "createdAt": 1786863508928,
-    "lastActiveAt": 1786946308928,
+    "createdAt": 1787101554689,
+    "lastActiveAt": 1787184354689,
     "calls": 618,
     "inputTokens": 1900000,
     "outputTokens": 2100000,
@@ -4000,8 +4006,8 @@ window.__ZH = {
    {
     "id": "s2",
     "title": "整理项目文档",
-    "createdAt": 1786777108928,
-    "lastActiveAt": 1786777108928,
+    "createdAt": 1787015154689,
+    "lastActiveAt": 1787015154689,
     "calls": 402,
     "inputTokens": 1300000,
     "outputTokens": 1500000,
@@ -4014,8 +4020,8 @@ window.__ZH = {
    {
     "id": "s3",
     "title": "修复 CI 流水线",
-    "createdAt": 1786690708928,
-    "lastActiveAt": 1786690708928,
+    "createdAt": 1786928754689,
+    "lastActiveAt": 1786928754689,
     "calls": 184,
     "inputTokens": 500000,
     "outputTokens": 600000,
@@ -4029,11 +4035,33 @@ window.__ZH = {
  },
  "/dsh-usage/version": {
   "ok": true,
-  "checkedAt": 1786949908928,
+  "checkedAt": 1787187954689,
   "installed": "0.1.0",
-  "latest": "0.2.0",
+  "latest": "0.3.0",
   "updateAvailable": true,
   "url": "https://github.com/xavier711/dsh-deepseek-usage/releases"
+ },
+ "/dsh-usage/period": {
+  "ok": true,
+  "now": 1787187954689,
+  "period": "peak",
+  "range": [
+   540,
+   720
+  ],
+  "nextAt": 1787198400000,
+  "newPricingAt": 1786896000000,
+  "peakHours": [
+   [
+    9,
+    12
+   ],
+   [
+    14,
+    18
+   ]
+  ],
+  "timezoneOffsetMinutes": 480
  }
 };
   window.fetch = (url) => Promise.resolve({ ok: true, status: 200, json: async () => SAMPLE[url] || { ok: false, error: 'unknown', message: url } });

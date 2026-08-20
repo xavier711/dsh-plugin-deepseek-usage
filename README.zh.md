@@ -6,7 +6,7 @@ DeepSeek 用量面板插件 —— 装在 [DeepSeek Harness](https://github.com/
 
 - **账户余额**：实时查询官方接口 `GET /user/balance`（余额、充值/赠送拆分）
 - **本地用量**：回放你本机会话日志里的官方 token 计数 —— 今日 / 近 7 天 / 累计、7 天柱状图、今日构成、按会话明细、**按模型统计**
-- **费用估算**：按模型套用 DeepSeek **官方定价**（含 2026-08-17 起 V4 系列峰谷定价，北京时间自动区分高峰/空闲）
+- **费用估算**：按模型套用 DeepSeek **官方定价**（含 2026-08-17 起 V4 系列峰谷定价，北京时间自动区分高峰/空闲）。侧边栏入口和面板头部会实时显示**当前时段标识**（高峰/空闲，含当前时段区间与下一次切换时间）
 
 > 说明：DeepSeek 官方 API 没有账号级用量查询接口（实测所有候选路径均 404），所以用量数据来自 harness 本地会话日志 —— 日志里记录的就是官方每次请求返回的真实 usage。
 
@@ -27,13 +27,13 @@ DeepSeek 用量面板插件 —— 装在 [DeepSeek Harness](https://github.com/
 在终端粘贴运行：
 
 ```sh
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.2.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.3.0
 ```
 
 **没有全局安装过 `dsh`？** 用这条（npx 会自动下载）：
 
 ```sh
-npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.2.0
+npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.3.0
 ```
 
 > 提示：安装过程中如果提示 pnpm 不存在，先运行 `npm install -g pnpm` 再重试。
@@ -93,7 +93,7 @@ dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
 ## 项目结构
 
 ```
-lib/index.js       宿主端：/dsh-usage/balance + /dsh-usage/local 两个路由
+lib/index.js       宿主端：/dsh-usage/balance + /dsh-usage/local + /dsh-usage/period 路由
 lib/client.js      浏览器端：侧边栏「用量」入口 + 面板（纯手写 bundle，无构建步骤）
 cordis.patch.yml   插件自身的 patch 层（dsh.bundle 声明，安装即自动激活）
 install.sh         一键安装脚本
@@ -110,6 +110,7 @@ install.sh         一键安装脚本
     maxSessions: 100         # 统计最近多少个会话
     sessionConcurrency: 4    # 并行读取会话数
     balanceTimeoutMs: 10000  # 余额请求超时
+    localTtlMs: 30000        # 本地统计缓存毫秒数（信号驱动刷新下保持廉价）
     newPricingAt: 1786924800000   # 峰谷定价生效时间（2026-08-17 00:00 北京时间）
     peakHours: [[9,12],[14,18]]   # 北京时间高峰时段
     # pricing: 按模型单价（元/百万 tokens），详见源码仓库
@@ -123,7 +124,7 @@ install.sh         一键安装脚本
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.2.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.3.0
 ```
 
 ## 常见问题
@@ -134,7 +135,7 @@ dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.2.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.3.0
 ```
 
 然后重启 `dsh web` 并刷新页面。
@@ -147,3 +148,4 @@ dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage
 
 - `GET /dsh-usage/balance` — `{ ok, isAvailable, currency, totalBalance, grantedBalance, toppedUpBalance, ... }`
 - `GET /dsh-usage/local` — `{ ok, sessionCount, errorSessions, pricing, buckets: { today, week, total }, days: [...7], models: [...], sessions: [...] }`
+- `GET /dsh-usage/period` — `{ ok, now, period: 'peak'|'offPeak'|'flat', range: [start, end] 分钟数, nextAt, peakHours, timezoneOffsetMinutes }` — 当前北京时间高峰/空闲分类，供侧边栏徽标与面板头部使用

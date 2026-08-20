@@ -16,12 +16,24 @@ export interface DeepseekUsageConfig {
   maxSessions?: number;
   /** Parallel session-log inspections. */
   sessionConcurrency?: number;
-  /** Approximate DeepSeek pricing, CNY per 1M tokens (cost-estimate basis). */
-  pricePerMillionInput?: number;
-  pricePerMillionCacheHit?: number;
-  pricePerMillionOutput?: number;
   /** Timeout for the balance request (ms). */
   balanceTimeoutMs?: number;
+  /** How long a successful local-usage payload may be served from cache (ms). */
+  localTtlMs?: number;
+  /** Per-model pricing, CNY per 1M tokens (see DEFAULTS in lib/index.js). */
+  pricing?: Record<string, unknown>;
+  /** Epoch ms when the V4 peak/off-peak pricing takes effect (2026-08-17 00:00 Beijing). */
+  newPricingAt?: number;
+  /** Beijing peak windows, local hours [start, end). */
+  peakHours?: Array<[number, number]>;
+  /** Beijing timezone offset for the peak-window determination (minutes). */
+  timezoneOffsetMinutes?: number;
+  /** Update-check URL (raw package.json on the repo's default branch). */
+  updateCheckUrl?: string;
+  /** Releases page shown in the update banner. */
+  updateReleasesUrl?: string;
+  /** How long a successful update check may be cached (ms). */
+  updateCheckTtlMs?: number;
 }
 
 /** Cordis plugin name (also the row id used in cordis.patch.yml). */
