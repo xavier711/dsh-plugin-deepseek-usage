@@ -4,8 +4,9 @@
   "description": "DeepSeek usage panel for the DSH Web GUI: account balance (official /user/balance API) plus per-model local session token statistics",
   "keywords": [
     "deepseek",
-    "dsh",
     "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
     "usage",
     "token",
     "cost",
