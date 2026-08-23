@@ -87,6 +87,8 @@ window.__ZH = {
       "period.flat": "统一价",
       "period.next": "{time} 后转 {period}",
       "period.tomorrow": "次日",
+      "period.weekend": "周末全天",
+      "period.weekdays": ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
       "local.trend": "用量趋势",
       "local.range7d": "近 7 天",
       "local.range30d": "近 30 天",
@@ -181,7 +183,7 @@ window.__ZH = {
   const SAMPLE = {
  "/dsh-usage/balance": {
   "ok": true,
-  "fetchedAt": 1787187954689,
+  "fetchedAt": 1787445378336,
   "isAvailable": true,
   "currency": "CNY",
   "totalBalance": "128.45",
@@ -190,13 +192,14 @@ window.__ZH = {
  },
  "/dsh-usage/local": {
   "ok": true,
-  "fetchedAt": 1787187954689,
+  "fetchedAt": 1787445378336,
   "sessionCount": 3,
   "errorSessions": 0,
   "pricing": {
    "currency": "CNY",
    "note": "official",
-   "newPricingAt": 1787187954689,
+   "newPricingAt": 1787445378336,
+   "weekendOffPeakAt": 1787414400000,
    "peakHours": [
     [
      9,
@@ -210,7 +213,7 @@ window.__ZH = {
   },
   "buckets": {
    "today": {
-    "date": "2026-08-20",
+    "date": "2026-08-23",
     "calls": 132,
     "inputTokens": 384000,
     "outputTokens": 408000,
@@ -220,7 +223,7 @@ window.__ZH = {
     "cost": 2.4
    },
    "week": {
-    "date": "2026-08-20",
+    "date": "2026-08-23",
     "calls": 512,
     "inputTokens": 3840000,
     "outputTokens": 4080000,
@@ -230,7 +233,7 @@ window.__ZH = {
     "cost": 24
    },
    "total": {
-    "date": "2026-08-20",
+    "date": "2026-08-23",
     "calls": 1204,
     "inputTokens": 72000000,
     "outputTokens": 76500000,
@@ -242,7 +245,7 @@ window.__ZH = {
   },
   "days": [
    {
-    "date": "2026-08-14",
+    "date": "2026-08-17",
     "calls": 60,
     "inputTokens": 192000,
     "outputTokens": 204000,
@@ -252,7 +255,7 @@ window.__ZH = {
     "cost": 1.2
    },
    {
-    "date": "2026-08-15",
+    "date": "2026-08-18",
     "calls": 72,
     "inputTokens": 544000,
     "outputTokens": 578000,
@@ -262,7 +265,7 @@ window.__ZH = {
     "cost": 3.4
    },
    {
-    "date": "2026-08-16",
+    "date": "2026-08-19",
     "calls": 84,
     "inputTokens": 336000,
     "outputTokens": 357000,
@@ -272,7 +275,7 @@ window.__ZH = {
     "cost": 2.1
    },
    {
-    "date": "2026-08-17",
+    "date": "2026-08-20",
     "calls": 96,
     "inputTokens": 768000,
     "outputTokens": 816000,
@@ -282,7 +285,7 @@ window.__ZH = {
     "cost": 4.8
    },
    {
-    "date": "2026-08-18",
+    "date": "2026-08-21",
     "calls": 108,
     "inputTokens": 992000,
     "outputTokens": 1054000,
@@ -292,7 +295,7 @@ window.__ZH = {
     "cost": 6.199999999999999
    },
    {
-    "date": "2026-08-19",
+    "date": "2026-08-22",
     "calls": 120,
     "inputTokens": 624000,
     "outputTokens": 663000,
@@ -302,7 +305,7 @@ window.__ZH = {
     "cost": 3.9
    },
    {
-    "date": "2026-08-20",
+    "date": "2026-08-23",
     "calls": 132,
     "inputTokens": 384000,
     "outputTokens": 408000,
@@ -314,78 +317,8 @@ window.__ZH = {
   ],
   "activity": {
    "weeks": 52,
-   "start": "2025-08-17",
+   "start": "2025-08-24",
    "days": [
-    {
-     "date": "2025-08-17",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-18",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-19",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-20",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-21",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-22",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-23",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
     {
      "date": "2025-08-24",
      "calls": 0,
@@ -3538,23 +3471,23 @@ window.__ZH = {
     },
     {
      "date": "2026-07-05",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-06",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-07",
@@ -3568,23 +3501,23 @@ window.__ZH = {
     },
     {
      "date": "2026-07-08",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-09",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-10",
@@ -3628,26 +3561,16 @@ window.__ZH = {
     },
     {
      "date": "2026-07-14",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-15",
-     "calls": 109,
-     "inputTokens": 156800,
-     "outputTokens": 166600,
-     "cacheReadTokens": 637000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 19600,
-     "cost": 0.9803919999999999
-    },
-    {
-     "date": "2026-07-16",
      "calls": 86,
      "inputTokens": 83200,
      "outputTokens": 88400,
@@ -3657,7 +3580,7 @@ window.__ZH = {
      "cost": 0.520208
     },
     {
-     "date": "2026-07-17",
+     "date": "2026-07-16",
      "calls": 63,
      "inputTokens": 38400,
      "outputTokens": 40800,
@@ -3665,6 +3588,16 @@ window.__ZH = {
      "cacheWriteTokens": 0,
      "reasoningTokens": 4800,
      "cost": 0.240096
+    },
+    {
+     "date": "2026-07-17",
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-18",
@@ -3678,66 +3611,6 @@ window.__ZH = {
     },
     {
      "date": "2026-07-19",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
-    },
-    {
-     "date": "2026-07-20",
-     "calls": 109,
-     "inputTokens": 156800,
-     "outputTokens": 166600,
-     "cacheReadTokens": 637000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 19600,
-     "cost": 0.9803919999999999
-    },
-    {
-     "date": "2026-07-21",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
-    },
-    {
-     "date": "2026-07-22",
-     "calls": 132,
-     "inputTokens": 304000,
-     "outputTokens": 323000,
-     "cacheReadTokens": 1235000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 38000,
-     "cost": 1.90076
-    },
-    {
-     "date": "2026-07-23",
-     "calls": 109,
-     "inputTokens": 156800,
-     "outputTokens": 166600,
-     "cacheReadTokens": 637000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 19600,
-     "cost": 0.9803919999999999
-    },
-    {
-     "date": "2026-07-24",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
-    },
-    {
-     "date": "2026-07-25",
      "calls": 63,
      "inputTokens": 38400,
      "outputTokens": 40800,
@@ -3747,7 +3620,27 @@ window.__ZH = {
      "cost": 0.240096
     },
     {
-     "date": "2026-07-26",
+     "date": "2026-07-20",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
+    },
+    {
+     "date": "2026-07-21",
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 4800,
+     "cost": 0.240096
+    },
+    {
+     "date": "2026-07-22",
      "calls": 109,
      "inputTokens": 156800,
      "outputTokens": 166600,
@@ -3755,19 +3648,49 @@ window.__ZH = {
      "cacheWriteTokens": 0,
      "reasoningTokens": 19600,
      "cost": 0.9803919999999999
+    },
+    {
+     "date": "2026-07-23",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
+    },
+    {
+     "date": "2026-07-24",
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 4800,
+     "cost": 0.240096
+    },
+    {
+     "date": "2026-07-25",
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 0,
+     "cost": 0
+    },
+    {
+     "date": "2026-07-26",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
     },
     {
      "date": "2026-07-27",
-     "calls": 132,
-     "inputTokens": 304000,
-     "outputTokens": 323000,
-     "cacheReadTokens": 1235000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 38000,
-     "cost": 1.90076
-    },
-    {
-     "date": "2026-07-28",
      "calls": 109,
      "inputTokens": 156800,
      "outputTokens": 166600,
@@ -3775,6 +3698,16 @@ window.__ZH = {
      "cacheWriteTokens": 0,
      "reasoningTokens": 19600,
      "cost": 0.9803919999999999
+    },
+    {
+     "date": "2026-07-28",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
     },
     {
      "date": "2026-07-29",
@@ -3788,46 +3721,36 @@ window.__ZH = {
     },
     {
      "date": "2026-07-30",
-     "calls": 132,
-     "inputTokens": 304000,
-     "outputTokens": 323000,
-     "cacheReadTokens": 1235000,
+     "calls": 109,
+     "inputTokens": 156800,
+     "outputTokens": 166600,
+     "cacheReadTokens": 637000,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 38000,
-     "cost": 1.90076
+     "reasoningTokens": 19600,
+     "cost": 0.9803919999999999
     },
     {
      "date": "2026-07-31",
-     "calls": 109,
-     "inputTokens": 156800,
-     "outputTokens": 166600,
-     "cacheReadTokens": 637000,
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 19600,
-     "cost": 0.9803919999999999
+     "reasoningTokens": 10400,
+     "cost": 0.520208
     },
     {
      "date": "2026-08-01",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
+     "reasoningTokens": 4800,
+     "cost": 0.240096
     },
     {
      "date": "2026-08-02",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
-    },
-    {
-     "date": "2026-08-03",
      "calls": 109,
      "inputTokens": 156800,
      "outputTokens": 166600,
@@ -3837,7 +3760,7 @@ window.__ZH = {
      "cost": 0.9803919999999999
     },
     {
-     "date": "2026-08-04",
+     "date": "2026-08-03",
      "calls": 132,
      "inputTokens": 304000,
      "outputTokens": 323000,
@@ -3847,7 +3770,7 @@ window.__ZH = {
      "cost": 1.90076
     },
     {
-     "date": "2026-08-05",
+     "date": "2026-08-04",
      "calls": 109,
      "inputTokens": 156800,
      "outputTokens": 166600,
@@ -3855,6 +3778,16 @@ window.__ZH = {
      "cacheWriteTokens": 0,
      "reasoningTokens": 19600,
      "cost": 0.9803919999999999
+    },
+    {
+     "date": "2026-08-05",
+     "calls": 132,
+     "inputTokens": 304000,
+     "outputTokens": 323000,
+     "cacheReadTokens": 1235000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 38000,
+     "cost": 1.90076
     },
     {
      "date": "2026-08-06",
@@ -3868,36 +3801,16 @@ window.__ZH = {
     },
     {
      "date": "2026-08-07",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
+     "calls": 109,
+     "inputTokens": 156800,
+     "outputTokens": 166600,
+     "cacheReadTokens": 637000,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
+     "reasoningTokens": 19600,
+     "cost": 0.9803919999999999
     },
     {
      "date": "2026-08-08",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
-    },
-    {
-     "date": "2026-08-09",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
-    },
-    {
-     "date": "2026-08-10",
      "calls": 86,
      "inputTokens": 83200,
      "outputTokens": 88400,
@@ -3905,6 +3818,26 @@ window.__ZH = {
      "cacheWriteTokens": 0,
      "reasoningTokens": 10400,
      "cost": 0.520208
+    },
+    {
+     "date": "2026-08-09",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
+    },
+    {
+     "date": "2026-08-10",
+     "calls": 109,
+     "inputTokens": 156800,
+     "outputTokens": 166600,
+     "cacheReadTokens": 637000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 19600,
+     "cost": 0.9803919999999999
     },
     {
      "date": "2026-08-11",
@@ -3918,16 +3851,6 @@ window.__ZH = {
     },
     {
      "date": "2026-08-12",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
-    },
-    {
-     "date": "2026-08-13",
      "calls": 109,
      "inputTokens": 156800,
      "outputTokens": 166600,
@@ -3937,7 +3860,7 @@ window.__ZH = {
      "cost": 0.9803919999999999
     },
     {
-     "date": "2026-08-14",
+     "date": "2026-08-13",
      "calls": 132,
      "inputTokens": 304000,
      "outputTokens": 323000,
@@ -3947,7 +3870,87 @@ window.__ZH = {
      "cost": 1.90076
     },
     {
+     "date": "2026-08-14",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
+    },
+    {
      "date": "2026-08-15",
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 4800,
+     "cost": 0.240096
+    },
+    {
+     "date": "2026-08-16",
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 4800,
+     "cost": 0.240096
+    },
+    {
+     "date": "2026-08-17",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
+    },
+    {
+     "date": "2026-08-18",
+     "calls": 132,
+     "inputTokens": 304000,
+     "outputTokens": 323000,
+     "cacheReadTokens": 1235000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 38000,
+     "cost": 1.90076
+    },
+    {
+     "date": "2026-08-19",
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 4800,
+     "cost": 0.240096
+    },
+    {
+     "date": "2026-08-20",
+     "calls": 109,
+     "inputTokens": 156800,
+     "outputTokens": 166600,
+     "cacheReadTokens": 637000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 19600,
+     "cost": 0.9803919999999999
+    },
+    {
+     "date": "2026-08-21",
+     "calls": 132,
+     "inputTokens": 304000,
+     "outputTokens": 323000,
+     "cacheReadTokens": 1235000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 38000,
+     "cost": 1.90076
+    },
+    {
+     "date": "2026-08-22",
      "calls": 86,
      "inputTokens": 83200,
      "outputTokens": 88400,
@@ -3992,8 +3995,8 @@ window.__ZH = {
    {
     "id": "s1",
     "title": "优化支付网关性能",
-    "createdAt": 1787101554689,
-    "lastActiveAt": 1787184354689,
+    "createdAt": 1787358978336,
+    "lastActiveAt": 1787441778336,
     "calls": 618,
     "inputTokens": 1900000,
     "outputTokens": 2100000,
@@ -4006,8 +4009,8 @@ window.__ZH = {
    {
     "id": "s2",
     "title": "整理项目文档",
-    "createdAt": 1787015154689,
-    "lastActiveAt": 1787015154689,
+    "createdAt": 1787272578336,
+    "lastActiveAt": 1787272578336,
     "calls": 402,
     "inputTokens": 1300000,
     "outputTokens": 1500000,
@@ -4020,8 +4023,8 @@ window.__ZH = {
    {
     "id": "s3",
     "title": "修复 CI 流水线",
-    "createdAt": 1786928754689,
-    "lastActiveAt": 1786928754689,
+    "createdAt": 1787186178336,
+    "lastActiveAt": 1787186178336,
     "calls": 184,
     "inputTokens": 500000,
     "outputTokens": 600000,
@@ -4035,7 +4038,7 @@ window.__ZH = {
  },
  "/dsh-usage/version": {
   "ok": true,
-  "checkedAt": 1787187954689,
+  "checkedAt": 1787445378336,
   "installed": "0.1.0",
   "latest": "0.3.0",
   "updateAvailable": true,
@@ -4043,14 +4046,16 @@ window.__ZH = {
  },
  "/dsh-usage/period": {
   "ok": true,
-  "now": 1787187954689,
-  "period": "peak",
+  "now": 1787445378336,
+  "period": "offPeak",
   "range": [
-   540,
-   720
+   0,
+   540
   ],
-  "nextAt": 1787198400000,
+  "nextAt": 1787446800000,
+  "nextPeriod": "peak",
   "newPricingAt": 1786896000000,
+  "weekendOffPeakAt": 1787414400000,
   "peakHours": [
    [
     9,
