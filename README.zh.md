@@ -111,7 +111,7 @@ install.sh         一键安装脚本
     sessionConcurrency: 4    # 并行读取会话数
     balanceTimeoutMs: 10000  # 余额请求超时
     localTtlMs: 30000        # 本地统计缓存毫秒数（信号驱动刷新下保持廉价）
-    newPricingAt: 1786924800000   # 峰谷定价生效时间（2026-08-17 00:00 北京时间）
+    newPricingAt: 1786896000000   # 峰谷定价生效时间（2026-08-17 00:00 北京时间）
     weekendOffPeakAt: 1787414400000  # 周末全天低谷价生效时间（2026-08-23 00:00 北京时间）
     peakHours: [[9,12],[14,18]]   # 北京时间高峰时段
     # pricing: 按模型单价（元/百万 tokens），详见源码仓库

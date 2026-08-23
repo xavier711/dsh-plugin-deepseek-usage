@@ -104,7 +104,7 @@ Override row config by id in `~/.dsh/profiles/web/cordis.patch.yml`:
     sessionConcurrency: 4      # parallel session-log reads
     balanceTimeoutMs: 10000    # balance request timeout
     localTtlMs: 30000          # local-usage cache TTL (ms); keeps signal-driven badge refreshes cheap
-    newPricingAt: 1786924800000      # peak/off-peak pricing effective date (2026-08-17 00:00 Beijing)
+    newPricingAt: 1786896000000      # peak/off-peak pricing effective date (2026-08-17 00:00 Beijing)
     weekendOffPeakAt: 1787414400000  # weekends all-day off-peak rule effective date (2026-08-23 00:00 Beijing)
     peakHours: [[9,12],[14,18]]      # Beijing peak windows
     # pricing: per-model rates (CNY per 1M tokens), see the source repo
