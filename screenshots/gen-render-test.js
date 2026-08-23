@@ -108,7 +108,9 @@ const periodPayload = {
   period: periodIsPeak ? 'peak' : 'offPeak',
   range: periodRange,
   nextAt: periodNow + (periodNext - periodMinutes) * 60_000,
+  nextPeriod: periodIsPeak ? 'offPeak' : 'peak',
   newPricingAt: Date.UTC(2026, 7, 16, 16, 0, 0),
+  weekendOffPeakAt: Date.UTC(2026, 7, 22, 16, 0, 0),
   peakHours: [[9, 12], [14, 18]],
   timezoneOffsetMinutes: BEIJING_OFFSET
 };
@@ -128,7 +130,7 @@ const sample = {
     fetchedAt: Date.now(),
     sessionCount: 3,
     errorSessions: 0,
-    pricing: { currency: 'CNY', note: 'official', newPricingAt: Date.now(), peakHours: [[9, 12], [14, 18]] },
+    pricing: { currency: 'CNY', note: 'official', newPricingAt: Date.now(), weekendOffPeakAt: Date.UTC(2026, 7, 22, 16, 0, 0), peakHours: [[9, 12], [14, 18]] },
     buckets: {
       today: days7[6],
       week: bucket(day(0), 24e6, 512),
