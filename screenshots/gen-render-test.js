@@ -359,11 +359,18 @@ ${zhSource}
   // once the local-usage sections are on screen.
   setTimeout(() => {
     try {
-      const wsHeads = document.querySelectorAll('.du-workspaceHead');
-      for (const h of wsHeads) {
-        if (h.textContent.includes('docs')) { h.dispatchEvent(new MouseEvent('click', { bubbles: true })); break; }
+      const wsRows = document.querySelectorAll('.du-modelRow');
+      for (const row of wsRows) {
+        if (row.textContent.includes('docs')) {
+          const tg = row.querySelector('.du-sessionToggle');
+          if (tg) tg.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+          break;
+        }
       }
-      const toggle = document.querySelector('.du-sessionToggle');
+      // Workspace rows render their toggles before the global one, so the
+      // global session toggle is the LAST .du-sessionToggle on the page.
+      const toggles = document.querySelectorAll('.du-sessionToggle');
+      const toggle = toggles[toggles.length - 1];
       if (toggle) toggle.dispatchEvent(new MouseEvent('click', { bubbles: true }));
       meta.textContent = 'expanded';
     } catch (err) { meta.textContent = 'expand-err:' + err.message; }
