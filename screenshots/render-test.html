@@ -156,6 +156,10 @@ window.__ZH = {
       "local.more": "多",
       "local.todayComposition": "今日构成",
       "local.byModel": "按模型统计",
+      "local.byWorkspace": "按工作区统计",
+      "local.workspaceUnassigned": "未关联工作区",
+      "local.workspaceMeta": "{tokens} tok · {sessions} 个会话 · {cost}",
+      "local.workspaceSubagents": "{count} 个子代理",
       "local.estimated": "估算",
       "local.modelMeta": "{tokens} tok · {calls} 次 · {cost}",
       "local.sessionToggle": "查看 {count} 个会话",
@@ -183,7 +187,7 @@ window.__ZH = {
   const SAMPLE = {
  "/dsh-usage/balance": {
   "ok": true,
-  "fetchedAt": 1787445378336,
+  "fetchedAt": 1787554188927,
   "isAvailable": true,
   "currency": "CNY",
   "totalBalance": "128.45",
@@ -192,13 +196,13 @@ window.__ZH = {
  },
  "/dsh-usage/local": {
   "ok": true,
-  "fetchedAt": 1787445378336,
+  "fetchedAt": 1787554188927,
   "sessionCount": 3,
   "errorSessions": 0,
   "pricing": {
    "currency": "CNY",
    "note": "official",
-   "newPricingAt": 1787445378336,
+   "newPricingAt": 1787554188927,
    "weekendOffPeakAt": 1787414400000,
    "peakHours": [
     [
@@ -213,7 +217,7 @@ window.__ZH = {
   },
   "buckets": {
    "today": {
-    "date": "2026-08-23",
+    "date": "2026-08-24",
     "calls": 132,
     "inputTokens": 384000,
     "outputTokens": 408000,
@@ -223,7 +227,7 @@ window.__ZH = {
     "cost": 2.4
    },
    "week": {
-    "date": "2026-08-23",
+    "date": "2026-08-24",
     "calls": 512,
     "inputTokens": 3840000,
     "outputTokens": 4080000,
@@ -233,7 +237,7 @@ window.__ZH = {
     "cost": 24
    },
    "total": {
-    "date": "2026-08-23",
+    "date": "2026-08-24",
     "calls": 1204,
     "inputTokens": 72000000,
     "outputTokens": 76500000,
@@ -245,7 +249,7 @@ window.__ZH = {
   },
   "days": [
    {
-    "date": "2026-08-17",
+    "date": "2026-08-18",
     "calls": 60,
     "inputTokens": 192000,
     "outputTokens": 204000,
@@ -255,7 +259,7 @@ window.__ZH = {
     "cost": 1.2
    },
    {
-    "date": "2026-08-18",
+    "date": "2026-08-19",
     "calls": 72,
     "inputTokens": 544000,
     "outputTokens": 578000,
@@ -265,7 +269,7 @@ window.__ZH = {
     "cost": 3.4
    },
    {
-    "date": "2026-08-19",
+    "date": "2026-08-20",
     "calls": 84,
     "inputTokens": 336000,
     "outputTokens": 357000,
@@ -275,7 +279,7 @@ window.__ZH = {
     "cost": 2.1
    },
    {
-    "date": "2026-08-20",
+    "date": "2026-08-21",
     "calls": 96,
     "inputTokens": 768000,
     "outputTokens": 816000,
@@ -285,7 +289,7 @@ window.__ZH = {
     "cost": 4.8
    },
    {
-    "date": "2026-08-21",
+    "date": "2026-08-22",
     "calls": 108,
     "inputTokens": 992000,
     "outputTokens": 1054000,
@@ -295,7 +299,7 @@ window.__ZH = {
     "cost": 6.199999999999999
    },
    {
-    "date": "2026-08-22",
+    "date": "2026-08-23",
     "calls": 120,
     "inputTokens": 624000,
     "outputTokens": 663000,
@@ -305,7 +309,7 @@ window.__ZH = {
     "cost": 3.9
    },
    {
-    "date": "2026-08-23",
+    "date": "2026-08-24",
     "calls": 132,
     "inputTokens": 384000,
     "outputTokens": 408000,
@@ -3995,8 +3999,10 @@ window.__ZH = {
    {
     "id": "s1",
     "title": "优化支付网关性能",
-    "createdAt": 1787358978336,
-    "lastActiveAt": 1787441778336,
+    "workspace": "/Users/alice/dev/payment-gateway",
+    "subagent": false,
+    "createdAt": 1787467788927,
+    "lastActiveAt": 1787550588927,
     "calls": 618,
     "inputTokens": 1900000,
     "outputTokens": 2100000,
@@ -4009,8 +4015,10 @@ window.__ZH = {
    {
     "id": "s2",
     "title": "整理项目文档",
-    "createdAt": 1787272578336,
-    "lastActiveAt": 1787272578336,
+    "workspace": "/Users/alice/docs",
+    "subagent": false,
+    "createdAt": 1787381388927,
+    "lastActiveAt": 1787381388927,
     "calls": 402,
     "inputTokens": 1300000,
     "outputTokens": 1500000,
@@ -4023,8 +4031,10 @@ window.__ZH = {
    {
     "id": "s3",
     "title": "修复 CI 流水线",
-    "createdAt": 1787186178336,
-    "lastActiveAt": 1787186178336,
+    "workspace": "/Users/alice/ci-infra",
+    "subagent": false,
+    "createdAt": 1787294988927,
+    "lastActiveAt": 1787294988927,
     "calls": 184,
     "inputTokens": 500000,
     "outputTokens": 600000,
@@ -4033,27 +4043,291 @@ window.__ZH = {
     "reasoningTokens": 120000,
     "cost": 4.8,
     "error": null
+   },
+   {
+    "id": "s4",
+    "title": "整理项目文档（子代理）",
+    "workspace": "/Users/alice/docs",
+    "subagent": true,
+    "createdAt": 1787381388927,
+    "lastActiveAt": 1787467788927,
+    "calls": 36,
+    "inputTokens": 90000,
+    "outputTokens": 110000,
+    "cacheReadTokens": 420000,
+    "cacheWriteTokens": 0,
+    "reasoningTokens": 21000,
+    "cost": 0.6,
+    "error": null
+   },
+   {
+    "id": "s5",
+    "title": "临时想法速记",
+    "workspace": null,
+    "subagent": false,
+    "createdAt": 1787208588927,
+    "lastActiveAt": 1787208588927,
+    "calls": 27,
+    "inputTokens": 60000,
+    "outputTokens": 80000,
+    "cacheReadTokens": 300000,
+    "cacheWriteTokens": 0,
+    "reasoningTokens": 9000,
+    "cost": 0.3,
+    "error": null
+   }
+  ],
+  "workspaces": [
+   {
+    "path": "/Users/alice/dev/payment-gateway",
+    "name": "payment-gateway",
+    "sessionCount": 1,
+    "subagentSessionCount": 0,
+    "buckets": {
+     "today": {
+      "date": "2026-08-24",
+      "calls": 38,
+      "inputTokens": 384000,
+      "outputTokens": 408000,
+      "cacheReadTokens": 1560000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 48000,
+      "cost": 2.4
+     },
+     "week": {
+      "date": "2026-08-24",
+      "calls": 214,
+      "inputTokens": 1792000,
+      "outputTokens": 1904000,
+      "cacheReadTokens": 7280000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 224000,
+      "cost": 11.2
+     },
+     "total": {
+      "date": "2026-08-24",
+      "calls": 618,
+      "inputTokens": 12160000,
+      "outputTokens": 12920000,
+      "cacheReadTokens": 49400000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 1520000,
+      "cost": 76
+     }
+    },
+    "sessions": [
+     {
+      "id": "s1",
+      "title": "优化支付网关性能",
+      "subagent": false,
+      "createdAt": 1787467788927,
+      "lastActiveAt": 1787550588927,
+      "calls": 618,
+      "inputTokens": 1900000,
+      "outputTokens": 2100000,
+      "cacheReadTokens": 8100000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 420000,
+      "cost": 18.2
+     }
+    ]
+   },
+   {
+    "path": "/Users/alice/docs",
+    "name": "docs",
+    "sessionCount": 2,
+    "subagentSessionCount": 1,
+    "buckets": {
+     "today": {
+      "date": "2026-08-24",
+      "calls": 22,
+      "inputTokens": 176000,
+      "outputTokens": 187000,
+      "cacheReadTokens": 715000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 22000,
+      "cost": 1.0999999999999999
+     },
+     "week": {
+      "date": "2026-08-24",
+      "calls": 160,
+      "inputTokens": 1376000,
+      "outputTokens": 1462000,
+      "cacheReadTokens": 5590000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 172000,
+      "cost": 8.6
+     },
+     "total": {
+      "date": "2026-08-24",
+      "calls": 438,
+      "inputTokens": 8480000,
+      "outputTokens": 9010000,
+      "cacheReadTokens": 34450000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 1060000,
+      "cost": 53
+     }
+    },
+    "sessions": [
+     {
+      "id": "s2",
+      "title": "整理项目文档",
+      "subagent": false,
+      "createdAt": 1787381388927,
+      "lastActiveAt": 1787381388927,
+      "calls": 402,
+      "inputTokens": 1300000,
+      "outputTokens": 1500000,
+      "cacheReadTokens": 5600000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 300000,
+      "cost": 12.4
+     },
+     {
+      "id": "s4",
+      "title": "整理项目文档（子代理）",
+      "subagent": true,
+      "createdAt": 1787381388927,
+      "lastActiveAt": 1787467788927,
+      "calls": 36,
+      "inputTokens": 90000,
+      "outputTokens": 110000,
+      "cacheReadTokens": 420000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 21000,
+      "cost": 0.6
+     }
+    ]
+   },
+   {
+    "path": "/Users/alice/ci-infra",
+    "name": "ci-infra",
+    "sessionCount": 1,
+    "subagentSessionCount": 0,
+    "buckets": {
+     "today": {
+      "date": "2026-08-24",
+      "calls": 9,
+      "inputTokens": 96000,
+      "outputTokens": 102000,
+      "cacheReadTokens": 390000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 12000,
+      "cost": 0.6
+     },
+     "week": {
+      "date": "2026-08-24",
+      "calls": 71,
+      "inputTokens": 672000,
+      "outputTokens": 714000,
+      "cacheReadTokens": 2730000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 84000,
+      "cost": 4.2
+     },
+     "total": {
+      "date": "2026-08-24",
+      "calls": 184,
+      "inputTokens": 3360000,
+      "outputTokens": 3570000,
+      "cacheReadTokens": 13650000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 420000,
+      "cost": 21
+     }
+    },
+    "sessions": [
+     {
+      "id": "s3",
+      "title": "修复 CI 流水线",
+      "subagent": false,
+      "createdAt": 1787294988927,
+      "lastActiveAt": 1787294988927,
+      "calls": 184,
+      "inputTokens": 500000,
+      "outputTokens": 600000,
+      "cacheReadTokens": 2100000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 120000,
+      "cost": 4.8
+     }
+    ]
+   },
+   {
+    "path": null,
+    "name": null,
+    "sessionCount": 1,
+    "subagentSessionCount": 0,
+    "buckets": {
+     "today": {
+      "date": "2026-08-24",
+      "calls": 2,
+      "inputTokens": 16000,
+      "outputTokens": 17000,
+      "cacheReadTokens": 65000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 2000,
+      "cost": 0.09999999999999999
+     },
+     "week": {
+      "date": "2026-08-24",
+      "calls": 11,
+      "inputTokens": 80000,
+      "outputTokens": 85000,
+      "cacheReadTokens": 325000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 10000,
+      "cost": 0.5
+     },
+     "total": {
+      "date": "2026-08-24",
+      "calls": 27,
+      "inputTokens": 224000,
+      "outputTokens": 238000,
+      "cacheReadTokens": 910000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 28000,
+      "cost": 1.4
+     }
+    },
+    "sessions": [
+     {
+      "id": "s5",
+      "title": "临时想法速记",
+      "subagent": false,
+      "createdAt": 1787208588927,
+      "lastActiveAt": 1787208588927,
+      "calls": 27,
+      "inputTokens": 60000,
+      "outputTokens": 80000,
+      "cacheReadTokens": 300000,
+      "cacheWriteTokens": 0,
+      "reasoningTokens": 9000,
+      "cost": 0.3
+     }
+    ]
    }
   ]
  },
  "/dsh-usage/version": {
   "ok": true,
-  "checkedAt": 1787445378336,
+  "checkedAt": 1787554188927,
   "installed": "0.1.0",
-  "latest": "0.3.0",
+  "latest": "0.4.0",
   "updateAvailable": true,
   "url": "https://github.com/xavier711/dsh-deepseek-usage/releases"
  },
  "/dsh-usage/period": {
   "ok": true,
-  "now": 1787445378336,
-  "period": "offPeak",
+  "now": 1787554188926,
+  "period": "peak",
   "range": [
-   0,
-   540
+   840,
+   1080
   ],
-  "nextAt": 1787446800000,
-  "nextPeriod": "peak",
+  "nextAt": 1787565600000,
+  "nextPeriod": "offPeak",
   "newPricingAt": 1786896000000,
   "weekendOffPeakAt": 1787414400000,
   "peakHours": [
@@ -4110,6 +4384,20 @@ window.__ZH = {
       meta.textContent = 'clicked';
     } catch (err) { meta.textContent = 'click-err:' + err.message; }
   }, 50);
+  // Panel data loads asynchronously; expand the "docs" workspace (its session
+  // records) and the global session list (per-session workspace tags) only
+  // once the local-usage sections are on screen.
+  setTimeout(() => {
+    try {
+      const wsHeads = document.querySelectorAll('.du-workspaceHead');
+      for (const h of wsHeads) {
+        if (h.textContent.includes('docs')) { h.dispatchEvent(new MouseEvent('click', { bubbles: true })); break; }
+      }
+      const toggle = document.querySelector('.du-sessionToggle');
+      if (toggle) toggle.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      meta.textContent = 'expanded';
+    } catch (err) { meta.textContent = 'expand-err:' + err.message; }
+  }, 1200);
   setTimeout(() => {
     try {
       const panel = document.querySelector('.du-panel');
@@ -4117,7 +4405,7 @@ window.__ZH = {
       meta.textContent = 'PH=' + (r ? Math.round(r.height) : 'none') + ' PW=' + (r ? Math.round(r.width) : 'none') + ' SW=' + document.body.scrollWidth + ' CW=' + document.body.clientWidth + ' BH=' + document.body.scrollHeight + ' ERRS=' + (window.__errs.length ? window.__errs.join('|') : 'none');
       document.title = meta.textContent;
     } catch (err) { meta.textContent = 'meas-err:' + err.message; }
-  }, 1200);
+  }, 1600);
   });
 </script>
 </head>

@@ -5,7 +5,7 @@
 A DeepSeek usage panel plugin for the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web GUI. It adds a **「Usage / 用量」** entry at the bottom of the left sidebar showing:
 
 - **Account balance** — queried live from the official endpoint `GET /user/balance` (total, topped-up, granted).
-- **Local usage** — replays your own session logs (which store the official per-request `usage` records) and shows: today / last 7 days / all time, a 7-day chart, today's token composition, per-session breakdown, and **per-model statistics**.
+- **Local usage** — replays your own session logs (which store the official per-request `usage` records) and shows: today / last 7 days / all time, a 7-day chart, today's token composition, per-session breakdown, **per-model statistics**, and **per-workspace statistics** (a workspace is the session's project directory; each workspace row expands into its own session records, and subagent sessions count toward their parent workspace).
 - **Cost estimate** — priced **per model** at official DeepSeek rates (CNY per 1M tokens), including the V4 peak/off-peak pricing effective 2026-08-17 (peak hours in Beijing time are applied automatically), and the 2026-08-23 rule change: **weekends (Sat/Sun) are all-day off-peak**. The sidebar entry and the panel header show a live **current-period indicator** (peak/off-peak, with the active time window and the next transition).
 
 > Note: DeepSeek's API does not expose an account-level usage endpoint (all candidate paths return 404 in practice). The usage data therefore comes from your local session logs — which contain the exact `usage` values returned by the official API for every request.
@@ -27,13 +27,13 @@ You need **Node.js** first (download from [nodejs.org](https://nodejs.org)).
 Paste this into a terminal:
 
 ```sh
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.3.1
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.0
 ```
 
 **Don't have `dsh` installed globally?** Use this instead (`npx` downloads it on first run):
 
 ```sh
-npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.3.1
+npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.0
 ```
 
 > Tip: if the installer complains that `pnpm` is missing, run `npm install -g pnpm` and retry.
@@ -123,7 +123,7 @@ available」** banner with the exact update command. Simply run it, restart
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.3.1
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.0
 ```
 
 ## Troubleshooting
@@ -137,7 +137,7 @@ the pinned tag:
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.3.1
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.0
 ```
 
 Then restart `dsh web` and refresh the page.
@@ -151,5 +151,5 @@ page (Cmd/Ctrl+Shift+R).
 ## HTTP routes
 
 - `GET /dsh-usage/balance` — `{ ok, isAvailable, currency, totalBalance, grantedBalance, toppedUpBalance, ... }`
-- `GET /dsh-usage/local` — `{ ok, sessionCount, errorSessions, pricing, buckets: { today, week, total }, days: [...7], models: [...], sessions: [...] }` (pricing includes `newPricingAt`, `weekendOffPeakAt`, `peakHours`)
+- `GET /dsh-usage/local` — `{ ok, sessionCount, errorSessions, pricing, buckets: { today, week, total }, days: [...7], models: [...], workspaces: [...], sessions: [...] }` — each workspace entry is `{ path, name, sessionCount, subagentSessionCount, buckets: { today, week, total }, sessions: [...] }` (sessions without a working directory group under `path: null`); each session row carries `workspace` and `subagent` (pricing includes `newPricingAt`, `weekendOffPeakAt`, `peakHours`)
 - `GET /dsh-usage/period` — `{ ok, now, period: 'peak'|'offPeak'|'flat', range: [start, end] minutes-of-day, nextAt, nextPeriod, peakHours, weekendOffPeakAt, timezoneOffsetMinutes }` — current Beijing peak/off-peak classification for the sidebar badge and the panel header; `nextAt`/`nextPeriod` describe the next actual period change (weekends skip to the next weekday's first peak start)

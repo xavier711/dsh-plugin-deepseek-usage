@@ -153,16 +153,61 @@ const sample = {
       { model: 'deepseek-v4-pro', estimated: false, calls: 99, inputTokens: 220000, outputTokens: 260000, cacheReadTokens: 900000, cacheWriteTokens: 0, reasoningTokens: 41000, cost: 5.66 }
     ],
     sessions: [
-      { id: 's1', title: '优化支付网关性能', createdAt: Date.now() - 864e5, lastActiveAt: Date.now() - 3600e3, calls: 618, inputTokens: 1900000, outputTokens: 2100000, cacheReadTokens: 8100000, cacheWriteTokens: 0, reasoningTokens: 420000, cost: 18.2, error: null },
-      { id: 's2', title: '整理项目文档', createdAt: Date.now() - 2 * 864e5, lastActiveAt: Date.now() - 2 * 864e5, calls: 402, inputTokens: 1300000, outputTokens: 1500000, cacheReadTokens: 5600000, cacheWriteTokens: 0, reasoningTokens: 300000, cost: 12.4, error: null },
-      { id: 's3', title: '修复 CI 流水线', createdAt: Date.now() - 3 * 864e5, lastActiveAt: Date.now() - 3 * 864e5, calls: 184, inputTokens: 500000, outputTokens: 600000, cacheReadTokens: 2100000, cacheWriteTokens: 0, reasoningTokens: 120000, cost: 4.8, error: null }
+      { id: 's1', title: '优化支付网关性能', workspace: '/Users/alice/dev/payment-gateway', subagent: false, createdAt: Date.now() - 864e5, lastActiveAt: Date.now() - 3600e3, calls: 618, inputTokens: 1900000, outputTokens: 2100000, cacheReadTokens: 8100000, cacheWriteTokens: 0, reasoningTokens: 420000, cost: 18.2, error: null },
+      { id: 's2', title: '整理项目文档', workspace: '/Users/alice/docs', subagent: false, createdAt: Date.now() - 2 * 864e5, lastActiveAt: Date.now() - 2 * 864e5, calls: 402, inputTokens: 1300000, outputTokens: 1500000, cacheReadTokens: 5600000, cacheWriteTokens: 0, reasoningTokens: 300000, cost: 12.4, error: null },
+      { id: 's3', title: '修复 CI 流水线', workspace: '/Users/alice/ci-infra', subagent: false, createdAt: Date.now() - 3 * 864e5, lastActiveAt: Date.now() - 3 * 864e5, calls: 184, inputTokens: 500000, outputTokens: 600000, cacheReadTokens: 2100000, cacheWriteTokens: 0, reasoningTokens: 120000, cost: 4.8, error: null },
+      { id: 's4', title: '整理项目文档（子代理）', workspace: '/Users/alice/docs', subagent: true, createdAt: Date.now() - 2 * 864e5, lastActiveAt: Date.now() - 864e5, calls: 36, inputTokens: 90000, outputTokens: 110000, cacheReadTokens: 420000, cacheWriteTokens: 0, reasoningTokens: 21000, cost: 0.6, error: null },
+      { id: 's5', title: '临时想法速记', workspace: null, subagent: false, createdAt: Date.now() - 4 * 864e5, lastActiveAt: Date.now() - 4 * 864e5, calls: 27, inputTokens: 60000, outputTokens: 80000, cacheReadTokens: 300000, cacheWriteTokens: 0, reasoningTokens: 9000, cost: 0.3, error: null }
+    ],
+    workspaces: [
+      {
+        path: '/Users/alice/dev/payment-gateway',
+        name: 'payment-gateway',
+        sessionCount: 1,
+        subagentSessionCount: 0,
+        buckets: { today: bucket(day(0), 2.4e6, 38), week: bucket(day(0), 11.2e6, 214), total: bucket(day(0), 76e6, 618) },
+        sessions: [
+          { id: 's1', title: '优化支付网关性能', subagent: false, createdAt: Date.now() - 864e5, lastActiveAt: Date.now() - 3600e3, calls: 618, inputTokens: 1900000, outputTokens: 2100000, cacheReadTokens: 8100000, cacheWriteTokens: 0, reasoningTokens: 420000, cost: 18.2 }
+        ]
+      },
+      {
+        path: '/Users/alice/docs',
+        name: 'docs',
+        sessionCount: 2,
+        subagentSessionCount: 1,
+        buckets: { today: bucket(day(0), 1.1e6, 22), week: bucket(day(0), 8.6e6, 160), total: bucket(day(0), 53e6, 438) },
+        sessions: [
+          { id: 's2', title: '整理项目文档', subagent: false, createdAt: Date.now() - 2 * 864e5, lastActiveAt: Date.now() - 2 * 864e5, calls: 402, inputTokens: 1300000, outputTokens: 1500000, cacheReadTokens: 5600000, cacheWriteTokens: 0, reasoningTokens: 300000, cost: 12.4 },
+          { id: 's4', title: '整理项目文档（子代理）', subagent: true, createdAt: Date.now() - 2 * 864e5, lastActiveAt: Date.now() - 864e5, calls: 36, inputTokens: 90000, outputTokens: 110000, cacheReadTokens: 420000, cacheWriteTokens: 0, reasoningTokens: 21000, cost: 0.6 }
+        ]
+      },
+      {
+        path: '/Users/alice/ci-infra',
+        name: 'ci-infra',
+        sessionCount: 1,
+        subagentSessionCount: 0,
+        buckets: { today: bucket(day(0), 0.6e6, 9), week: bucket(day(0), 4.2e6, 71), total: bucket(day(0), 21e6, 184) },
+        sessions: [
+          { id: 's3', title: '修复 CI 流水线', subagent: false, createdAt: Date.now() - 3 * 864e5, lastActiveAt: Date.now() - 3 * 864e5, calls: 184, inputTokens: 500000, outputTokens: 600000, cacheReadTokens: 2100000, cacheWriteTokens: 0, reasoningTokens: 120000, cost: 4.8 }
+        ]
+      },
+      {
+        path: null,
+        name: null,
+        sessionCount: 1,
+        subagentSessionCount: 0,
+        buckets: { today: bucket(day(0), 0.1e6, 2), week: bucket(day(0), 0.5e6, 11), total: bucket(day(0), 1.4e6, 27) },
+        sessions: [
+          { id: 's5', title: '临时想法速记', subagent: false, createdAt: Date.now() - 4 * 864e5, lastActiveAt: Date.now() - 4 * 864e5, calls: 27, inputTokens: 60000, outputTokens: 80000, cacheReadTokens: 300000, cacheWriteTokens: 0, reasoningTokens: 9000, cost: 0.3 }
+        ]
+      }
     ]
   },
   '/dsh-usage/version': {
     ok: true,
     checkedAt: Date.now(),
     installed: '0.1.0',
-    latest: '0.3.0',
+    latest: '0.4.0',
     updateAvailable: true,
     url: 'https://github.com/xavier711/dsh-deepseek-usage/releases'
   },
@@ -309,6 +354,20 @@ ${zhSource}
       meta.textContent = 'clicked';
     } catch (err) { meta.textContent = 'click-err:' + err.message; }
   }, 50);
+  // Panel data loads asynchronously; expand the "docs" workspace (its session
+  // records) and the global session list (per-session workspace tags) only
+  // once the local-usage sections are on screen.
+  setTimeout(() => {
+    try {
+      const wsHeads = document.querySelectorAll('.du-workspaceHead');
+      for (const h of wsHeads) {
+        if (h.textContent.includes('docs')) { h.dispatchEvent(new MouseEvent('click', { bubbles: true })); break; }
+      }
+      const toggle = document.querySelector('.du-sessionToggle');
+      if (toggle) toggle.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      meta.textContent = 'expanded';
+    } catch (err) { meta.textContent = 'expand-err:' + err.message; }
+  }, 1200);
   setTimeout(() => {
     try {
       const panel = document.querySelector('.du-panel');
@@ -316,7 +375,7 @@ ${zhSource}
       meta.textContent = 'PH=' + (r ? Math.round(r.height) : 'none') + ' PW=' + (r ? Math.round(r.width) : 'none') + ' SW=' + document.body.scrollWidth + ' CW=' + document.body.clientWidth + ' BH=' + document.body.scrollHeight + ' ERRS=' + (window.__errs.length ? window.__errs.join('|') : 'none');
       document.title = meta.textContent;
     } catch (err) { meta.textContent = 'meas-err:' + err.message; }
-  }, 1200);
+  }, 1600);
   });
 </script>
 </head>
