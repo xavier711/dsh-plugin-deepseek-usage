@@ -293,6 +293,8 @@ const html = `<!doctype html>
     IconRefreshOutline16: (p) => svg(16, 16, [React.createElement('path', { d: 'M13.2 8a5.2 5.2 0 1 1-1.5-3.7', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round' }), React.createElement('path', { d: 'M13.2 2.8v3h-3', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round' })], { fill: 'none' }),
     IconCloseOutline16: (p) => svg(16, 16, [React.createElement('path', { d: 'M4 4l8 8M12 4l-8 8', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round' })], { fill: 'none' }),
     IconChevronUpOutline14: (p) => svg(14, 14, [React.createElement('path', { d: 'M7 11V3M3.5 6.5 7 3l3.5 3.5', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' })], { fill: 'none' }),
+    IconChevronRightOutline14: (p) => svg(14, 14, [React.createElement('path', { d: 'M5 3.5 9.5 7 5 10.5', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' })], { fill: 'none' }),
+    IconChevronDownOutline14: (p) => svg(14, 14, [React.createElement('path', { d: 'M3.5 5 7 9.5 10.5 5', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' })], { fill: 'none' }),
     Tooltip: (props) => props.children
   };
 </script>
@@ -355,23 +357,13 @@ ${zhSource}
     } catch (err) { meta.textContent = 'click-err:' + err.message; }
   }, 50);
   // Panel data loads asynchronously; expand the "docs" workspace (its session
-  // records) and the global session list (per-session workspace tags) only
-  // once the local-usage sections are on screen.
+  // records) once the local-usage sections are on screen.
   setTimeout(() => {
     try {
-      const wsRows = document.querySelectorAll('.du-modelRow');
-      for (const row of wsRows) {
-        if (row.textContent.includes('docs')) {
-          const tg = row.querySelector('.du-sessionToggle');
-          if (tg) tg.dispatchEvent(new MouseEvent('click', { bubbles: true }));
-          break;
-        }
+      const wsHeaders = document.querySelectorAll('.du-wsHeader');
+      for (const h of wsHeaders) {
+        if (h.textContent.includes('docs')) { h.dispatchEvent(new MouseEvent('click', { bubbles: true })); break; }
       }
-      // Workspace rows render their toggles before the global one, so the
-      // global session toggle is the LAST .du-sessionToggle on the page.
-      const toggles = document.querySelectorAll('.du-sessionToggle');
-      const toggle = toggles[toggles.length - 1];
-      if (toggle) toggle.dispatchEvent(new MouseEvent('click', { bubbles: true }));
       meta.textContent = 'expanded';
     } catch (err) { meta.textContent = 'expand-err:' + err.message; }
   }, 1200);
