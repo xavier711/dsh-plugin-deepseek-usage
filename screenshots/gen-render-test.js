@@ -226,6 +226,7 @@ const themeCss = `
     --dsw-alias-label-caption: #6b7280;
     --dsw-alias-border-l1: #2a2d33;
     --dsw-alias-border-l2: #32353d;
+    --dsw-alias-border-inverted: rgba(255,255,255,.06);
     --dsw-alias-fill-l2: #262a30;
     --dsw-alias-interactive-bg-hover: rgba(255,255,255,.06);
     --dsw-alias-interactive-bg-hover-solid: rgba(255,255,255,.09);
@@ -249,6 +250,7 @@ const themeCss = `
     --dsw-alias-label-caption: #8b949e;
     --dsw-alias-border-l1: #d8dee4;
     --dsw-alias-border-l2: #e5e9ee;
+    --dsw-alias-border-inverted: rgba(0,0,0,0);
     --dsw-alias-fill-l2: #f0f2f5;
     --dsw-alias-interactive-bg-hover: rgba(0,0,0,.05);
     --dsw-alias-interactive-bg-hover-solid: rgba(0,0,0,.08);

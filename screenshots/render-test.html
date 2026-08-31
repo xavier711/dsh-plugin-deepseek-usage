@@ -14,6 +14,7 @@
     --dsw-alias-label-caption: #6b7280;
     --dsw-alias-border-l1: #2a2d33;
     --dsw-alias-border-l2: #32353d;
+    --dsw-alias-border-inverted: rgba(255,255,255,.06);
     --dsw-alias-fill-l2: #262a30;
     --dsw-alias-interactive-bg-hover: rgba(255,255,255,.06);
     --dsw-alias-interactive-bg-hover-solid: rgba(255,255,255,.09);
@@ -37,6 +38,7 @@
     --dsw-alias-label-caption: #8b949e;
     --dsw-alias-border-l1: #d8dee4;
     --dsw-alias-border-l2: #e5e9ee;
+    --dsw-alias-border-inverted: rgba(0,0,0,0);
     --dsw-alias-fill-l2: #f0f2f5;
     --dsw-alias-interactive-bg-hover: rgba(0,0,0,.05);
     --dsw-alias-interactive-bg-hover-solid: rgba(0,0,0,.08);
@@ -188,7 +190,7 @@ window.__ZH = {
   const SAMPLE = {
  "/dsh-usage/balance": {
   "ok": true,
-  "fetchedAt": 1787569688273,
+  "fetchedAt": 1788171169422,
   "isAvailable": true,
   "currency": "CNY",
   "totalBalance": "128.45",
@@ -197,13 +199,13 @@ window.__ZH = {
  },
  "/dsh-usage/local": {
   "ok": true,
-  "fetchedAt": 1787569688273,
+  "fetchedAt": 1788171169422,
   "sessionCount": 3,
   "errorSessions": 0,
   "pricing": {
    "currency": "CNY",
    "note": "official",
-   "newPricingAt": 1787569688273,
+   "newPricingAt": 1788171169422,
    "weekendOffPeakAt": 1787414400000,
    "peakHours": [
     [
@@ -218,7 +220,7 @@ window.__ZH = {
   },
   "buckets": {
    "today": {
-    "date": "2026-08-24",
+    "date": "2026-08-31",
     "calls": 132,
     "inputTokens": 384000,
     "outputTokens": 408000,
@@ -228,7 +230,7 @@ window.__ZH = {
     "cost": 2.4
    },
    "week": {
-    "date": "2026-08-24",
+    "date": "2026-08-31",
     "calls": 512,
     "inputTokens": 3840000,
     "outputTokens": 4080000,
@@ -238,7 +240,7 @@ window.__ZH = {
     "cost": 24
    },
    "total": {
-    "date": "2026-08-24",
+    "date": "2026-08-31",
     "calls": 1204,
     "inputTokens": 72000000,
     "outputTokens": 76500000,
@@ -250,7 +252,7 @@ window.__ZH = {
   },
   "days": [
    {
-    "date": "2026-08-18",
+    "date": "2026-08-25",
     "calls": 60,
     "inputTokens": 192000,
     "outputTokens": 204000,
@@ -260,7 +262,7 @@ window.__ZH = {
     "cost": 1.2
    },
    {
-    "date": "2026-08-19",
+    "date": "2026-08-26",
     "calls": 72,
     "inputTokens": 544000,
     "outputTokens": 578000,
@@ -270,7 +272,7 @@ window.__ZH = {
     "cost": 3.4
    },
    {
-    "date": "2026-08-20",
+    "date": "2026-08-27",
     "calls": 84,
     "inputTokens": 336000,
     "outputTokens": 357000,
@@ -280,7 +282,7 @@ window.__ZH = {
     "cost": 2.1
    },
    {
-    "date": "2026-08-21",
+    "date": "2026-08-28",
     "calls": 96,
     "inputTokens": 768000,
     "outputTokens": 816000,
@@ -290,7 +292,7 @@ window.__ZH = {
     "cost": 4.8
    },
    {
-    "date": "2026-08-22",
+    "date": "2026-08-29",
     "calls": 108,
     "inputTokens": 992000,
     "outputTokens": 1054000,
@@ -300,7 +302,7 @@ window.__ZH = {
     "cost": 6.199999999999999
    },
    {
-    "date": "2026-08-23",
+    "date": "2026-08-30",
     "calls": 120,
     "inputTokens": 624000,
     "outputTokens": 663000,
@@ -310,7 +312,7 @@ window.__ZH = {
     "cost": 3.9
    },
    {
-    "date": "2026-08-24",
+    "date": "2026-08-31",
     "calls": 132,
     "inputTokens": 384000,
     "outputTokens": 408000,
@@ -322,78 +324,8 @@ window.__ZH = {
   ],
   "activity": {
    "weeks": 52,
-   "start": "2025-08-24",
+   "start": "2025-08-31",
    "days": [
-    {
-     "date": "2025-08-24",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-25",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-26",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-27",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-28",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-29",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
-    {
-     "date": "2025-08-30",
-     "calls": 0,
-     "inputTokens": 0,
-     "outputTokens": 0,
-     "cacheReadTokens": 0,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 0,
-     "cost": 0
-    },
     {
      "date": "2025-08-31",
      "calls": 0,
@@ -3546,23 +3478,23 @@ window.__ZH = {
     },
     {
      "date": "2026-07-12",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-13",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-14",
@@ -3576,23 +3508,23 @@ window.__ZH = {
     },
     {
      "date": "2026-07-15",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-16",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-17",
@@ -3636,26 +3568,16 @@ window.__ZH = {
     },
     {
      "date": "2026-07-21",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-22",
-     "calls": 109,
-     "inputTokens": 156800,
-     "outputTokens": 166600,
-     "cacheReadTokens": 637000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 19600,
-     "cost": 0.9803919999999999
-    },
-    {
-     "date": "2026-07-23",
      "calls": 86,
      "inputTokens": 83200,
      "outputTokens": 88400,
@@ -3665,7 +3587,7 @@ window.__ZH = {
      "cost": 0.520208
     },
     {
-     "date": "2026-07-24",
+     "date": "2026-07-23",
      "calls": 63,
      "inputTokens": 38400,
      "outputTokens": 40800,
@@ -3673,6 +3595,16 @@ window.__ZH = {
      "cacheWriteTokens": 0,
      "reasoningTokens": 4800,
      "cost": 0.240096
+    },
+    {
+     "date": "2026-07-24",
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 0,
+     "cost": 0
     },
     {
      "date": "2026-07-25",
@@ -3686,66 +3618,6 @@ window.__ZH = {
     },
     {
      "date": "2026-07-26",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
-    },
-    {
-     "date": "2026-07-27",
-     "calls": 109,
-     "inputTokens": 156800,
-     "outputTokens": 166600,
-     "cacheReadTokens": 637000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 19600,
-     "cost": 0.9803919999999999
-    },
-    {
-     "date": "2026-07-28",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
-    },
-    {
-     "date": "2026-07-29",
-     "calls": 132,
-     "inputTokens": 304000,
-     "outputTokens": 323000,
-     "cacheReadTokens": 1235000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 38000,
-     "cost": 1.90076
-    },
-    {
-     "date": "2026-07-30",
-     "calls": 109,
-     "inputTokens": 156800,
-     "outputTokens": 166600,
-     "cacheReadTokens": 637000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 19600,
-     "cost": 0.9803919999999999
-    },
-    {
-     "date": "2026-07-31",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
-    },
-    {
-     "date": "2026-08-01",
      "calls": 63,
      "inputTokens": 38400,
      "outputTokens": 40800,
@@ -3755,7 +3627,27 @@ window.__ZH = {
      "cost": 0.240096
     },
     {
-     "date": "2026-08-02",
+     "date": "2026-07-27",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
+    },
+    {
+     "date": "2026-07-28",
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 4800,
+     "cost": 0.240096
+    },
+    {
+     "date": "2026-07-29",
      "calls": 109,
      "inputTokens": 156800,
      "outputTokens": 166600,
@@ -3763,19 +3655,49 @@ window.__ZH = {
      "cacheWriteTokens": 0,
      "reasoningTokens": 19600,
      "cost": 0.9803919999999999
+    },
+    {
+     "date": "2026-07-30",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
+    },
+    {
+     "date": "2026-07-31",
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 4800,
+     "cost": 0.240096
+    },
+    {
+     "date": "2026-08-01",
+     "calls": 0,
+     "inputTokens": 0,
+     "outputTokens": 0,
+     "cacheReadTokens": 0,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 0,
+     "cost": 0
+    },
+    {
+     "date": "2026-08-02",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
     },
     {
      "date": "2026-08-03",
-     "calls": 132,
-     "inputTokens": 304000,
-     "outputTokens": 323000,
-     "cacheReadTokens": 1235000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 38000,
-     "cost": 1.90076
-    },
-    {
-     "date": "2026-08-04",
      "calls": 109,
      "inputTokens": 156800,
      "outputTokens": 166600,
@@ -3783,6 +3705,16 @@ window.__ZH = {
      "cacheWriteTokens": 0,
      "reasoningTokens": 19600,
      "cost": 0.9803919999999999
+    },
+    {
+     "date": "2026-08-04",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
     },
     {
      "date": "2026-08-05",
@@ -3796,46 +3728,36 @@ window.__ZH = {
     },
     {
      "date": "2026-08-06",
-     "calls": 132,
-     "inputTokens": 304000,
-     "outputTokens": 323000,
-     "cacheReadTokens": 1235000,
+     "calls": 109,
+     "inputTokens": 156800,
+     "outputTokens": 166600,
+     "cacheReadTokens": 637000,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 38000,
-     "cost": 1.90076
+     "reasoningTokens": 19600,
+     "cost": 0.9803919999999999
     },
     {
      "date": "2026-08-07",
-     "calls": 109,
-     "inputTokens": 156800,
-     "outputTokens": 166600,
-     "cacheReadTokens": 637000,
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 19600,
-     "cost": 0.9803919999999999
+     "reasoningTokens": 10400,
+     "cost": 0.520208
     },
     {
      "date": "2026-08-08",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
+     "reasoningTokens": 4800,
+     "cost": 0.240096
     },
     {
      "date": "2026-08-09",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
-    },
-    {
-     "date": "2026-08-10",
      "calls": 109,
      "inputTokens": 156800,
      "outputTokens": 166600,
@@ -3845,7 +3767,7 @@ window.__ZH = {
      "cost": 0.9803919999999999
     },
     {
-     "date": "2026-08-11",
+     "date": "2026-08-10",
      "calls": 132,
      "inputTokens": 304000,
      "outputTokens": 323000,
@@ -3855,7 +3777,7 @@ window.__ZH = {
      "cost": 1.90076
     },
     {
-     "date": "2026-08-12",
+     "date": "2026-08-11",
      "calls": 109,
      "inputTokens": 156800,
      "outputTokens": 166600,
@@ -3863,6 +3785,16 @@ window.__ZH = {
      "cacheWriteTokens": 0,
      "reasoningTokens": 19600,
      "cost": 0.9803919999999999
+    },
+    {
+     "date": "2026-08-12",
+     "calls": 132,
+     "inputTokens": 304000,
+     "outputTokens": 323000,
+     "cacheReadTokens": 1235000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 38000,
+     "cost": 1.90076
     },
     {
      "date": "2026-08-13",
@@ -3876,36 +3808,16 @@ window.__ZH = {
     },
     {
      "date": "2026-08-14",
-     "calls": 86,
-     "inputTokens": 83200,
-     "outputTokens": 88400,
-     "cacheReadTokens": 338000,
+     "calls": 109,
+     "inputTokens": 156800,
+     "outputTokens": 166600,
+     "cacheReadTokens": 637000,
      "cacheWriteTokens": 0,
-     "reasoningTokens": 10400,
-     "cost": 0.520208
+     "reasoningTokens": 19600,
+     "cost": 0.9803919999999999
     },
     {
      "date": "2026-08-15",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
-    },
-    {
-     "date": "2026-08-16",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
-    },
-    {
-     "date": "2026-08-17",
      "calls": 86,
      "inputTokens": 83200,
      "outputTokens": 88400,
@@ -3913,6 +3825,26 @@ window.__ZH = {
      "cacheWriteTokens": 0,
      "reasoningTokens": 10400,
      "cost": 0.520208
+    },
+    {
+     "date": "2026-08-16",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
+    },
+    {
+     "date": "2026-08-17",
+     "calls": 109,
+     "inputTokens": 156800,
+     "outputTokens": 166600,
+     "cacheReadTokens": 637000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 19600,
+     "cost": 0.9803919999999999
     },
     {
      "date": "2026-08-18",
@@ -3926,16 +3858,6 @@ window.__ZH = {
     },
     {
      "date": "2026-08-19",
-     "calls": 63,
-     "inputTokens": 38400,
-     "outputTokens": 40800,
-     "cacheReadTokens": 156000,
-     "cacheWriteTokens": 0,
-     "reasoningTokens": 4800,
-     "cost": 0.240096
-    },
-    {
-     "date": "2026-08-20",
      "calls": 109,
      "inputTokens": 156800,
      "outputTokens": 166600,
@@ -3945,7 +3867,7 @@ window.__ZH = {
      "cost": 0.9803919999999999
     },
     {
-     "date": "2026-08-21",
+     "date": "2026-08-20",
      "calls": 132,
      "inputTokens": 304000,
      "outputTokens": 323000,
@@ -3955,7 +3877,87 @@ window.__ZH = {
      "cost": 1.90076
     },
     {
+     "date": "2026-08-21",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
+    },
+    {
      "date": "2026-08-22",
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 4800,
+     "cost": 0.240096
+    },
+    {
+     "date": "2026-08-23",
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 4800,
+     "cost": 0.240096
+    },
+    {
+     "date": "2026-08-24",
+     "calls": 86,
+     "inputTokens": 83200,
+     "outputTokens": 88400,
+     "cacheReadTokens": 338000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 10400,
+     "cost": 0.520208
+    },
+    {
+     "date": "2026-08-25",
+     "calls": 132,
+     "inputTokens": 304000,
+     "outputTokens": 323000,
+     "cacheReadTokens": 1235000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 38000,
+     "cost": 1.90076
+    },
+    {
+     "date": "2026-08-26",
+     "calls": 63,
+     "inputTokens": 38400,
+     "outputTokens": 40800,
+     "cacheReadTokens": 156000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 4800,
+     "cost": 0.240096
+    },
+    {
+     "date": "2026-08-27",
+     "calls": 109,
+     "inputTokens": 156800,
+     "outputTokens": 166600,
+     "cacheReadTokens": 637000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 19600,
+     "cost": 0.9803919999999999
+    },
+    {
+     "date": "2026-08-28",
+     "calls": 132,
+     "inputTokens": 304000,
+     "outputTokens": 323000,
+     "cacheReadTokens": 1235000,
+     "cacheWriteTokens": 0,
+     "reasoningTokens": 38000,
+     "cost": 1.90076
+    },
+    {
+     "date": "2026-08-29",
      "calls": 86,
      "inputTokens": 83200,
      "outputTokens": 88400,
@@ -4002,8 +4004,8 @@ window.__ZH = {
     "title": "优化支付网关性能",
     "workspace": "/Users/alice/dev/payment-gateway",
     "subagent": false,
-    "createdAt": 1787483288273,
-    "lastActiveAt": 1787566088273,
+    "createdAt": 1788084769422,
+    "lastActiveAt": 1788167569422,
     "calls": 618,
     "inputTokens": 1900000,
     "outputTokens": 2100000,
@@ -4018,8 +4020,8 @@ window.__ZH = {
     "title": "整理项目文档",
     "workspace": "/Users/alice/docs",
     "subagent": false,
-    "createdAt": 1787396888273,
-    "lastActiveAt": 1787396888273,
+    "createdAt": 1787998369422,
+    "lastActiveAt": 1787998369422,
     "calls": 402,
     "inputTokens": 1300000,
     "outputTokens": 1500000,
@@ -4034,8 +4036,8 @@ window.__ZH = {
     "title": "修复 CI 流水线",
     "workspace": "/Users/alice/ci-infra",
     "subagent": false,
-    "createdAt": 1787310488273,
-    "lastActiveAt": 1787310488273,
+    "createdAt": 1787911969422,
+    "lastActiveAt": 1787911969422,
     "calls": 184,
     "inputTokens": 500000,
     "outputTokens": 600000,
@@ -4050,8 +4052,8 @@ window.__ZH = {
     "title": "整理项目文档（子代理）",
     "workspace": "/Users/alice/docs",
     "subagent": true,
-    "createdAt": 1787396888273,
-    "lastActiveAt": 1787483288273,
+    "createdAt": 1787998369422,
+    "lastActiveAt": 1788084769422,
     "calls": 36,
     "inputTokens": 90000,
     "outputTokens": 110000,
@@ -4066,8 +4068,8 @@ window.__ZH = {
     "title": "临时想法速记",
     "workspace": null,
     "subagent": false,
-    "createdAt": 1787224088273,
-    "lastActiveAt": 1787224088273,
+    "createdAt": 1787825569422,
+    "lastActiveAt": 1787825569422,
     "calls": 27,
     "inputTokens": 60000,
     "outputTokens": 80000,
@@ -4086,7 +4088,7 @@ window.__ZH = {
     "subagentSessionCount": 0,
     "buckets": {
      "today": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 38,
       "inputTokens": 384000,
       "outputTokens": 408000,
@@ -4096,7 +4098,7 @@ window.__ZH = {
       "cost": 2.4
      },
      "week": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 214,
       "inputTokens": 1792000,
       "outputTokens": 1904000,
@@ -4106,7 +4108,7 @@ window.__ZH = {
       "cost": 11.2
      },
      "total": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 618,
       "inputTokens": 12160000,
       "outputTokens": 12920000,
@@ -4121,8 +4123,8 @@ window.__ZH = {
       "id": "s1",
       "title": "优化支付网关性能",
       "subagent": false,
-      "createdAt": 1787483288273,
-      "lastActiveAt": 1787566088273,
+      "createdAt": 1788084769422,
+      "lastActiveAt": 1788167569422,
       "calls": 618,
       "inputTokens": 1900000,
       "outputTokens": 2100000,
@@ -4140,7 +4142,7 @@ window.__ZH = {
     "subagentSessionCount": 1,
     "buckets": {
      "today": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 22,
       "inputTokens": 176000,
       "outputTokens": 187000,
@@ -4150,7 +4152,7 @@ window.__ZH = {
       "cost": 1.0999999999999999
      },
      "week": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 160,
       "inputTokens": 1376000,
       "outputTokens": 1462000,
@@ -4160,7 +4162,7 @@ window.__ZH = {
       "cost": 8.6
      },
      "total": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 438,
       "inputTokens": 8480000,
       "outputTokens": 9010000,
@@ -4175,8 +4177,8 @@ window.__ZH = {
       "id": "s2",
       "title": "整理项目文档",
       "subagent": false,
-      "createdAt": 1787396888273,
-      "lastActiveAt": 1787396888273,
+      "createdAt": 1787998369422,
+      "lastActiveAt": 1787998369422,
       "calls": 402,
       "inputTokens": 1300000,
       "outputTokens": 1500000,
@@ -4189,8 +4191,8 @@ window.__ZH = {
       "id": "s4",
       "title": "整理项目文档（子代理）",
       "subagent": true,
-      "createdAt": 1787396888273,
-      "lastActiveAt": 1787483288273,
+      "createdAt": 1787998369422,
+      "lastActiveAt": 1788084769422,
       "calls": 36,
       "inputTokens": 90000,
       "outputTokens": 110000,
@@ -4208,7 +4210,7 @@ window.__ZH = {
     "subagentSessionCount": 0,
     "buckets": {
      "today": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 9,
       "inputTokens": 96000,
       "outputTokens": 102000,
@@ -4218,7 +4220,7 @@ window.__ZH = {
       "cost": 0.6
      },
      "week": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 71,
       "inputTokens": 672000,
       "outputTokens": 714000,
@@ -4228,7 +4230,7 @@ window.__ZH = {
       "cost": 4.2
      },
      "total": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 184,
       "inputTokens": 3360000,
       "outputTokens": 3570000,
@@ -4243,8 +4245,8 @@ window.__ZH = {
       "id": "s3",
       "title": "修复 CI 流水线",
       "subagent": false,
-      "createdAt": 1787310488273,
-      "lastActiveAt": 1787310488273,
+      "createdAt": 1787911969422,
+      "lastActiveAt": 1787911969422,
       "calls": 184,
       "inputTokens": 500000,
       "outputTokens": 600000,
@@ -4262,7 +4264,7 @@ window.__ZH = {
     "subagentSessionCount": 0,
     "buckets": {
      "today": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 2,
       "inputTokens": 16000,
       "outputTokens": 17000,
@@ -4272,7 +4274,7 @@ window.__ZH = {
       "cost": 0.09999999999999999
      },
      "week": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 11,
       "inputTokens": 80000,
       "outputTokens": 85000,
@@ -4282,7 +4284,7 @@ window.__ZH = {
       "cost": 0.5
      },
      "total": {
-      "date": "2026-08-24",
+      "date": "2026-08-31",
       "calls": 27,
       "inputTokens": 224000,
       "outputTokens": 238000,
@@ -4297,8 +4299,8 @@ window.__ZH = {
       "id": "s5",
       "title": "临时想法速记",
       "subagent": false,
-      "createdAt": 1787224088273,
-      "lastActiveAt": 1787224088273,
+      "createdAt": 1787825569422,
+      "lastActiveAt": 1787825569422,
       "calls": 27,
       "inputTokens": 60000,
       "outputTokens": 80000,
@@ -4313,7 +4315,7 @@ window.__ZH = {
  },
  "/dsh-usage/version": {
   "ok": true,
-  "checkedAt": 1787569688273,
+  "checkedAt": 1788171169422,
   "installed": "0.1.0",
   "latest": "0.4.0",
   "updateAvailable": true,
@@ -4321,13 +4323,13 @@ window.__ZH = {
  },
  "/dsh-usage/period": {
   "ok": true,
-  "now": 1787569688273,
+  "now": 1788171169422,
   "period": "offPeak",
   "range": [
    1080,
    1440
   ],
-  "nextAt": 1787587200000,
+  "nextAt": 1788192000000,
   "nextPeriod": "peak",
   "newPricingAt": 1786896000000,
   "weekendOffPeakAt": 1787414400000,
