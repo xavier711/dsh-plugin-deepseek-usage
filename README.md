@@ -6,7 +6,8 @@ A DeepSeek usage panel plugin for the [DeepSeek Harness](https://github.com/deep
 
 - **Account balance** — queried live from the official endpoint `GET /user/balance` (total, topped-up, granted).
 - **Local usage** — replays your own session logs (which store the official per-request `usage` records) and shows: today / last 7 days / all time, a 7-day chart, today's token composition, **per-model statistics**, and **per-workspace statistics** (a workspace is the session's project directory; a collapsible panel expands each workspace into its own session records, and subagent sessions count toward their parent workspace).
-- **Cost estimate** — priced **per model** at official DeepSeek rates (CNY per 1M tokens), including the V4 peak/off-peak pricing effective 2026-08-17 (peak hours in Beijing time are applied automatically), and the 2026-08-23 rule change: **weekends (Sat/Sun) are all-day off-peak**. The sidebar entry and the panel header show a live **current-period indicator** (peak/off-peak, with the active time window and the next transition).
+- **Cost estimate** — priced **per model** at official DeepSeek rates (CNY per 1M tokens), including the V4 peak/off-peak pricing effective 2026-08-17 (peak hours in Beijing time are applied automatically), the 2026-08-23 rule change — **weekends (Sat/Sun) are all-day off-peak** — the 2026-09-10 12:00 flash-series price cut (off-peak ¥1 input / ¥0.02 cache hit / ¥4 output, peak doubled) and the 2026-09-14 12:00 retirement of V4 Pro (routed to and billed as V4.1 Flash). The sidebar entry and the panel header show a live **current-period indicator** (peak/off-peak, with the active time window and the next transition).
+- **Works across DSH versions** — session history is read through whichever `sessionPersistence` seam the running harness exposes: the current snapshot-list + `open(id,'read')` handle API, or the older header-list + `inspect()` API. The panel no longer comes up empty on a newer harness.
 
 > Note: DeepSeek's API does not expose an account-level usage endpoint (all candidate paths return 404 in practice). The usage data therefore comes from your local session logs — which contain the exact `usage` values returned by the official API for every request.
 
@@ -27,13 +28,13 @@ You need **Node.js** first (download from [nodejs.org](https://nodejs.org)).
 Paste this into a terminal:
 
 ```sh
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.2
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
 ```
 
 **Don't have `dsh` installed globally?** Use this instead (`npx` downloads it on first run):
 
 ```sh
-npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.2
+npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
 ```
 
 > Tip: if the installer complains that `pnpm` is missing, run `npm install -g pnpm` and retry.
@@ -107,7 +108,10 @@ Override row config by id in `~/.dsh/profiles/web/cordis.patch.yml`:
     newPricingAt: 1786896000000      # peak/off-peak pricing effective date (2026-08-17 00:00 Beijing)
     weekendOffPeakAt: 1787414400000  # weekends all-day off-peak rule effective date (2026-08-23 00:00 Beijing)
     peakHours: [[9,12],[14,18]]      # Beijing peak windows
-    # pricing: per-model rates (CNY per 1M tokens), see the source repo
+    # pricing: per-model rates (CNY per 1M tokens); an entry may carry
+    #          eras: [{ at, peak, offPeak }] for rates that change from a
+    #          moment on (2026-09-10 12:00 flash price cut, 2026-09-14 12:00
+    #          V4 Pro billed as V4.1 Flash) — see the source repo
 ```
 
 ## Updating
@@ -123,7 +127,7 @@ available」** banner with the exact update command. Simply run it, restart
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.2
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
 ```
 
 ## Troubleshooting
@@ -137,7 +141,7 @@ the pinned tag:
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.2
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
 ```
 
 Then restart `dsh web` and refresh the page.

@@ -6,7 +6,8 @@ DeepSeek 用量面板插件 —— 装在 [DeepSeek Harness](https://github.com/
 
 - **账户余额**：实时查询官方接口 `GET /user/balance`（余额、充值/赠送拆分）
 - **本地用量**：回放你本机会话日志里的官方 token 计数 —— 今日 / 近 7 天 / 累计、7 天柱状图、今日构成、**按模型统计**、**按工作区统计**（工作区 = 会话所在的项目目录，折叠面板按工作区展开查看各自的会话记录；子代理会话计入其父工作区）
-- **费用估算**：按模型套用 DeepSeek **官方定价**（含 2026-08-17 起 V4 系列峰谷定价，北京时间自动区分高峰/空闲；2026-08-23 起**周末（周六、周日）全天按低谷价计费**，不再区分峰谷）。侧边栏入口和面板头部会实时显示**当前时段标识**（高峰/空闲，含当前时段区间与下一次切换时间）
+- **费用估算**：按模型套用 DeepSeek **官方定价**（含 2026-08-17 起 V4 系列峰谷定价，北京时间自动区分高峰/空闲；2026-08-23 起**周末（周六、周日）全天按低谷价计费**，不再区分峰谷；2026-09-10 12:00 起 flash 系列降价至空闲 ¥1 / 缓存命中 ¥0.02 / 输出 ¥4、高峰翻倍；2026-09-14 12:00 起 V4 Pro 下线并按 V4.1 Flash 计费）。侧边栏入口和面板头部会实时显示**当前时段标识**（高峰/空闲，含当前时段区间与下一次切换时间）
+- **兼容新旧 DSH**：会话历史读取同时支持新版 `sessionPersistence`（`list()` 返回快照 + `open(id,'read')` 读句柄）与旧版接口（`list()` 返回 header + `inspect()`），在新版 harness 上不会再出现「会话历史读不到」
 
 > 说明：DeepSeek 官方 API 没有账号级用量查询接口（实测所有候选路径均 404），所以用量数据来自 harness 本地会话日志 —— 日志里记录的就是官方每次请求返回的真实 usage。
 
@@ -27,13 +28,13 @@ DeepSeek 用量面板插件 —— 装在 [DeepSeek Harness](https://github.com/
 在终端粘贴运行：
 
 ```sh
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.2
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
 ```
 
 **没有全局安装过 `dsh`？** 用这条（npx 会自动下载）：
 
 ```sh
-npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.2
+npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
 ```
 
 > 提示：安装过程中如果提示 pnpm 不存在，先运行 `npm install -g pnpm` 再重试。
@@ -114,7 +115,9 @@ install.sh         一键安装脚本
     newPricingAt: 1786896000000   # 峰谷定价生效时间（2026-08-17 00:00 北京时间）
     weekendOffPeakAt: 1787414400000  # 周末全天低谷价生效时间（2026-08-23 00:00 北京时间）
     peakHours: [[9,12],[14,18]]   # 北京时间高峰时段
-    # pricing: 按模型单价（元/百万 tokens），详见源码仓库
+    # pricing: 按模型单价（元/百万 tokens）；每项可带 eras: [{ at, peak, offPeak }]
+    #          表达「自某时刻起换价」（如 2026-09-10 12:00 起 flash 系列降价、
+    #          2026-09-14 12:00 起 V4 Pro 按 V4.1 Flash 计费），详见源码仓库
 ```
 
 ## 更新
@@ -125,7 +128,7 @@ install.sh         一键安装脚本
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.2
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
 ```
 
 ## 常见问题
@@ -136,7 +139,7 @@ dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.2
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
 ```
 
 然后重启 `dsh web` 并刷新页面。
