@@ -28,13 +28,13 @@ DeepSeek 用量面板插件 —— 装在 [DeepSeek Harness](https://github.com/
 在终端粘贴运行：
 
 ```sh
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
 ```
 
 **没有全局安装过 `dsh`？** 用这条（npx 会自动下载）：
 
 ```sh
-npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
+npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
 ```
 
 > 提示：安装过程中如果提示 pnpm 不存在，先运行 `npm install -g pnpm` 再重试。
@@ -57,7 +57,7 @@ cd dsh-deepseek-usage
 ### 方式 C：npm 安装
 
 ```sh
-dsh plugin --profile web add @xavier711/dsh-deepseek-usage
+dsh plugin --profile web add @xavier711/dsh-deepseek-usage@0.5.0
 ```
 
 ---
@@ -155,7 +155,7 @@ install.sh         一键安装脚本
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
 ```
 
 ## 常见问题
@@ -166,7 +166,7 @@ dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.4.3
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
 ```
 
 然后重启 `dsh web` 并刷新页面。
