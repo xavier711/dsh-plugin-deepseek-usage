@@ -6,7 +6,7 @@ DeepSeek 用量面板插件 —— 装在 [DeepSeek Harness](https://github.com/
 
 - **账户余额**：实时查询官方接口 `GET /user/balance`（余额、充值/赠送拆分）
 - **本地用量**：回放你本机会话日志里的官方 token 计数 —— 今日 / 近 7 天 / 累计、7 天柱状图、今日构成、**按模型统计**、**按工作区统计**（工作区 = 会话所在的项目目录，折叠面板按工作区展开查看各自的会话记录；子代理会话计入其父工作区）
-- **费用估算**：按模型套用 DeepSeek **官方定价**（含 2026-08-17 起 V4 系列峰谷定价，北京时间自动区分高峰/空闲；2026-08-23 起**周末（周六、周日）全天按低谷价计费**，不再区分峰谷；2026-09-19 官方补充说明进一步明确**调休上班的周末、中国法定节假日全天同样按空闲时段计费**，内置 2026 年国务院节假日安排并可用 `holidayRanges` 覆盖；2026-09-10 12:00 起 flash 系列降价至空闲 ¥1 / 缓存命中 ¥0.02 / 输出 ¥4、高峰翻倍）。**V4 Pro 继续按自身峰谷价计费**——其 2026-09-14 下线已于 9-11 公告取消，**不**按 V4.1 Flash 计费。侧边栏入口和面板头部会实时显示**当前时段标识**（高峰/空闲，含当前时段区间与下一次切换时间）
+- **费用估算**：按模型套用 DeepSeek **官方定价**（含 2026-08-17 起 V4 系列峰谷定价，北京时间自动区分高峰/空闲；2026-08-23 起**周末（周六、周日）全天按低谷价计费**，不再区分峰谷；2026-09-19 官方补充说明进一步明确**调休上班的周末、中国法定节假日全天同样按空闲时段计费**（假期日期取自本仓库的 [`holidays.json`](holidays.json)，每 6 小时刷新一次，并内置 2026 年国务院安排作为离线兜底）；2026-09-10 12:00 起 flash 系列降价至空闲 ¥1 / 缓存命中 ¥0.02 / 输出 ¥4、高峰翻倍）。**V4 Pro 继续按自身峰谷价计费**——其 2026-09-14 下线已于 9-11 公告取消，**不**按 V4.1 Flash 计费。侧边栏入口和面板头部会实时显示**当前时段标识**（高峰/空闲，含当前时段区间与下一次切换时间）
 - **兼容新旧 DSH**：会话历史读取同时支持新版 `sessionPersistence`（`list()` 返回快照 + `open(id,'read')` 读句柄）与旧版接口（`list()` 返回 header + `inspect()`），在新版 harness 上不会再出现「会话历史读不到」
 
 > 说明：DeepSeek 官方 API 没有账号级用量查询接口（实测所有候选路径均 404），所以用量数据来自 harness 本地会话日志 —— 日志里记录的就是官方每次请求返回的真实 usage。
@@ -115,19 +115,27 @@ install.sh         一键安装脚本
     newPricingAt: 1786896000000   # 峰谷定价生效时间（2026-08-17 00:00 北京时间）
     weekendOffPeakAt: 1787414400000  # 周末全天低谷价生效时间（2026-08-23 00:00 北京时间）
     holidayOffPeakAt: 1789747200000  # 法定节假日全天低谷价生效时间（2026-09-19 00:00 北京时间）
-    holidayRanges:                # 法定节假日放假区间（北京时间日期，含首尾）；默认值为
-      - { name: 中秋节, start: "2026-09-25", end: "2026-09-27" }   # 2026 年国务院完整安排，
-      - { name: 国庆节, start: "2026-10-01", end: "2026-10-07" }   # 次年公告发布后整体替换即可
+    holidayCalendarUrl: "https://raw.githubusercontent.com/xavier711/dsh-deepseek-usage/main/holidays.json"
+                                     # 维护用的假期日历，每 6 小时拉取一次；设为 null 可关闭远端
+    holidayCalendarTtlMs: 21600000   # 拉取到的日历缓存时长（毫秒）
+    holidayWorkdays: []              # 逃生口：即使落在周末/假期也按时段计费的日子（按现行口径留空）
+    holidayRanges:                   # 可选覆盖；一旦设置即优先于远端日历，并完全不再发起请求
+      - { name: 中秋节, start: "2026-09-25", end: "2026-09-27" }
+      - { name: 国庆节, start: "2026-10-01", end: "2026-10-07" }
     peakHours: [[9,12],[14,18]]   # 北京时间高峰时段
     # pricing: 按模型单价（元/百万 tokens）；每项可带 eras: [{ at, peak, offPeak }]
     #          表达「自某时刻起换价」（如 2026-09-10 12:00 起 flash 系列降价）。
     #          V4 Pro 不带 era：它不按 flash 计费，详见源码仓库
 ```
 
-> **节假日每年都变。** 国务院通常在前一年年底公布次年的放假安排，因此
-> `holidayRanges` 是每年 12 月唯一需要复核的配置项：按新公告的「放假」区间整体
-> 替换即可（调休上班的周末不必单列——它们本身就是周六/周日，已按周末规则享受
-> 低谷价）。
+> **节假日每年都变 —— 但你不需要做任何事。** 国务院通常在前一年年底公布次年的
+> 放假安排，插件会每 6 小时拉取一次本仓库的 [`holidays.json`](holidays.json)：
+> **维护者只需把新的一年写进这一个文件**，已安装的插件会在下次刷新时自动生效，
+> 既不用发版，也不用用户操作。优先级是 **你的 `holidayRanges` → 远端
+> `holidays.json` → 内置 2026 表**，所以本地覆盖或下载失败都不会让你失去日历；
+> 远端文件只要有一处不合法就整份丢弃（绝不半份生效）。若日历没有覆盖当前年份，
+> 面板会明确提示，而不是悄悄把节假日算贵。调休上班的周末不必单列——它们本身
+> 就是周六/周日，已按周末规则享受低谷价。
 
 ## 更新
 
@@ -161,4 +169,4 @@ dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage
 
 - `GET /dsh-usage/balance` — `{ ok, isAvailable, currency, totalBalance, grantedBalance, toppedUpBalance, ... }`
 - `GET /dsh-usage/local` — `{ ok, sessionCount, errorSessions, pricing, buckets: { today, week, total }, days: [...7], models: [...], workspaces: [...], sessions: [...] }`——每个工作区条目为 `{ path, name, sessionCount, subagentSessionCount, buckets: { today, week, total }, sessions: [...] }`（无工作目录的会话归入 `path: null`）；每个会话行带 `workspace` 与 `subagent` 字段（pricing 含 `newPricingAt`、`weekendOffPeakAt`、`holidayOffPeakAt`、`peakHours`）
-- `GET /dsh-usage/period` — `{ ok, now, period: 'peak'|'offPeak'|'flat', range: [start, end] 分钟数, nextAt, nextPeriod, peakHours, weekendOffPeakAt, holidayOffPeakAt, offPeakDay, offPeakReason: 'weekend'|'holiday'|null, holiday, timezoneOffsetMinutes }` — 当前北京时间高峰/空闲分类，供侧边栏徽标与面板头部使用；`nextAt`/`nextPeriod` 描述下一次真正的时段切换（周末与节假日会直接跳到下一个工作日的首个高峰开始时刻）；`offPeakDay`/`offPeakReason`/`holiday` 说明今天是否全天低谷、依据哪条规则，以及具体节日名
+- `GET /dsh-usage/period` — `{ ok, now, period: 'peak'|'offPeak'|'flat', range: [start, end] 分钟数, nextAt, nextPeriod, peakHours, weekendOffPeakAt, holidayOffPeakAt, offPeakDay, offPeakReason: 'weekend'|'holiday'|null, holiday, calendar, timezoneOffsetMinutes }` — 当前北京时间高峰/空闲分类，供侧边栏徽标与面板头部使用；`nextAt`/`nextPeriod` 描述下一次真正的时段切换（周末与节假日会直接跳到下一个工作日的首个高峰开始时刻）；`offPeakDay`/`offPeakReason`/`holiday` 说明今天是否全天低谷、依据哪条规则，以及具体节日名；`calendar` 说明当前生效的假期日历来自哪里（`{ source: 'config'|'remote'|'builtin', updatedAt, publisher, years, currentYear, coversCurrentYear, url, error }`）

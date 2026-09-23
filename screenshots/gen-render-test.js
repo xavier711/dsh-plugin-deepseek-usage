@@ -111,6 +111,12 @@ const periodPayload = {
   nextPeriod: periodIsPeak ? 'offPeak' : 'peak',
   newPricingAt: Date.UTC(2026, 7, 16, 16, 0, 0),
   weekendOffPeakAt: Date.UTC(2026, 7, 22, 16, 0, 0),
+  holidayOffPeakAt: Date.UTC(2026, 8, 18, 16, 0, 0),
+  offPeakDay: false,
+  offPeakReason: null,
+  holiday: null,
+  // 假期表来源与覆盖年份：合成数据按「已覆盖」渲染，未覆盖告警条不出现。
+  calendar: { source: 'builtin', updatedAt: null, publisher: null, years: ['2026'], currentYear: '2026', coversCurrentYear: true, url: null, error: null },
   peakHours: [[9, 12], [14, 18]],
   timezoneOffsetMinutes: BEIJING_OFFSET
 };
@@ -130,7 +136,7 @@ const sample = {
     fetchedAt: Date.now(),
     sessionCount: 3,
     errorSessions: 0,
-    pricing: { currency: 'CNY', note: 'official', newPricingAt: Date.now(), weekendOffPeakAt: Date.UTC(2026, 7, 22, 16, 0, 0), peakHours: [[9, 12], [14, 18]] },
+    pricing: { currency: 'CNY', note: 'official', newPricingAt: Date.now(), weekendOffPeakAt: Date.UTC(2026, 7, 22, 16, 0, 0), holidayOffPeakAt: Date.UTC(2026, 8, 18, 16, 0, 0), peakHours: [[9, 12], [14, 18]] },
     buckets: {
       today: days7[6],
       week: bucket(day(0), 24e6, 512),

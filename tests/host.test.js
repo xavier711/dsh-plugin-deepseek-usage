@@ -22,6 +22,7 @@
  */
 
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { apply } from "../lib/index.js";
 
 /* ── harness ─────────────────────────────────────────────────────────────── */
@@ -57,6 +58,10 @@ function makeRes() {
 
 /**
  * Apply the plugin to a mock context and return its registered routes.
+ *
+ * The remote holiday calendar is disabled by default so every test stays
+ * hermetic; tests that exercise the fetch path opt back in with
+ * `holidayCalendarUrl` and a stubbed `fetch`.
  * @param options.persistence - fake `sessionPersistence` (defaults to none).
  * @param options.config - row config overriding DEFAULTS.
  */
@@ -73,8 +78,25 @@ function mount({ persistence, config } = {}) {
     },
     effect(fn) { const dispose = fn(); return () => dispose?.(); }
   };
-  apply(ctx, config ?? {});
+  apply(ctx, { holidayCalendarUrl: null, ...(config ?? {}) });
   return routes;
+}
+
+/** Replace global fetch for one test; returns the recorded call URLs. */
+function stubFetch(handler) {
+  const calls = [];
+  const original = globalThis.fetch;
+  globalThis.fetch = async (url, options) => {
+    calls.push(String(url));
+    return handler(String(url), options);
+  };
+  calls.restore = () => { globalThis.fetch = original; };
+  return calls;
+}
+
+/** Minimal `Response` stand-in for the fetch stub. */
+function jsonResponse(body, status = 200) {
+  return { ok: status >= 200 && status < 300, status, json: async () => body };
 }
 
 /** Run a route handler and return its JSON body. */
@@ -85,6 +107,16 @@ async function callRoute(routes, path) {
   await handler({ method: "GET" }, res);
   assert.equal(res.status, 200, `${path} should answer 200`);
   return res.body;
+}
+
+/** Call `/dsh-usage/period` as of `time` on an existing mount. */
+async function periodWith(routes, time) {
+  globalThis.Date.now = () => time;
+  try {
+    return await callRoute(routes, "/dsh-usage/period");
+  } finally {
+    globalThis.Date.now = realNow;
+  }
 }
 
 /** A persistence fake reading one session through `open(id, "read")`. */
@@ -116,12 +148,7 @@ async function costAt(time, model, { usage = ONE_MILLION_EACH, config } = {}) {
 /** The `/dsh-usage/period` payload as of `time`. */
 async function periodAt(time, config) {
   const routes = mount({ persistence: openPersistence([]), config });
-  globalThis.Date.now = () => time;
-  try {
-    return await callRoute(routes, "/dsh-usage/period");
-  } finally {
-    globalThis.Date.now = realNow;
-  }
+  return periodWith(routes, time);
 }
 
 const realNow = Date.now;
@@ -403,6 +430,195 @@ await test("list() 中混入脏条目不会崩溃（缺 header / null）", async
     near(payload.buckets.total.cost, FLASH.peakNew);
   } finally {
     globalThis.Date.now = realNow;
+  }
+});
+
+/* ── 6. 远端节假日日历（holidays.json） ─────────────────────────────────── */
+
+const CALENDAR_URL = "https://example.test/holidays.json";
+
+/** A remote calendar covering 2026 with one non-built-in holiday on 2026-09-29 (周二). */
+function remoteCalendar() {
+  return {
+    version: 1,
+    updatedAt: "2026-11-04",
+    source: "测试用安排",
+    workdays: [],
+    years: { 2026: [{ name: "远程假期", start: "2026-09-29", end: "2026-09-29" }] }
+  };
+}
+
+await test("远端日历可用时整体替换内置表（含新增假期，且替换而非合并）", async () => {
+  const calls = stubFetch(() => jsonResponse(remoteCalendar()));
+  try {
+    // 9/29 周二 10:00：内置表下是高峰，远端表把它变成全天空闲。
+    const body = await periodAt(bj(2026, 9, 29, 10, 0), { holidayCalendarUrl: CALENDAR_URL });
+    assert.equal(body.period, "offPeak");
+    assert.deepEqual(body.range, [0, 1440]);
+    assert.equal(body.holiday, "远程假期");
+    assert.equal(body.calendar.source, "remote");
+    assert.equal(body.calendar.updatedAt, "2026-11-04");
+    assert.equal(body.calendar.publisher, "测试用安排");
+    assert.deepEqual(body.calendar.years, ["2026"]);
+    assert.equal(body.calendar.coversCurrentYear, true);
+    assert.equal(body.calendar.error, null);
+    assert.equal(body.calendar.url, CALENDAR_URL);
+    // 内置的中秋在远端表里不存在 → 必须回到高峰（证明是整体替换，不是合并）
+    const mid = await periodAt(bj(2026, 9, 25, 10, 0), { holidayCalendarUrl: CALENDAR_URL });
+    assert.equal(mid.period, "peak");
+    assert.equal(mid.holiday, null);
+  } finally {
+    calls.restore();
+  }
+});
+
+await test("远端日历同样作用于成本计算（9/29 空闲价 vs 内置表的高峰价）", async () => {
+  const calls = stubFetch(() => jsonResponse(remoteCalendar()));
+  try {
+    const remote = await costAt(bj(2026, 9, 29, 10, 0), "deepseek-flash", { config: { holidayCalendarUrl: CALENDAR_URL } });
+    near(remote, FLASH.offPeakNew, "远端日历下的空闲价");
+    const builtin = await costAt(bj(2026, 9, 29, 10, 0), "deepseek-flash");
+    near(builtin, FLASH.peakNew, "内置表下同一时刻为高峰价");
+  } finally {
+    calls.restore();
+  }
+});
+
+await test("行配置 holidayRanges 优先于远端日历，且完全不发起请求", async () => {
+  const calls = stubFetch(() => jsonResponse(remoteCalendar()));
+  try {
+    const config = {
+      holidayCalendarUrl: CALENDAR_URL,
+      holidayRanges: [{ name: "本地假期", start: "2026-09-30", end: "2026-09-30" }]
+    };
+    const body = await periodAt(bj(2026, 9, 30, 10, 0), config);
+    assert.equal(body.holiday, "本地假期");
+    assert.equal(body.calendar.source, "config");
+    assert.deepEqual(body.calendar.years, ["2026"]);
+    assert.equal(calls.length, 0, "行配置存在时不应请求远端");
+  } finally {
+    calls.restore();
+  }
+});
+
+await test("holidayCalendarUrl 为 null 时不做任何网络请求（离线/关闭远端）", async () => {
+  const calls = stubFetch(() => jsonResponse(remoteCalendar()));
+  try {
+    const body = await periodAt(bj(2026, 9, 25, 10, 0), { holidayCalendarUrl: null });
+    assert.equal(body.calendar.source, "builtin");
+    assert.equal(body.calendar.url, null);
+    assert.equal(calls.length, 0);
+  } finally {
+    calls.restore();
+  }
+});
+
+await test("远端日历非法时整份丢弃：保留内置表并记录 error", async () => {
+  const bad = [
+    { name: "非法日期", doc: { years: { 2026: [{ start: "2026-02-30" }] } } },
+    { name: "start > end", doc: { years: { 2026: [{ start: "2026-05-05", end: "2026-05-01" }] } } },
+    { name: "区间跨年", doc: { years: { 2026: [{ start: "2026-12-31", end: "2027-01-02" }] } } },
+    { name: "空 years", doc: { years: {} } },
+    { name: "years 缺失", doc: { version: 1 } },
+    { name: "workdays 非法", doc: { years: { 2026: [{ start: "2026-01-01" }] }, workdays: ["2026-1-1"] } }
+  ];
+  for (const { name, doc } of bad) {
+    const calls = stubFetch(() => jsonResponse(doc));
+    try {
+      const body = await periodAt(bj(2026, 9, 25, 10, 0), { holidayCalendarUrl: CALENDAR_URL });
+      assert.equal(body.calendar.source, "builtin", `${name}：应保留内置表`);
+      assert.ok(body.calendar.error, `${name}：应记录 error`);
+      assert.equal(body.holiday, "中秋节", `${name}：内置中秋仍生效`);
+      assert.equal(body.period, "offPeak");
+    } finally {
+      calls.restore();
+    }
+  }
+});
+
+await test("远端返回非 2xx / 抛错时保留原日历，不影响路由", async () => {
+  for (const handler of [() => jsonResponse({}, 500), () => { throw new Error("boom"); }]) {
+    const calls = stubFetch(handler);
+    try {
+      const body = await periodAt(bj(2026, 10, 1, 10, 0), { holidayCalendarUrl: CALENDAR_URL });
+      assert.equal(body.calendar.source, "builtin");
+      assert.ok(body.calendar.error);
+      assert.equal(body.holiday, "国庆节", "内置国庆仍生效");
+      assert.equal(body.period, "offPeak");
+    } finally {
+      calls.restore();
+    }
+  }
+});
+
+await test("日历按 TTL 缓存：TTL 内只请求一次，过期后重新请求", async () => {
+  const calls = stubFetch(() => jsonResponse(remoteCalendar()));
+  try {
+    const routes = mount({ persistence: openPersistence([]), config: { holidayCalendarUrl: CALENDAR_URL, holidayCalendarTtlMs: 60_000 } });
+    await periodWith(routes, bj(2026, 9, 29, 10, 0));
+    assert.equal(calls.length, 1, "首次请求");
+    await periodWith(routes, bj(2026, 9, 29, 10, 0, 30));
+    assert.equal(calls.length, 1, "TTL 内不应重复请求");
+    await periodWith(routes, bj(2026, 9, 29, 12, 0));
+    assert.equal(calls.length, 2, "超过 TTL 后应重新请求");
+  } finally {
+    calls.restore();
+  }
+});
+
+await test("覆盖年份判定：内置表覆盖 2026；仅覆盖次年的日历会报未覆盖", async () => {
+  const inYear = await periodAt(bj(2026, 9, 23, 10, 0));
+  assert.equal(inYear.calendar.coversCurrentYear, true);
+  assert.equal(inYear.calendar.currentYear, "2026");
+
+  const nextOnly = await periodAt(bj(2026, 9, 23, 10, 0), {
+    holidayRanges: [{ name: "次年元旦", start: "2027-01-01", end: "2027-01-03" }]
+  });
+  assert.equal(nextOnly.calendar.coversCurrentYear, false);
+  assert.equal(nextOnly.calendar.currentYear, "2026");
+  assert.deepEqual(nextOnly.calendar.years, ["2027"]);
+});
+
+await test("workdays 能把某天从全天空闲改回按时段计费（未来的口径逃生口）", async () => {
+  const config = { holidayWorkdays: ["2026-09-25"] };
+  const body = await periodAt(bj(2026, 9, 25, 10, 0), config);
+  assert.equal(body.offPeakDay, false, "被列入 workdays 后不再是全天低谷");
+  assert.equal(body.holiday, "中秋节", "假期区间仍匹配，只是被 workdays 覆盖");
+  assert.equal(body.period, "peak");
+  near(await costAt(bj(2026, 9, 25, 10, 0), "deepseek-flash", { config }), FLASH.peakNew);
+});
+
+await test("workdays 不受远端刷新覆盖（行配置优先）", async () => {
+  const calls = stubFetch(() => jsonResponse(remoteCalendar()));
+  try {
+    const body = await periodAt(bj(2026, 9, 29, 10, 0), {
+      holidayCalendarUrl: CALENDAR_URL,
+      holidayWorkdays: ["2026-09-29"]
+    });
+    assert.equal(body.calendar.source, "remote", "远端仍提供区间");
+    assert.equal(body.period, "peak", "行配置的 workdays 依然生效");
+    assert.equal(body.offPeakDay, false);
+  } finally {
+    calls.restore();
+  }
+});
+
+await test("仓库里的 holidays.json 可被解析，且与内置 2026 表一致（发版前的一致性守卫）", async () => {
+  const raw = JSON.parse(readFileSync(new URL("../holidays.json", import.meta.url), "utf8"));
+  const calls = stubFetch(() => jsonResponse(raw));
+  try {
+    const body = await periodAt(bj(2026, 9, 25, 10, 0), { holidayCalendarUrl: CALENDAR_URL });
+    assert.equal(body.calendar.source, "remote", "holidays.json 必须能通过校验");
+    assert.equal(body.calendar.error, null);
+    assert.deepEqual(body.calendar.years, ["2026"]);
+    assert.equal(body.calendar.publisher, raw.source);
+    // 与内置表逐日等价：中秋/国庆/调休周末 + 普通工作日
+    near(await costAt(bj(2026, 9, 25, 10, 0), "deepseek-flash", { config: { holidayCalendarUrl: CALENDAR_URL } }), FLASH.offPeakNew);
+    near(await costAt(bj(2026, 10, 1, 10, 0), "deepseek-flash", { config: { holidayCalendarUrl: CALENDAR_URL } }), FLASH.offPeakNew);
+    near(await costAt(bj(2026, 10, 10, 10, 0), "deepseek-flash", { config: { holidayCalendarUrl: CALENDAR_URL } }), FLASH.offPeakNew);
+    near(await costAt(bj(2026, 9, 29, 10, 0), "deepseek-flash", { config: { holidayCalendarUrl: CALENDAR_URL } }), FLASH.peakNew);
+  } finally {
+    calls.restore();
   }
 });
 
