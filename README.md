@@ -6,7 +6,7 @@ A DeepSeek usage panel plugin for the [DeepSeek Harness](https://github.com/deep
 
 - **Account balance** — queried live from the official endpoint `GET /user/balance` (total, topped-up, granted).
 - **Local usage** — replays your own session logs (which store the official per-request `usage` records) and shows: today / last 7 days / all time, a 7-day chart, today's token composition, **per-model statistics**, and **per-workspace statistics** (a workspace is the session's project directory; a collapsible panel expands each workspace into its own session records, and subagent sessions count toward their parent workspace).
-- **Cost estimate** — priced **per model** at official DeepSeek rates (CNY per 1M tokens), including the V4 peak/off-peak pricing effective 2026-08-17 (peak hours in Beijing time are applied automatically), the 2026-08-23 rule change — **weekends (Sat/Sun) are all-day off-peak** — the 2026-09-10 12:00 flash-series price cut (off-peak ¥1 input / ¥0.02 cache hit / ¥4 output, peak doubled) and the 2026-09-14 12:00 retirement of V4 Pro (routed to and billed as V4.1 Flash). The sidebar entry and the panel header show a live **current-period indicator** (peak/off-peak, with the active time window and the next transition).
+- **Cost estimate** — priced **per model** at official DeepSeek rates (CNY per 1M tokens), including the V4 peak/off-peak pricing effective 2026-08-17 (peak hours in Beijing time are applied automatically), the 2026-08-23 rule change — **weekends (Sat/Sun) are all-day off-peak** — the 2026-09-19 clarification that **make-up working weekends and Chinese statutory holidays are off-peak all day too** (the 2026 State Council holiday schedule is built in and can be overridden with `holidayRanges`), and the 2026-09-10 12:00 flash-series price cut (off-peak ¥1 input / ¥0.02 cache hit / ¥4 output, peak doubled). **V4 Pro keeps its own peak/off-peak rates** — its 2026-09-14 retirement was cancelled on 2026-09-11, so it is *not* billed as flash. The sidebar entry and the panel header show a live **current-period indicator** (peak/off-peak, with the active time window and the next transition).
 - **Works across DSH versions** — session history is read through whichever `sessionPersistence` seam the running harness exposes: the current snapshot-list + `open(id,'read')` handle API, or the older header-list + `inspect()` API. The panel no longer comes up empty on a newer harness.
 
 > Note: DeepSeek's API does not expose an account-level usage endpoint (all candidate paths return 404 in practice). The usage data therefore comes from your local session logs — which contain the exact `usage` values returned by the official API for every request.
@@ -107,12 +107,22 @@ Override row config by id in `~/.dsh/profiles/web/cordis.patch.yml`:
     localTtlMs: 30000          # local-usage cache TTL (ms); keeps signal-driven badge refreshes cheap
     newPricingAt: 1786896000000      # peak/off-peak pricing effective date (2026-08-17 00:00 Beijing)
     weekendOffPeakAt: 1787414400000  # weekends all-day off-peak rule effective date (2026-08-23 00:00 Beijing)
+    holidayOffPeakAt: 1789747200000  # statutory-holiday off-peak rule effective date (2026-09-19 00:00 Beijing)
+    holidayRanges:                   # holiday leave days (Beijing dates, inclusive); defaults to the
+      - { name: 中秋节, start: "2026-09-25", end: "2026-09-27" }   # full 2026 State Council schedule —
+      - { name: 国庆节, start: "2026-10-01", end: "2026-10-07" }   # swap in the 2027 notice when published
     peakHours: [[9,12],[14,18]]      # Beijing peak windows
     # pricing: per-model rates (CNY per 1M tokens); an entry may carry
     #          eras: [{ at, peak, offPeak }] for rates that change from a
-    #          moment on (2026-09-10 12:00 flash price cut, 2026-09-14 12:00
-    #          V4 Pro billed as V4.1 Flash) — see the source repo
+    #          moment on (e.g. the 2026-09-10 12:00 flash price cut). V4 Pro
+    #          carries no era: it is not billed as flash — see the source repo
 ```
+
+> **Holidays move every year.** The State Council publishes the next year's
+> schedule late in the current one, so `holidayRanges` is the one thing worth
+> re-checking each December — replace it with the new notice's leave ranges
+> (make-up working weekends need no entry: they are calendar weekends and are
+> already off-peak).
 
 ## Updating
 
@@ -155,5 +165,5 @@ page (Cmd/Ctrl+Shift+R).
 ## HTTP routes
 
 - `GET /dsh-usage/balance` — `{ ok, isAvailable, currency, totalBalance, grantedBalance, toppedUpBalance, ... }`
-- `GET /dsh-usage/local` — `{ ok, sessionCount, errorSessions, pricing, buckets: { today, week, total }, days: [...7], models: [...], workspaces: [...], sessions: [...] }` — each workspace entry is `{ path, name, sessionCount, subagentSessionCount, buckets: { today, week, total }, sessions: [...] }` (sessions without a working directory group under `path: null`); each session row carries `workspace` and `subagent` (pricing includes `newPricingAt`, `weekendOffPeakAt`, `peakHours`)
-- `GET /dsh-usage/period` — `{ ok, now, period: 'peak'|'offPeak'|'flat', range: [start, end] minutes-of-day, nextAt, nextPeriod, peakHours, weekendOffPeakAt, timezoneOffsetMinutes }` — current Beijing peak/off-peak classification for the sidebar badge and the panel header; `nextAt`/`nextPeriod` describe the next actual period change (weekends skip to the next weekday's first peak start)
+- `GET /dsh-usage/local` — `{ ok, sessionCount, errorSessions, pricing, buckets: { today, week, total }, days: [...7], models: [...], workspaces: [...], sessions: [...] }` — each workspace entry is `{ path, name, sessionCount, subagentSessionCount, buckets: { today, week, total }, sessions: [...] }` (sessions without a working directory group under `path: null`); each session row carries `workspace` and `subagent` (pricing includes `newPricingAt`, `weekendOffPeakAt`, `holidayOffPeakAt`, `peakHours`)
+- `GET /dsh-usage/period` — `{ ok, now, period: 'peak'|'offPeak'|'flat', range: [start, end] minutes-of-day, nextAt, nextPeriod, peakHours, weekendOffPeakAt, holidayOffPeakAt, offPeakDay, offPeakReason: 'weekend'|'holiday'|null, holiday, timezoneOffsetMinutes }` — current Beijing peak/off-peak classification for the sidebar badge and the panel header; `nextAt`/`nextPeriod` describe the next actual period change (weekends and holidays skip to the next working day's first peak start), `offPeakDay`/`offPeakReason`/`holiday` say whether today is an all-day off-peak day and which rule makes it one
