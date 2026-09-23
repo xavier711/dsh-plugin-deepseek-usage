@@ -141,11 +141,13 @@ Everything above is also editable without touching YAML: open **sidebar → 插�
 `@xavier711/dsh-deepseek-usage` → the `deepseek-usage` row → 配置**. The form is generated
 from the plugin's own config schema, so DSH validates every value and writes it into the
 same `cordis.patch.yml` row shown above — a saved field *is* an ordinary override, and
-clearing a field restores the built-in default. Fields are grouped as *performance and
-refresh*, *holiday calendar*, *windows and region (advanced)* and *pricing overrides
-(advanced)*; the JSON fields (`pricing`, `peakHours`, `holidayRanges`, `holidayWorkdays`)
-take the same structures documented below. Per-model rate overrides only skew the local
-**estimate** — official billing is unaffected.
+clearing a field restores the built-in default. **Restart `dsh web` after saving**: a
+config-only change is written to the profile immediately but is not hot-reloaded by the
+host. Fields are grouped as *performance and refresh*, *holiday calendar*, *windows and
+region (advanced)* and *pricing overrides (advanced)*; the JSON fields (`pricing`,
+`peakHours`, `holidayRanges`, `holidayWorkdays`) take the same structures documented
+below. Per-model rate overrides only skew the local **estimate** — official billing is
+unaffected.
 
 ## Updating
 

@@ -643,6 +643,39 @@ await test("schemastery 占位值（未设置的键会以 {} 下发）不覆盖�
   }
 });
 
+await test("Volatile 包装的用户取值必须生效（否则 schema 会让整份行配置失效）", async () => {
+  // cordis 的 resolveConfig 返回的是「未解析」形态：每个已声明键都是一个只有
+  // get 的持有者，其 JSON 恰好是 {}。把它当成「用户没设」会让所有已声明键全部
+  // 回落到 DEFAULTS —— 用户的 YAML/设置页改动被静默忽略。这里用 3 个会话 +
+  // 包装成 get()=1 的 maxSessions 断言回放范围真的被收窄。
+  const events = [
+    usageEvent(bj(2026, 9, 23, 10, 0), "deepseek-flash"),
+    usageEvent(bj(2026, 9, 22, 10, 0), "deepseek-flash"),
+    usageEvent(bj(2026, 9, 21, 10, 0), "deepseek-flash")
+  ];
+  const persistence = () => ({
+    list: async () => events.map((event, index) => snapshot(`session-${index}`, event.time, [event])),
+    open: async (id) => ({ read: async () => ({ events: [events[Number(id.split("-")[1])]] }), close: async () => {} })
+  });
+  globalThis.Date.now = () => events[0].time;
+  try {
+    const plain = await callRoute(mount({ persistence: persistence() }), "/dsh-usage/local");
+    assert.equal(plain.sessionCount, 3, "默认 maxSessions=100 应回放全部 3 个会话");
+
+    const holder = { get: () => 1 };
+    const wrapped = await callRoute(mount({ persistence: persistence(), config: { maxSessions: holder } }), "/dsh-usage/local");
+    assert.equal(wrapped.sessionCount, 1, "Volatile 里的 maxSessions=1 必须生效");
+
+    // 同一个包装机制也应让节假日等结构化键生效（此处用假期把工作日变成全天空闲）
+    const ranges = { get: () => [{ name: "包装假期", start: "2026-09-28", end: "2026-09-28" }] };
+    const holiday = mount({ persistence: openPersistence([usageEvent(bj(2026, 9, 28, 10, 0), "deepseek-flash")]), config: { holidayRanges: ranges } });
+    const payload = await callRoute(holiday, "/dsh-usage/local");
+    near(payload.buckets.total.cost, FLASH.offPeakNew, "包装后的 holidayRanges 应让 9/28 全天低谷");
+  } finally {
+    globalThis.Date.now = realNow;
+  }
+});
+
 await test("schema 键与客户端设置页的字段清单一一对应（防止两边漂移）", async () => {
   const host = readFileSync(new URL("../lib/index.js", import.meta.url), "utf8");
   const client = readFileSync(new URL("../lib/client.js", import.meta.url), "utf8");
