@@ -287,6 +287,8 @@ const html = `<!doctype html>
   body.shot #root .du-badge { display: none !important; }
 </style>
 <script>
+  /* The body does not exist yet here; the theme marker is set at DOMContentLoaded
+     below, before the bundle renders. */
   if (location.hash === '#light') document.documentElement.setAttribute('data-theme', 'light');
 </script>
 <script src="vendor/react.production.min.js"></script>
@@ -313,6 +315,12 @@ ${zhSource}
 <script>
   // ── require for the bundle factory ──
   document.addEventListener('DOMContentLoaded', () => {
+  /* Mirror the host: DSH marks dark mode with body[data-ds-dark-theme] (see
+     packages/client/ui-theme), and that is what the plugin's dark colour ramp
+     keys off. Without this the "dark" screenshot would silently render the light
+     cells, so a dark-mode colour regression could never show up here. */
+  if (location.hash === '#light') document.body.removeAttribute('data-ds-dark-theme');
+  else document.body.setAttribute('data-ds-dark-theme', '');
   const req = (spec) => {
     if (spec === 'react') return React;
     if (spec === 'react/jsx-runtime') return { jsx: React.createElement, jsxs: React.createElement, Fragment: React.Fragment };
@@ -381,7 +389,52 @@ ${zhSource}
     try {
       const panel = document.querySelector('.du-panel');
       const r = panel ? panel.getBoundingClientRect() : null;
-      meta.textContent = 'PH=' + (r ? Math.round(r.height) : 'none') + ' PW=' + (r ? Math.round(r.width) : 'none') + ' SW=' + document.body.scrollWidth + ' CW=' + document.body.clientWidth + ' BH=' + document.body.scrollHeight + ' ERRS=' + (window.__errs.length ? window.__errs.join('|') : 'none');
+      /* Heatmap probe: HEAT = cell count, LVL = how many cells landed in each
+         level. A grid that rendered but came out all level 0 (or invisible
+         against the panel) shows up here as LVL=365/0/0/0/0 instead of needing
+         someone to eyeball a PNG. Also verifies the grid fits: gridW <= cardW. */
+      const cells = [...document.querySelectorAll('.du-activityCell')];
+      const lvl = [0, 0, 0, 0, 0];
+      for (const cell of cells) lvl[Number(cell.dataset.level) || 0] += 1;
+      const grid = document.querySelector('.du-activityGrid');
+      const card = grid ? grid.closest('.du-card') : null;
+      const gridW = grid ? Math.round(grid.getBoundingClientRect().width) : 0;
+      const cardW = card ? Math.round(card.getBoundingClientRect().width) : 0;
+      /* Width budget: the grid has to fit inside the card's content box next to
+         the weekday labels. Compare the *content* box, not the border box — the
+         grid is clipped silently by .du-body{overflow-x:hidden} otherwise. */
+      let budget = 'n/a';
+      if (grid && card) {
+        const cs = getComputedStyle(card);
+        const content = card.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        const labels = document.querySelector('.du-activityLabels');
+        const labelsW = labels ? labels.getBoundingClientRect().width : 0;
+        const gap = parseFloat(getComputedStyle(grid.parentElement).columnGap) || 0;
+        budget = Math.round(content) + ':' + Math.round(content - labelsW - gap) + ':' + (gridW <= content - labelsW - gap ? 'fit' : 'OVERFLOW');
+      }
+      const themed = document.body.hasAttribute('data-ds-dark-theme') ? 'dark' : 'light';
+      /* Month labels are absolutely positioned: two of them can silently overlap
+         each other (or the card edge) without changing any box measurement. */
+      const monthEls = [...document.querySelectorAll('.du-activityMonth')].map((el) => el.getBoundingClientRect());
+      let overlaps = 0;
+      for (let i = 1; i < monthEls.length; i += 1) if (monthEls[i].left < monthEls[i - 1].right) overlaps += 1;
+      /* Colours actually painted per level, against the card background: the
+         "heatmap came out invisible" bug was a colour problem, and it is cheaper
+         to assert the five fills differ from the card than to eyeball a PNG. */
+      const fillOf = (level) => {
+        const el = document.querySelector('.du-activityCell[data-level="' + level + '"]');
+        return el ? getComputedStyle(el).backgroundColor : 'none';
+      };
+      /* [0-9] rather than \d on purpose: this block lives inside a template
+         literal, where an unknown escape like \d silently collapses to "d" and
+         the regex then matches nothing (the check would read as "0 distance"). */
+      const rgb = (value) => (value.match(/[0-9]+/g) || []).slice(0, 3).map(Number);
+      const distance = (a, b) => Math.max(...rgb(a).map((v, i) => Math.abs(v - rgb(b)[i])));
+      const cardBg = card ? getComputedStyle(card).backgroundColor : 'none';
+      const fills = [0, 1, 2, 3, 4].map(fillOf);
+      const visible = fills.map((fill, level) => level === 0 ? distance(fill, cardBg) >= 6 : true).every(Boolean);
+      const spread = Math.max(...fills.map((fill, level) => level === 0 ? 0 : distance(fill, cardBg)));      const gbox = grid ? grid.getBoundingClientRect() : null;
+      meta.textContent = 'PH=' + (r ? Math.round(r.height) : 'none') + ' PW=' + (r ? Math.round(r.width) : 'none') + ' SW=' + document.body.scrollWidth + ' CW=' + document.body.clientWidth + ' BH=' + document.body.scrollHeight + ' THEME=' + themed + ' HEAT=' + cells.length + ' LVL=' + lvl.join('/') + ' MONTH=' + monthEls.length + ' MOVL=' + overlaps + ' BUDGET=' + budget + ' GBOX=' + (gbox ? [Math.round(gbox.left), Math.round(gbox.top), Math.round(gbox.width), Math.round(gbox.height)].join(',') : 'none') + ' L0=' + fills[0] + ' L4=' + fills[4] + ' CARDBG=' + cardBg + ' CELLVIS=' + (visible ? 'ok' : 'INVISIBLE') + ' SPREAD=' + spread + ' ERRS=' + (window.__errs.length ? window.__errs.join('|') : 'none');
       document.title = meta.textContent;
     } catch (err) { meta.textContent = 'meas-err:' + err.message; }
   }, 1600);
