@@ -622,6 +622,40 @@ await test("仓库里的 holidays.json 可被解析，且与内置 2026 表一�
   }
 });
 
+/* ── 6. 图形化设置的 schema 契约 ──────────────────────────────────────────── */
+
+await test("schemastery 占位值（未设置的键会以 {} 下发）不覆盖内置默认值", async () => {
+  // 导出 Config schema 后，cordis 的 resolveConfig 只校验、不落默认值：
+  // 未设置的键会变成 {}。若浅合并照单全收，maxSessions: {} 会让 slice(0, {})
+  // 取到 0 个会话，面板统计直接归零。
+  const events = [usageEvent(bj(2026, 9, 23, 10, 0), "deepseek-flash")];
+  const placeholder = mount({ persistence: openPersistence(events), config: { maxSessions: {}, localTtlMs: {} } });
+  const clean = mount({ persistence: openPersistence(events) });
+  globalThis.Date.now = () => events[0].time;
+  try {
+    const withPlaceholders = await callRoute(placeholder, "/dsh-usage/local");
+    const baseline = await callRoute(clean, "/dsh-usage/local");
+    assert.equal(withPlaceholders.sessionCount, baseline.sessionCount, "占位值不得改变回放范围");
+    assert.ok(baseline.sessionCount > 0);
+    near(withPlaceholders.buckets.total.cost, baseline.buckets.total.cost);
+  } finally {
+    globalThis.Date.now = realNow;
+  }
+});
+
+await test("schema 键与客户端设置页的字段清单一一对应（防止两边漂移）", async () => {
+  const host = readFileSync(new URL("../lib/index.js", import.meta.url), "utf8");
+  const client = readFileSync(new URL("../lib/client.js", import.meta.url), "utf8");
+  // 宿主 schema：Config.object({...}) 里每个 `<key>: Schema...volatile()` 的键
+  const schemaBlock = host.slice(host.indexOf("Config = Schema.object({"), host.indexOf("} catch {", host.indexOf("Config = Schema.object({")));
+  const schemaKeys = new Set([...schemaBlock.matchAll(/^\s{4}(\w+):/gm)].map(m => m[1]));
+  // 客户端：CONFIG_FIELDS 的 key 字段
+  const fieldsBlock = client.slice(client.indexOf("const CONFIG_FIELDS = ["), client.indexOf("];", client.indexOf("const CONFIG_FIELDS = [")));
+  const clientKeys = new Set([...fieldsBlock.matchAll(/key: "(\w+)"/g)].map(m => m[1]));
+  assert.ok(schemaKeys.size >= 10, `应解析到 schema 键，实际 ${schemaKeys.size}`);
+  assert.deepEqual([...clientKeys].sort(), [...schemaKeys].sort(), "客户端字段清单必须与宿主 schema 完全一致");
+});
+
 /* ── report ──────────────────────────────────────────────────────────────── */
 
 if (failures.length > 0) {

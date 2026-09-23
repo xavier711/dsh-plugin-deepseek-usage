@@ -325,18 +325,20 @@ ${zhSource}
   const SAMPLE = ${sampleJson};
   window.fetch = (url) => Promise.resolve({ ok: true, status: 200, json: async () => SAMPLE[url] || { ok: false, error: 'unknown', message: url } });
 
-  // ── fake services; capture the registered component ──
+  // ── fake services; capture the registered component per slot ──
   let component = null;
+  const slotCallbacks = {};
   const ctx = {
     effect: () => () => {},
     locale: { register: () => () => {} },
     slots: {
-      inject: (name, cb) => { window.__slot = cb; },
-      register: (opts, comp) => { component = comp; return () => {}; }
+      inject: (name, cb) => { slotCallbacks[name] = cb; },
+      register: (opts, comp) => { if (opts.name === 'sidebar.footer.action') component = comp; return () => {}; }
     }
   };
   mod.apply(ctx);
-  window.__slot();
+  // 插件会向多个 slot 注册（侧边栏入口 + 「插件」页的配置页），这里只要面板那个。
+  slotCallbacks['sidebar.footer.action']();
 
   // ── t(): zh dictionary lookup with {param} substitution ──
   const t = (key, params) => {

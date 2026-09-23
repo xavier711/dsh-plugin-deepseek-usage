@@ -137,6 +137,15 @@ install.sh         一键安装脚本
 > 面板会明确提示，而不是悄悄把节假日算贵。调休上班的周末不必单列——它们本身
 > 就是周六/周日，已按周末规则享受低谷价。
 
+### 在图形界面里配置
+
+上面这些项都不用改 YAML：**侧边栏 →「插件」→ `@xavier711/dsh-deepseek-usage` → `deepseek-usage` 行 →「配置」**。
+表单由插件自己的 config schema 生成，宿主会逐项校验，并写进上面那个 `cordis.patch.yml`
+的同一行 —— 保存一个字段就等于一条普通覆盖，清空字段即恢复内置默认值。字段按
+「性能与刷新」「节假日日历」「时段与区域（高级）」「定价覆盖（高级）」分组；
+`pricing`、`peakHours`、`holidayRanges`、`holidayWorkdays` 是 JSON 字段，结构同下文。
+按模型覆盖单价只影响本地**估算**，不影响官方实际计费。
+
 ## 更新
 
 **npm 安装的用户**：执行 `dsh plugin --profile web update @xavier711/dsh-deepseek-usage`（或按新版本号重新 add，如 `... add @xavier711/dsh-deepseek-usage@X.Y.Z`）。
