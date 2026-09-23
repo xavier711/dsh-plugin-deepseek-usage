@@ -291,12 +291,12 @@ const html = `<!doctype html>
   // ── primitives stub (visual approximations, theme-aware) ──
   const svg = (w, h, children, extra) => React.createElement('svg', Object.assign({ width: w, height: h, viewBox: '0 0 ' + w + ' ' + h, fill: 'currentColor', 'aria-hidden': true }, extra || {}), children);
   window.__prim = {
-    IconDataOutline16: (p) => svg(16, 16, [React.createElement('rect', { x: 2.2, y: 8, width: 3, height: 5.6, rx: 1.1 }), React.createElement('rect', { x: 6.5, y: 4.8, width: 3, height: 8.8, rx: 1.1 }), React.createElement('rect', { x: 10.8, y: 2.4, width: 3, height: 11.2, rx: 1.1 })]),
-    IconRefreshOutline16: (p) => svg(16, 16, [React.createElement('path', { d: 'M13.2 8a5.2 5.2 0 1 1-1.5-3.7', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round' }), React.createElement('path', { d: 'M13.2 2.8v3h-3', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round' })], { fill: 'none' }),
-    IconCloseOutline16: (p) => svg(16, 16, [React.createElement('path', { d: 'M4 4l8 8M12 4l-8 8', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round' })], { fill: 'none' }),
-    IconChevronUpOutline14: (p) => svg(14, 14, [React.createElement('path', { d: 'M7 11V3M3.5 6.5 7 3l3.5 3.5', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' })], { fill: 'none' }),
-    IconChevronRightOutline14: (p) => svg(14, 14, [React.createElement('path', { d: 'M5 3.5 9.5 7 5 10.5', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' })], { fill: 'none' }),
-    IconChevronDownOutline14: (p) => svg(14, 14, [React.createElement('path', { d: 'M3.5 5 7 9.5 10.5 5', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' })], { fill: 'none' }),
+    IconDataOutlineRegular: ({ size = 16 }) => svg(size, size, [React.createElement('rect', { x: 2.2, y: 8, width: 3, height: 5.6, rx: 1.1 }), React.createElement('rect', { x: 6.5, y: 4.8, width: 3, height: 8.8, rx: 1.1 }), React.createElement('rect', { x: 10.8, y: 2.4, width: 3, height: 11.2, rx: 1.1 })]),
+    IconRefreshOutlineRegular: ({ size = 16 }) => svg(size, size, [React.createElement('path', { d: 'M13.2 8a5.2 5.2 0 1 1-1.5-3.7', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round' }), React.createElement('path', { d: 'M13.2 2.8v3h-3', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round' })], { fill: 'none' }),
+    IconCloseOutlineRegular: ({ size = 16 }) => svg(size, size, [React.createElement('path', { d: 'M4 4l8 8M12 4l-8 8', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round' })], { fill: 'none' }),
+    IconChevronUpOutlineRegular: ({ size = 14 }) => svg(size, size, [React.createElement('path', { d: 'M7 11V3M3.5 6.5 7 3l3.5 3.5', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' })], { fill: 'none' }),
+    IconChevronRightOutlineRegular: ({ size = 14 }) => svg(size, size, [React.createElement('path', { d: 'M5 3.5 9.5 7 5 10.5', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' })], { fill: 'none' }),
+    IconChevronDownOutlineRegular: ({ size = 14 }) => svg(size, size, [React.createElement('path', { d: 'M3.5 5 7 9.5 10.5 5', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' })], { fill: 'none' }),
     Tooltip: (props) => props.children
   };
 </script>
