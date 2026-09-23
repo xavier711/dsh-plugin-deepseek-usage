@@ -689,6 +689,21 @@ await test("schema 键与客户端设置页的字段清单一一对应（防止�
   assert.deepEqual([...clientKeys].sort(), [...schemaKeys].sort(), "客户端字段清单必须与宿主 schema 完全一致");
 });
 
+await test("用户可见文案不得夹带开发/验证内部措辞", async () => {
+  // 面板与设置页的字串是给用户看的：不要出现「实测」「热重载」「schema」
+  // 「bundle」这类只有维护者需要知道的说法（这类内容属于 AGENTS.md / 提交说明）。
+  const client = readFileSync(new URL("../lib/client.js", import.meta.url), "utf8");
+  const banned = ["实测", "热重载", "hot-reload", "host half", "schema", "schemastery", "bundle", "DEFAULTS", "Volatile"];
+  const offenders = [];
+  for (const match of client.matchAll(/^\s{6}"([\w.]+)":\s*"((?:[^"\\]|\\.)*)"/gm)) {
+    const [, key, text] = match;
+    for (const term of banned) {
+      if (text.includes(term)) offenders.push(`${key} 含「${term}」`);
+    }
+  }
+  assert.deepEqual(offenders, [], "用户可见文案里出现了内部措辞");
+});
+
 /* ── report ──────────────────────────────────────────────────────────────── */
 
 if (failures.length > 0) {
