@@ -289,7 +289,7 @@ const html = `<!doctype html>
 <script>
   /* The body does not exist yet here; the theme marker is set at DOMContentLoaded
      below, before the bundle renders. */
-  if (location.hash === '#light') document.documentElement.setAttribute('data-theme', 'light');
+  if (location.hash.indexOf('light') >= 0) document.documentElement.setAttribute('data-theme', 'light');
 </script>
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
@@ -319,7 +319,7 @@ ${zhSource}
      packages/client/ui-theme), and that is what the plugin's dark colour ramp
      keys off. Without this the "dark" screenshot would silently render the light
      cells, so a dark-mode colour regression could never show up here. */
-  if (location.hash === '#light') document.body.removeAttribute('data-ds-dark-theme');
+  if (location.hash.indexOf('light') >= 0) document.body.removeAttribute('data-ds-dark-theme');
   else document.body.setAttribute('data-ds-dark-theme', '');
   const req = (spec) => {
     if (spec === 'react') return React;
@@ -434,7 +434,24 @@ ${zhSource}
       const fills = [0, 1, 2, 3, 4].map(fillOf);
       const visible = fills.map((fill, level) => level === 0 ? distance(fill, cardBg) >= 6 : true).every(Boolean);
       const spread = Math.max(...fills.map((fill, level) => level === 0 ? 0 : distance(fill, cardBg)));      const gbox = grid ? grid.getBoundingClientRect() : null;
-      meta.textContent = 'PH=' + (r ? Math.round(r.height) : 'none') + ' PW=' + (r ? Math.round(r.width) : 'none') + ' SW=' + document.body.scrollWidth + ' CW=' + document.body.clientWidth + ' BH=' + document.body.scrollHeight + ' THEME=' + themed + ' HEAT=' + cells.length + ' LVL=' + lvl.join('/') + ' MONTH=' + monthEls.length + ' MOVL=' + overlaps + ' BUDGET=' + budget + ' GBOX=' + (gbox ? [Math.round(gbox.left), Math.round(gbox.top), Math.round(gbox.width), Math.round(gbox.height)].join(',') : 'none') + ' L0=' + fills[0] + ' L4=' + fills[4] + ' CARDBG=' + cardBg + ' CELLVIS=' + (visible ? 'ok' : 'INVISIBLE') + ' SPREAD=' + spread + ' ERRS=' + (window.__errs.length ? window.__errs.join('|') : 'none');
+
+      /* 动画探针：图表入场动画是 css keyframes，光看盒子量不出来，所以直接问
+         计算样式和 Web Animations API —— 减少动态效果下必须 none 且内容仍可见。 */
+      const barRect = document.querySelector('.du-bars rect');
+      const heatCell = document.querySelector('.du-activityCell');
+      const animOf = (el) => el === null ? 'missing' : (getComputedStyle(el).animationName || 'none');
+      const opacityOf = (el) => el === null ? 'missing' : getComputedStyle(el).opacity;
+      const running = (el) => el === null ? 0 : el.getAnimations().filter((a) => a.playState === 'running').length;
+      const cellCount = document.querySelectorAll('.du-activityCell').length;
+      const barsCount = document.querySelectorAll('.du-bars rect').length;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const anim = ' MODE=' + (reduced ? 'reduced-motion' : 'normal')
+        + ' BARANIM=' + animOf(barRect) + ' HEATANIM=' + animOf(heatCell)
+        + ' BAROPACITY=' + opacityOf(barRect) + ' HEATOPACITY=' + opacityOf(heatCell)
+        + ' BARRECTS=' + barsCount + ' CELLS=' + cellCount
+        + ' RUNNING=' + (running(barRect) + running(heatCell))
+        + ' STABLE=' + ((barRect && heatCell && barRect.getAnimations().concat(heatCell.getAnimations()).every((a) => a.playState === 'finished')) ? 'yes' : 'no');
+      meta.textContent = 'PH=' + (r ? Math.round(r.height) : 'none') + ' PW=' + (r ? Math.round(r.width) : 'none') + ' SW=' + document.body.scrollWidth + ' CW=' + document.body.clientWidth + ' BH=' + document.body.scrollHeight + ' THEME=' + themed + ' HEAT=' + cells.length + ' LVL=' + lvl.join('/') + ' MONTH=' + monthEls.length + ' MOVL=' + overlaps + ' BUDGET=' + budget + ' GBOX=' + (gbox ? [Math.round(gbox.left), Math.round(gbox.top), Math.round(gbox.width), Math.round(gbox.height)].join(',') : 'none') + ' L0=' + fills[0] + ' L4=' + fills[4] + ' CARDBG=' + cardBg + ' CELLVIS=' + (visible ? 'ok' : 'INVISIBLE') + ' SPREAD=' + spread + (location.hash.indexOf('anim=1') >= 0 ? anim : '') + ' ERRS=' + (window.__errs.length ? window.__errs.join('|') : 'none');
       document.title = meta.textContent;
     } catch (err) { meta.textContent = 'meas-err:' + err.message; }
   }, 1600);
