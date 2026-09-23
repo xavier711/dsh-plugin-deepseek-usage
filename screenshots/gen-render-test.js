@@ -428,12 +428,26 @@ ${zhSource}
       /* [0-9] rather than \d on purpose: this block lives inside a template
          literal, where an unknown escape like \d silently collapses to "d" and
          the regex then matches nothing (the check would read as "0 distance"). */
-      const rgb = (value) => (value.match(/[0-9]+/g) || []).slice(0, 3).map(Number);
-      const distance = (a, b) => Math.max(...rgb(a).map((v, i) => Math.abs(v - rgb(b)[i])));
+      const rgb = (value) => {
+        const parts = (value.match(/[0-9]+/g) || []).map(Number);
+        /* 只认 rgb()/rgba()：color-mix()/oklab() 的计算值是别的语法，硬解析会得出
+           134167 这种荒唐的距离，比报错更危险 —— 所以宁可返回 null。 */
+        /* 用 startsWith 而不是正则：正则里的转义在这个模板字符串里会被吃掉
+           （\\( 变成 (，正则直接语法错误；之前 \\d 变成 d 也是同一个坑）。 */
+        const looksRgb = value.startsWith('rgb(') || value.startsWith('rgba(');
+        return looksRgb && parts.length >= 3 ? parts.slice(0, 3) : null;
+      };
+      const distance = (a, b) => {
+        const left = rgb(a), right = rgb(b);
+        if (left === null || right === null || left.length !== right.length) return null;
+        return Math.max(...left.map((v, i) => Math.abs(v - right[i])));
+      };
       const cardBg = card ? getComputedStyle(card).backgroundColor : 'none';
       const fills = [0, 1, 2, 3, 4].map(fillOf);
       const visible = fills.map((fill, level) => level === 0 ? distance(fill, cardBg) >= 6 : true).every(Boolean);
-      const spread = Math.max(...fills.map((fill, level) => level === 0 ? 0 : distance(fill, cardBg)));      const gbox = grid ? grid.getBoundingClientRect() : null;
+      const gaps = fills.map((fill, level) => level === 0 ? 0 : distance(fill, cardBg));
+      const spread = gaps.some((v) => v === null) ? "未知" : Math.max(...gaps);
+      const gbox = grid ? grid.getBoundingClientRect() : null;
 
       /* 动画探针：图表入场动画是 css keyframes，光看盒子量不出来，所以直接问
          计算样式和 Web Animations API —— 减少动态效果下必须 none 且内容仍可见。 */
