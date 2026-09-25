@@ -28,13 +28,13 @@ You need **Node.js** first (download from [nodejs.org](https://nodejs.org)).
 Paste this into a terminal:
 
 ```sh
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.7.0
 ```
 
 **Don't have `dsh` installed globally?** Use this instead (`npx` downloads it on first run):
 
 ```sh
-npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
+npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.7.0
 ```
 
 > Tip: if the installer complains that `pnpm` is missing, run `npm install -g pnpm` and retry.
@@ -172,7 +172,7 @@ right there in the banner:
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.7.0
 ```
 
 ## Troubleshooting
@@ -186,7 +186,7 @@ the pinned tag:
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.7.0
 ```
 
 Then restart `dsh web` and refresh the page.
