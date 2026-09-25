@@ -5,8 +5,8 @@
 A DeepSeek usage panel plugin for the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web GUI. It adds a **「Usage / 用量」** entry at the bottom of the left sidebar showing:
 
 - **Account balance** — queried live from the official endpoint `GET /user/balance` (total, topped-up, granted).
-- **Local usage** — replays your own session logs (which store the official per-request `usage` records) and shows: today / last 7 days / all time, a 7-day chart (switchable to 30 days / 12 months, stacked by token type, with a lifetime / peak / streak summary line), a **token-activity heatmap** covering the last 6 months (one square per day, hover shows that day's full breakdown), today's token composition, **per-model statistics**, and **per-workspace statistics** (a workspace is the session's project directory; a collapsible panel expands each workspace into its own session records, and subagent sessions count toward their parent workspace).
-- **Cost estimate** — priced **per model** at official DeepSeek rates (CNY per 1M tokens), including the V4 peak/off-peak pricing effective 2026-08-17 (peak hours in Beijing time are applied automatically), the 2026-08-23 rule change — **weekends (Sat/Sun) are all-day off-peak** — the 2026-09-19 clarification that **make-up working weekends and Chinese statutory holidays are off-peak all day too** (holiday dates come from [`holidays.json`](holidays.json) in this repository, refreshed every 6 h, with the 2026 State Council schedule built in as an offline fallback), and the 2026-09-10 12:00 flash-series price cut (off-peak ¥1 input / ¥0.02 cache hit / ¥4 output, peak doubled). **V4 Pro keeps its own peak/off-peak rates** — its 2026-09-14 retirement was cancelled on 2026-09-11, so it is *not* billed as flash. The sidebar entry and the panel header show a live **current-period indicator** (peak/off-peak, with the active time window and the next transition).
+- **Local usage** — replays your own session logs (which store the official per-request `usage` records) and shows: today / last 7 days / all time, a 7-day chart (switchable to 30 days / 12 months, stacked by token type, with a lifetime / peak / streak summary line), a **token-activity heatmap** covering the last 6 months (one square per day; switchable between daily / weekly / cumulative — a column is one week, days without usage stay blank; hovering a column highlights it and shows that week's full breakdown), today's token composition, **per-model statistics** (locally hosted and third-party models count tokens but are never priced — only calls served by the official DeepSeek API carry a cost), and **per-workspace statistics** (a workspace is the session's project directory; a collapsible panel expands each workspace into its own session records, and subagent sessions count toward their parent workspace).
+- **Cost estimate** — priced **per model** at official DeepSeek rates (CNY per 1M tokens); **only calls served by the official DeepSeek API are priced** — locally hosted and third-party providers count tokens but cost nothing, including the V4 peak/off-peak pricing effective 2026-08-17 (peak hours in Beijing time are applied automatically), the 2026-08-23 rule change — **weekends (Sat/Sun) are all-day off-peak** — the 2026-09-19 clarification that **make-up working weekends and Chinese statutory holidays are off-peak all day too** (holiday dates come from [`holidays.json`](holidays.json) in this repository, refreshed every 6 h, with the 2026 State Council schedule built in as an offline fallback), and the 2026-09-10 12:00 flash-series price cut (off-peak ¥1 input / ¥0.02 cache hit / ¥4 output, peak doubled). **V4 Pro keeps its own peak/off-peak rates** — its 2026-09-14 retirement was cancelled on 2026-09-11, so it is *not* billed as flash. The sidebar entry and the panel header show a live **current-period indicator** (peak/off-peak, with the active time window and the next transition).
 - **Works across DSH versions** — session history is read through whichever `sessionPersistence` seam the running harness exposes: the current snapshot-list + `open(id,'read')` handle API, or the older header-list + `inspect()` API. The panel no longer comes up empty on a newer harness.
 
 > Note: DeepSeek's API does not expose an account-level usage endpoint (all candidate paths return 404 in practice). The usage data therefore comes from your local session logs — which contain the exact `usage` values returned by the official API for every request.
@@ -28,13 +28,13 @@ You need **Node.js** first (download from [nodejs.org](https://nodejs.org)).
 Paste this into a terminal:
 
 ```sh
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
 ```
 
 **Don't have `dsh` installed globally?** Use this instead (`npx` downloads it on first run):
 
 ```sh
-npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
+npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
 ```
 
 > Tip: if the installer complains that `pnpm` is missing, run `npm install -g pnpm` and retry.
@@ -162,7 +162,7 @@ available」** banner with the exact update command. Simply run it, restart
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
 ```
 
 ## Troubleshooting
@@ -176,7 +176,7 @@ the pinned tag:
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
 ```
 
 Then restart `dsh web` and refresh the page.

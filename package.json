@@ -1,6 +1,6 @@
 {
   "name": "@xavier711/dsh-deepseek-usage",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "DeepSeek usage panel for the DSH Web GUI: account balance (official /user/balance API) plus per-model and per-workspace local session token statistics",
   "keywords": [
     "deepseek",

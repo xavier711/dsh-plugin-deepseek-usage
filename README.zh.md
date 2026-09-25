@@ -5,8 +5,8 @@
 DeepSeek 用量面板插件 —— 装在 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的 Web 界面里，在左侧边栏底部显示你的用量：
 
 - **账户余额**：实时查询官方接口 `GET /user/balance`（余额、充值/赠送拆分）
-- **本地用量**：回放你本机会话日志里的官方 token 计数 —— 今日 / 近 7 天 / 累计、7 天柱状图（可切近 30 天 / 近 12 个月，按 token 类型堆叠，并带累计总量 / 单日峰值 / 连续天数一行）、**最近 6 个月的 token 活动热力图**（一天一格，悬停看当天完整构成）、今日构成、**按模型统计**、**按工作区统计**（工作区 = 会话所在的项目目录，折叠面板按工作区展开查看各自的会话记录；子代理会话计入其父工作区）
-- **费用估算**：按模型套用 DeepSeek **官方定价**（含 2026-08-17 起 V4 系列峰谷定价，北京时间自动区分高峰/空闲；2026-08-23 起**周末（周六、周日）全天按低谷价计费**，不再区分峰谷；2026-09-19 官方补充说明进一步明确**调休上班的周末、中国法定节假日全天同样按空闲时段计费**（假期日期取自本仓库的 [`holidays.json`](holidays.json)，每 6 小时刷新一次，并内置 2026 年国务院安排作为离线兜底）；2026-09-10 12:00 起 flash 系列降价至空闲 ¥1 / 缓存命中 ¥0.02 / 输出 ¥4、高峰翻倍）。**V4 Pro 继续按自身峰谷价计费**——其 2026-09-14 下线已于 9-11 公告取消，**不**按 V4.1 Flash 计费。侧边栏入口和面板头部会实时显示**当前时段标识**（高峰/空闲，含当前时段区间与下一次切换时间）
+- **本地用量**：回放你本机会话日志里的官方 token 计数 —— 今日 / 近 7 天 / 累计、7 天柱状图（可切近 30 天 / 近 12 个月，按 token 类型堆叠，并带累计总量 / 单日峰值 / 连续天数一行）、**最近 6 个月的 token 活动热力图**（一天一格，可切 每日 / 每周 / 累计 —— 一列是一周，没用量的那天留空；鼠标停在某一列会整列高亮并显示那一周的完整构成）、今日构成、**按模型统计**（本地部署与第三方模型只统计 token、不计费，只有走 DeepSeek 官方 API 的调用才算钱）、**按工作区统计**（工作区 = 会话所在的项目目录，折叠面板按工作区展开查看各自的会话记录；子代理会话计入其父工作区）
+- **费用估算**：按模型套用 DeepSeek **官方定价**（**只有走 DeepSeek 官方 API 的调用才计价** —— 本地部署与第三方 provider 只统计 token、不算钱；含 2026-08-17 起 V4 系列峰谷定价，北京时间自动区分高峰/空闲；2026-08-23 起**周末（周六、周日）全天按低谷价计费**，不再区分峰谷；2026-09-19 官方补充说明进一步明确**调休上班的周末、中国法定节假日全天同样按空闲时段计费**（假期日期取自本仓库的 [`holidays.json`](holidays.json)，每 6 小时刷新一次，并内置 2026 年国务院安排作为离线兜底）；2026-09-10 12:00 起 flash 系列降价至空闲 ¥1 / 缓存命中 ¥0.02 / 输出 ¥4、高峰翻倍）。**V4 Pro 继续按自身峰谷价计费**——其 2026-09-14 下线已于 9-11 公告取消，**不**按 V4.1 Flash 计费。侧边栏入口和面板头部会实时显示**当前时段标识**（高峰/空闲，含当前时段区间与下一次切换时间）
 - **兼容新旧 DSH**：会话历史读取同时支持新版 `sessionPersistence`（`list()` 返回快照 + `open(id,'read')` 读句柄）与旧版接口（`list()` 返回 header + `inspect()`），在新版 harness 上不会再出现「会话历史读不到」
 
 > 说明：DeepSeek 官方 API 没有账号级用量查询接口（实测所有候选路径均 404），所以用量数据来自 harness 本地会话日志 —— 日志里记录的就是官方每次请求返回的真实 usage。
@@ -28,13 +28,13 @@ DeepSeek 用量面板插件 —— 装在 [DeepSeek Harness](https://github.com/
 在终端粘贴运行：
 
 ```sh
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
 ```
 
 **没有全局安装过 `dsh`？** 用这条（npx 会自动下载）：
 
 ```sh
-npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
+npx --yes @deepseek-ai/dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
 ```
 
 > 提示：安装过程中如果提示 pnpm 不存在，先运行 `npm install -g pnpm` 再重试。
@@ -155,7 +155,7 @@ install.sh         一键安装脚本
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
 ```
 
 ## 常见问题
@@ -166,7 +166,7 @@ dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage
-dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0
+dsh plugin --profile web add git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.0
 ```
 
 然后重启 `dsh web` 并刷新页面。
