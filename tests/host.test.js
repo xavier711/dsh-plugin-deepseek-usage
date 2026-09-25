@@ -36,8 +36,9 @@ function bj(year, month, day, hour = 0, minute = 0) {
 const ONE_MILLION_EACH = { inputTokens: 1_000_000, cacheReadTokens: 1_000_000, outputTokens: 1_000_000 };
 
 /** One `assistant/message` usage record attributed to `model` at `time`. */
-function usageEvent(time, model, usage = ONE_MILLION_EACH) {
-  return { type: "assistant/message", time, data: { usage, message: { source: { model } } } };
+function usageEvent(time, model, usage = ONE_MILLION_EACH, provider) {
+  const source = provider === undefined ? { model } : { model, provider };
+  return { type: "assistant/message", time, data: { usage, message: { source } } };
 }
 
 /** A persistence snapshot as current hosts list it (`{ header, revision }`). */
@@ -702,6 +703,94 @@ await test("用户可见文案不得夹带开发/验证内部措辞", async () =
     }
   }
   assert.deepEqual(offenders, [], "用户可见文案里出现了内部措辞");
+});
+
+await test("本地部署的模型（provider 非官方）只统计 token，不计费", async () => {
+  // 真实故障：本机用 harness 接了个本地部署的模型（provider `qwen`，模型名
+  // huihui-qwen3.5-9b-…），插件只看得到模型名、不认识就掉进 pricing.default
+  // 兜底价，于是本地模型的用量被算成了 DeepSeek 的钱。
+  const time = bj(2026, 9, 23, 10);
+  const events = [usageEvent(time, "huihui-qwen3.5-9b-claude-4.6-opus-abliterated-heretic-i1", ONE_MILLION_EACH, "qwen")];
+  const routes = mount({ persistence: openPersistence(events) });
+  globalThis.Date.now = () => time;
+  try {
+    const payload = await callRoute(routes, "/dsh-usage/local");
+    assert.equal(payload.buckets.total.calls, 1, "调用次数照常统计");
+    assert.equal(payload.buckets.total.inputTokens, 1_000_000, "token 照常统计");
+    assert.equal(payload.buckets.total.cost, 0, "本地模型的费用必须是 0");
+    const row = payload.models.find((m) => m.model.startsWith("huihui-qwen"));
+    assert.ok(row, "本地模型应出现在模型列表里");
+    assert.equal(row.billable, false, "本地模型应标记为不计费");
+    assert.equal(row.provider, "qwen", "行里应带上 provider，供界面显示");
+  } finally {
+    globalThis.Date.now = realNow;
+  }
+});
+
+await test("第三方 provider 上的 deepseek 模型名同样不计费", async () => {
+  // 名字像官方模型不代表账单来自官方：provider 不是 deepseek 就不能按官方价算。
+  const time = bj(2026, 9, 23, 10);
+  const events = [usageEvent(time, "deepseek-v4-flash", ONE_MILLION_EACH, "openrouter")];
+  const routes = mount({ persistence: openPersistence(events) });
+  globalThis.Date.now = () => time;
+  try {
+    const payload = await callRoute(routes, "/dsh-usage/local");
+    assert.equal(payload.buckets.total.cost, 0, "第三方 provider 不计费");
+    assert.equal(payload.models[0].billable, false);
+  } finally {
+    globalThis.Date.now = realNow;
+  }
+});
+
+await test("官方 provider 上的未知模型仍按 default 估算，并标记 estimated", async () => {
+  const time = bj(2026, 9, 23, 10);
+  const events = [usageEvent(time, "deepseek-v5-experimental", ONE_MILLION_EACH, "deepseek-official")];
+  const routes = mount({ persistence: openPersistence(events) });
+  globalThis.Date.now = () => time;
+  try {
+    const payload = await callRoute(routes, "/dsh-usage/local");
+    assert.ok(payload.buckets.total.cost > 0, "官方 API 上的未知模型应给出估算");
+    assert.equal(payload.models[0].estimated, true, "应标记为估算");
+    assert.equal(payload.models[0].billable, true, "官方 provider 是可计费的");
+  } finally {
+    globalThis.Date.now = realNow;
+  }
+});
+
+await test("老日志没有 provider 时，只给已知官方模型计费（不再拿 default 乱算）", async () => {
+  const time = bj(2026, 9, 23, 10);
+  const known = mount({ persistence: openPersistence([usageEvent(time, "deepseek-v4-flash")]) });
+  const unknown = mount({ persistence: openPersistence([usageEvent(time, "mystery-model-9000")]) });
+  globalThis.Date.now = () => time;
+  try {
+    const billed = await callRoute(known, "/dsh-usage/local");
+    assert.ok(billed.buckets.total.cost > 0, "已知官方模型照常计费");
+    const notBilled = await callRoute(unknown, "/dsh-usage/local");
+    assert.equal(notBilled.buckets.total.cost, 0, "未知模型不再按兜底价计费");
+    assert.equal(notBilled.models[0].billable, false);
+  } finally {
+    globalThis.Date.now = realNow;
+  }
+});
+
+await test("一个会话混用官方与本地模型时，只把官方那部分算进费用", async () => {
+  const time = bj(2026, 9, 23, 10);
+  const events = [
+    usageEvent(time, "deepseek-v4-flash", ONE_MILLION_EACH, "deepseek-official"),
+    usageEvent(time + 60_000, "huihui-qwen3.5-9b", ONE_MILLION_EACH, "qwen")
+  ];
+  const routes = mount({ persistence: openPersistence(events) });
+  globalThis.Date.now = () => time + 60_000;
+  try {
+    const payload = await callRoute(routes, "/dsh-usage/local");
+    assert.equal(payload.buckets.total.calls, 2, "两次调用都统计");
+    assert.equal(payload.buckets.total.inputTokens, 2_000_000, "两边 token 都统计");
+    // 官方那次按高峰价 10.04 计（北京时间 10:00 属高峰），本地那次 0。
+    near(payload.buckets.total.cost, FLASH.peakNew, "费用只来自官方调用");
+    assert.deepEqual(payload.models.map((m) => m.billable).sort(), [false, true], "两个模型的可计费标记应各不相同");
+  } finally {
+    globalThis.Date.now = realNow;
+  }
 });
 
 /* ── report ──────────────────────────────────────────────────────────────── */
