@@ -213,12 +213,26 @@ window.__ZH = {
       "local.workspaceSubagents": "{count} 个子代理",
       "local.estimated": "估算",
       "local.modelMeta": "{tokens} tok · {calls} 次 · {cost}",
+      "local.modelMetaUnbilled": "{tokens} tok · {calls} 次 · 不计费",
+      "local.thirdParty": "本地/第三方",
+      "local.notBilled": "不计费",
       "local.sessionMeta": "{tokens} tok · {calls} 次 · {date}",
       "local.subagent": "子代理",
       "local.subagentHint": "由主任务派生的子代理会话",
       "update.available": "发现新版本 v{version}",
+      "update.install": "立即更新",
+      "update.copy": "复制命令",
+      "update.copied": "已复制",
+      "update.running": "正在更新…",
+      "update.done": "已更新到 v{version}。如果界面没变，重启一下 App。",
+      "update.failed": "更新失败：{message}",
+      "update.retry": "可以稍后重试，或复制下面的命令手动更新。",
+      "update.restart": "已经装上新版本，重启一下 App 就会生效。",
+      "update.manualLinked": "这是开发安装（link），请在开发目录里自行更新。",
+      "update.manualHost": "当前 DSH 版本不支持面板内更新，用下面的命令即可。",
       "update.releases": "查看发布页",
-      "panel.note": "费用按 DeepSeek 官方定价分模型估算。"
+      "panel.note": "费用按 DeepSeek 官方定价分模型估算。",
+      "panel.noteUnbilled": "本地部署与第三方模型的调用只统计 token，不计费。"
     };
 </script>
 <script src="../lib/client.js"></script>
@@ -243,7 +257,7 @@ window.__ZH = {
   const SAMPLE = {
  "/dsh-usage/balance": {
   "ok": true,
-  "fetchedAt": 1790181328469,
+  "fetchedAt": 1790331383694,
   "isAvailable": true,
   "currency": "CNY",
   "totalBalance": "128.45",
@@ -252,13 +266,13 @@ window.__ZH = {
  },
  "/dsh-usage/local": {
   "ok": true,
-  "fetchedAt": 1790181328469,
+  "fetchedAt": 1790331383694,
   "sessionCount": 3,
   "errorSessions": 0,
   "pricing": {
    "currency": "CNY",
    "note": "official",
-   "newPricingAt": 1790181328469,
+   "newPricingAt": 1790331383694,
    "weekendOffPeakAt": 1787414400000,
    "holidayOffPeakAt": 1789747200000,
    "peakHours": [
@@ -274,7 +288,7 @@ window.__ZH = {
   },
   "buckets": {
    "today": {
-    "date": "2026-09-24",
+    "date": "2026-09-25",
     "calls": 132,
     "inputTokens": 384000,
     "outputTokens": 408000,
@@ -284,7 +298,7 @@ window.__ZH = {
     "cost": 2.4
    },
    "week": {
-    "date": "2026-09-24",
+    "date": "2026-09-25",
     "calls": 512,
     "inputTokens": 3840000,
     "outputTokens": 4080000,
@@ -294,7 +308,7 @@ window.__ZH = {
     "cost": 24
    },
    "total": {
-    "date": "2026-09-24",
+    "date": "2026-09-25",
     "calls": 1204,
     "inputTokens": 72000000,
     "outputTokens": 76500000,
@@ -306,7 +320,7 @@ window.__ZH = {
   },
   "days": [
    {
-    "date": "2026-09-18",
+    "date": "2026-09-19",
     "calls": 60,
     "inputTokens": 192000,
     "outputTokens": 204000,
@@ -316,7 +330,7 @@ window.__ZH = {
     "cost": 1.2
    },
    {
-    "date": "2026-09-19",
+    "date": "2026-09-20",
     "calls": 72,
     "inputTokens": 544000,
     "outputTokens": 578000,
@@ -326,7 +340,7 @@ window.__ZH = {
     "cost": 3.4
    },
    {
-    "date": "2026-09-20",
+    "date": "2026-09-21",
     "calls": 84,
     "inputTokens": 336000,
     "outputTokens": 357000,
@@ -336,7 +350,7 @@ window.__ZH = {
     "cost": 2.1
    },
    {
-    "date": "2026-09-21",
+    "date": "2026-09-22",
     "calls": 96,
     "inputTokens": 768000,
     "outputTokens": 816000,
@@ -346,7 +360,7 @@ window.__ZH = {
     "cost": 4.8
    },
    {
-    "date": "2026-09-22",
+    "date": "2026-09-23",
     "calls": 108,
     "inputTokens": 992000,
     "outputTokens": 1054000,
@@ -356,7 +370,7 @@ window.__ZH = {
     "cost": 6.199999999999999
    },
    {
-    "date": "2026-09-23",
+    "date": "2026-09-24",
     "calls": 120,
     "inputTokens": 624000,
     "outputTokens": 663000,
@@ -366,7 +380,7 @@ window.__ZH = {
     "cost": 3.9
    },
    {
-    "date": "2026-09-24",
+    "date": "2026-09-25",
     "calls": 132,
     "inputTokens": 384000,
     "outputTokens": 408000,
@@ -4058,8 +4072,8 @@ window.__ZH = {
     "title": "优化支付网关性能",
     "workspace": "/Users/alice/dev/payment-gateway",
     "subagent": false,
-    "createdAt": 1790094928469,
-    "lastActiveAt": 1790177728469,
+    "createdAt": 1790244983694,
+    "lastActiveAt": 1790327783694,
     "calls": 618,
     "inputTokens": 1900000,
     "outputTokens": 2100000,
@@ -4074,8 +4088,8 @@ window.__ZH = {
     "title": "整理项目文档",
     "workspace": "/Users/alice/docs",
     "subagent": false,
-    "createdAt": 1790008528469,
-    "lastActiveAt": 1790008528469,
+    "createdAt": 1790158583694,
+    "lastActiveAt": 1790158583694,
     "calls": 402,
     "inputTokens": 1300000,
     "outputTokens": 1500000,
@@ -4090,8 +4104,8 @@ window.__ZH = {
     "title": "修复 CI 流水线",
     "workspace": "/Users/alice/ci-infra",
     "subagent": false,
-    "createdAt": 1789922128469,
-    "lastActiveAt": 1789922128469,
+    "createdAt": 1790072183694,
+    "lastActiveAt": 1790072183694,
     "calls": 184,
     "inputTokens": 500000,
     "outputTokens": 600000,
@@ -4106,8 +4120,8 @@ window.__ZH = {
     "title": "整理项目文档（子代理）",
     "workspace": "/Users/alice/docs",
     "subagent": true,
-    "createdAt": 1790008528469,
-    "lastActiveAt": 1790094928469,
+    "createdAt": 1790158583694,
+    "lastActiveAt": 1790244983694,
     "calls": 36,
     "inputTokens": 90000,
     "outputTokens": 110000,
@@ -4122,8 +4136,8 @@ window.__ZH = {
     "title": "临时想法速记",
     "workspace": null,
     "subagent": false,
-    "createdAt": 1789835728469,
-    "lastActiveAt": 1789835728469,
+    "createdAt": 1789985783694,
+    "lastActiveAt": 1789985783694,
     "calls": 27,
     "inputTokens": 60000,
     "outputTokens": 80000,
@@ -4142,7 +4156,7 @@ window.__ZH = {
     "subagentSessionCount": 0,
     "buckets": {
      "today": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 38,
       "inputTokens": 384000,
       "outputTokens": 408000,
@@ -4152,7 +4166,7 @@ window.__ZH = {
       "cost": 2.4
      },
      "week": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 214,
       "inputTokens": 1792000,
       "outputTokens": 1904000,
@@ -4162,7 +4176,7 @@ window.__ZH = {
       "cost": 11.2
      },
      "total": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 618,
       "inputTokens": 12160000,
       "outputTokens": 12920000,
@@ -4177,8 +4191,8 @@ window.__ZH = {
       "id": "s1",
       "title": "优化支付网关性能",
       "subagent": false,
-      "createdAt": 1790094928469,
-      "lastActiveAt": 1790177728469,
+      "createdAt": 1790244983694,
+      "lastActiveAt": 1790327783694,
       "calls": 618,
       "inputTokens": 1900000,
       "outputTokens": 2100000,
@@ -4196,7 +4210,7 @@ window.__ZH = {
     "subagentSessionCount": 1,
     "buckets": {
      "today": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 22,
       "inputTokens": 176000,
       "outputTokens": 187000,
@@ -4206,7 +4220,7 @@ window.__ZH = {
       "cost": 1.0999999999999999
      },
      "week": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 160,
       "inputTokens": 1376000,
       "outputTokens": 1462000,
@@ -4216,7 +4230,7 @@ window.__ZH = {
       "cost": 8.6
      },
      "total": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 438,
       "inputTokens": 8480000,
       "outputTokens": 9010000,
@@ -4231,8 +4245,8 @@ window.__ZH = {
       "id": "s2",
       "title": "整理项目文档",
       "subagent": false,
-      "createdAt": 1790008528469,
-      "lastActiveAt": 1790008528469,
+      "createdAt": 1790158583694,
+      "lastActiveAt": 1790158583694,
       "calls": 402,
       "inputTokens": 1300000,
       "outputTokens": 1500000,
@@ -4245,8 +4259,8 @@ window.__ZH = {
       "id": "s4",
       "title": "整理项目文档（子代理）",
       "subagent": true,
-      "createdAt": 1790008528469,
-      "lastActiveAt": 1790094928469,
+      "createdAt": 1790158583694,
+      "lastActiveAt": 1790244983694,
       "calls": 36,
       "inputTokens": 90000,
       "outputTokens": 110000,
@@ -4264,7 +4278,7 @@ window.__ZH = {
     "subagentSessionCount": 0,
     "buckets": {
      "today": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 9,
       "inputTokens": 96000,
       "outputTokens": 102000,
@@ -4274,7 +4288,7 @@ window.__ZH = {
       "cost": 0.6
      },
      "week": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 71,
       "inputTokens": 672000,
       "outputTokens": 714000,
@@ -4284,7 +4298,7 @@ window.__ZH = {
       "cost": 4.2
      },
      "total": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 184,
       "inputTokens": 3360000,
       "outputTokens": 3570000,
@@ -4299,8 +4313,8 @@ window.__ZH = {
       "id": "s3",
       "title": "修复 CI 流水线",
       "subagent": false,
-      "createdAt": 1789922128469,
-      "lastActiveAt": 1789922128469,
+      "createdAt": 1790072183694,
+      "lastActiveAt": 1790072183694,
       "calls": 184,
       "inputTokens": 500000,
       "outputTokens": 600000,
@@ -4318,7 +4332,7 @@ window.__ZH = {
     "subagentSessionCount": 0,
     "buckets": {
      "today": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 2,
       "inputTokens": 16000,
       "outputTokens": 17000,
@@ -4328,7 +4342,7 @@ window.__ZH = {
       "cost": 0.09999999999999999
      },
      "week": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 11,
       "inputTokens": 80000,
       "outputTokens": 85000,
@@ -4338,7 +4352,7 @@ window.__ZH = {
       "cost": 0.5
      },
      "total": {
-      "date": "2026-09-24",
+      "date": "2026-09-25",
       "calls": 27,
       "inputTokens": 224000,
       "outputTokens": 238000,
@@ -4353,8 +4367,8 @@ window.__ZH = {
       "id": "s5",
       "title": "临时想法速记",
       "subagent": false,
-      "createdAt": 1789835728469,
-      "lastActiveAt": 1789835728469,
+      "createdAt": 1789985783694,
+      "lastActiveAt": 1789985783694,
       "calls": 27,
       "inputTokens": 60000,
       "outputTokens": 80000,
@@ -4369,21 +4383,30 @@ window.__ZH = {
  },
  "/dsh-usage/version": {
   "ok": true,
-  "checkedAt": 1790181328469,
-  "installed": "0.1.0",
-  "latest": "0.4.0",
+  "checkedAt": 1790331383694,
+  "installed": "0.6.0",
+  "latest": "0.6.1",
   "updateAvailable": true,
-  "url": "https://github.com/xavier711/dsh-deepseek-usage/releases"
+  "url": "https://github.com/xavier711/dsh-deepseek-usage/releases",
+  "installKind": "git",
+  "spec": "git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.1",
+  "canInstall": true
+ },
+ "/dsh-usage/update": {
+  "ok": true,
+  "reason": "installed",
+  "latest": "0.6.1",
+  "application": "applied"
  },
  "/dsh-usage/period": {
   "ok": true,
-  "now": 1790181328469,
+  "now": 1790331383694,
   "period": "offPeak",
   "range": [
-   0,
-   540
+   1080,
+   1440
   ],
-  "nextAt": 1790211600000,
+  "nextAt": 1790352000000,
   "nextPeriod": "peak",
   "newPricingAt": 1786896000000,
   "weekendOffPeakAt": 1787414400000,
@@ -4416,7 +4439,17 @@ window.__ZH = {
   "timezoneOffsetMinutes": 480
  }
 };
-  window.fetch = (url) => Promise.resolve({ ok: true, status: 200, json: async () => SAMPLE[url] || { ok: false, error: 'unknown', message: url } });
+  // 走完「点更新 → 版本翻新」的流程用；必须声明在页面里，不是生成器里
+  let upgraded = false;
+  window.fetch = (url, options) => {
+    if (String(url).includes('/dsh-usage/update') && options && options.method === 'POST') upgraded = true;
+    const body = SAMPLE[String(url)];
+    // version 的 installed 依赖 upgraded，所以每次现算一遍，不能直接用序列化好的常量
+    if (String(url).includes('/dsh-usage/version')) {
+      return Promise.resolve({ ok: true, status: 200, json: async () => ({ ...body, installed: upgraded ? '0.6.1' : '0.6.0', updateAvailable: !upgraded }) });
+    }
+    return Promise.resolve({ ok: true, status: 200, json: async () => body || { ok: false, error: 'unknown', message: url } });
+  };
 
   // ── fake services; capture the registered component per slot ──
   let component = null;

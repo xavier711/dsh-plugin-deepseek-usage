@@ -157,8 +157,18 @@ unaffected.
 **Git installs:** you installed a pinned snapshot, so updates are **not** automatic — but you
 don't need to check for them: the plugin queries the GitHub releases feed
 (hours-cached) whenever you open the usage panel and shows a **「New version
-available」** banner with the exact update command. Simply run it, restart
-`dsh web`, and refresh the page:
+available」** banner.
+
+Click **「Update now」** in that banner and the plugin installs the new version for
+you — no terminal involved. When it finishes the panel says so; if the interface
+still looks unchanged, restart the app. (The install itself is done by the
+harness's plugin manager: the panel asks it to install this package at the new
+tag, and nothing else.)
+
+Two cases keep the copyable command instead of the button: a DSH build without
+that plugin manager, and a `link:` development checkout (where re-installing
+would replace your working tree with a tagged copy). Either way the command is
+right there in the banner:
 
 ```sh
 dsh plugin --profile web remove @xavier711/dsh-deepseek-usage

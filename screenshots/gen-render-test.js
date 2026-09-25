@@ -212,11 +212,16 @@ const sample = {
   '/dsh-usage/version': {
     ok: true,
     checkedAt: Date.now(),
-    installed: '0.1.0',
-    latest: '0.4.0',
+    // 静态初值；页面里的 fetch stub 会按 upgraded 现算 installed / updateAvailable
+    installed: '0.6.0',
+    latest: '0.6.1',
     updateAvailable: true,
-    url: 'https://github.com/xavier711/dsh-deepseek-usage/releases'
+    url: 'https://github.com/xavier711/dsh-deepseek-usage/releases',
+    installKind: 'git',
+    spec: 'git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.6.1',
+    canInstall: true
   },
+  '/dsh-usage/update': { ok: true, reason: 'installed', latest: '0.6.1', application: 'applied' },
   '/dsh-usage/period': periodPayload
 };
 const sampleJson = JSON.stringify(sample, null, 1).replaceAll('</', '<\\/');
@@ -331,7 +336,17 @@ ${zhSource}
 
   // ── fetch mock with sample data ──
   const SAMPLE = ${sampleJson};
-  window.fetch = (url) => Promise.resolve({ ok: true, status: 200, json: async () => SAMPLE[url] || { ok: false, error: 'unknown', message: url } });
+  // 走完「点更新 → 版本翻新」的流程用；必须声明在页面里，不是生成器里
+  let upgraded = false;
+  window.fetch = (url, options) => {
+    if (String(url).includes('/dsh-usage/update') && options && options.method === 'POST') upgraded = true;
+    const body = SAMPLE[String(url)];
+    // version 的 installed 依赖 upgraded，所以每次现算一遍，不能直接用序列化好的常量
+    if (String(url).includes('/dsh-usage/version')) {
+      return Promise.resolve({ ok: true, status: 200, json: async () => ({ ...body, installed: upgraded ? '0.6.1' : '0.6.0', updateAvailable: !upgraded }) });
+    }
+    return Promise.resolve({ ok: true, status: 200, json: async () => body || { ok: false, error: 'unknown', message: url } });
+  };
 
   // ── fake services; capture the registered component per slot ──
   let component = null;

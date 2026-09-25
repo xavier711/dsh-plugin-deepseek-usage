@@ -22,7 +22,9 @@
  */
 
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { apply } from "../lib/index.js";
 
 /* ── harness ─────────────────────────────────────────────────────────────── */
@@ -66,7 +68,7 @@ function makeRes() {
  * @param options.persistence - fake `sessionPersistence` (defaults to none).
  * @param options.config - row config overriding DEFAULTS.
  */
-function mount({ persistence, config } = {}) {
+function mount({ persistence, config, services } = {}) {
   const routes = new Map();
   const ctx = {
     credentials: { resolve: async () => undefined },
@@ -77,6 +79,9 @@ function mount({ persistence, config } = {}) {
         return () => routes.delete(route.path);
       }
     },
+    // Optional cordis services (`pluginManager`, `profileContext`) — the plugin
+    // reads them through `ctx.get`, so a missing one must stay harmless.
+    get(name) { return services?.[name]; },
     effect(fn) { const dispose = fn(); return () => dispose?.(); }
   };
   apply(ctx, { holidayCalendarUrl: null, ...(config ?? {}) });
@@ -108,6 +113,15 @@ async function callRoute(routes, path) {
   await handler({ method: "GET" }, res);
   assert.equal(res.status, 200, `${path} should answer 200`);
   return res.body;
+}
+
+/** Run a route handler with an explicit method, returning `{ status, body }`. */
+async function rawRoute(routes, path, method = "GET") {
+  const handler = routes.get(path);
+  assert.ok(handler, `route ${path} should be registered`);
+  const res = makeRes();
+  await handler({ method }, res);
+  return { status: res.status, body: res.body };
 }
 
 /** Call `/dsh-usage/period` as of `time` on an existing mount. */
@@ -790,6 +804,126 @@ await test("一个会话混用官方与本地模型时，只把官方那部分�
     assert.deepEqual(payload.models.map((m) => m.billable).sort(), [false, true], "两个模型的可计费标记应各不相同");
   } finally {
     globalThis.Date.now = realNow;
+  }
+});
+
+/* ── 面板内一键更新（/dsh-usage/update）──────────────────────────────────── */
+
+const UPDATE_URL = "https://example.test/package.json";
+
+/** A throwaway profile directory declaring how the plugin was installed. */
+function profileWithDependency(spec) {
+  const dir = mkdtempSync(join(tmpdir(), "dsh-usage-profile-"));
+  writeFileSync(join(dir, "package.json"), JSON.stringify({ dependencies: { "@xavier711/dsh-deepseek-usage": spec } }));
+  return dir;
+}
+
+/** Mount with a fake profile + optional fake plugin manager, and a stubbed update check. */
+function mountForUpdate({ dependency, installBundle } = {}) {
+  const spec = dependency ?? "git+https://github.com/xavier711/dsh-deepseek-usage.git#v0.5.0";
+  const calls = [];
+  const services = {
+    profileContext: { dir: profileWithDependency(spec) },
+    ...(installBundle === false ? {} : {
+      pluginManager: {
+        installBundle: async (requested, options) => {
+          calls.push({ spec: requested, options });
+          return (installBundle ?? (() => ({ application: "applied" })))(requested);
+        }
+      }
+    })
+  };
+  const routes = mount({ config: { updateCheckUrl: UPDATE_URL }, services });
+  const stub = stubFetch(() => jsonResponse({ version: "9.9.9" }));
+  return { routes, calls, stub };
+}
+
+await test("一键更新：宿主没有 pluginManager 时回 unsupported，不做任何安装", async () => {
+  const { routes, stub } = mountForUpdate({ installBundle: false });
+  try {
+    const out = await rawRoute(routes, "/dsh-usage/update", "POST");
+    assert.equal(out.status, 200);
+    assert.equal(out.body.ok, false);
+    assert.equal(out.body.reason, "unsupported");
+  } finally {
+    stub.restore();
+  }
+});
+
+await test("一键更新：link: 开发安装拒绝一键更新（不能把作者的开发目录换成 tag 副本）", async () => {
+  const { routes, calls, stub } = mountForUpdate({ dependency: "link:/Users/someone/Projects/deepseek plugin/dsh-deepseek-usage" });
+  try {
+    const out = await rawRoute(routes, "/dsh-usage/update", "POST");
+    assert.equal(out.body.ok, false);
+    assert.equal(out.body.reason, "linked");
+    assert.deepEqual(calls, [], "不应调用 installBundle");
+  } finally {
+    stub.restore();
+  }
+});
+
+await test("一键更新：git 安装用带新 tag 的 git spec 调 installBundle", async () => {
+  const { routes, calls, stub } = mountForUpdate();
+  try {
+    const out = await rawRoute(routes, "/dsh-usage/update", "POST");
+    assert.equal(out.body.ok, true, JSON.stringify(out.body));
+    assert.equal(out.body.reason, "installed");
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].spec, "git+https://github.com/xavier711/dsh-deepseek-usage.git#v9.9.9");
+  } finally {
+    stub.restore();
+  }
+});
+
+await test("一键更新：npm 安装走 npm spec，不会把渠道换成 git", async () => {
+  const { routes, calls, stub } = mountForUpdate({ dependency: "npm:@xavier711/dsh-deepseek-usage@0.5.0" });
+  try {
+    const out = await rawRoute(routes, "/dsh-usage/update", "POST");
+    assert.equal(out.body.ok, true);
+    assert.equal(calls[0].spec, "@xavier711/dsh-deepseek-usage@9.9.9");
+  } finally {
+    stub.restore();
+  }
+});
+
+await test("一键更新：安装失败要把 manager 的错误如实带回面板", async () => {
+  const { routes, stub } = mountForUpdate({ installBundle: () => ({ application: "failed", error: "pnpm exited 1" }) });
+  try {
+    const out = await rawRoute(routes, "/dsh-usage/update", "POST");
+    assert.equal(out.body.ok, false);
+    assert.equal(out.body.reason, "install-failed");
+    assert.equal(out.body.message, "pnpm exited 1");
+  } finally {
+    stub.restore();
+  }
+});
+
+await test("一键更新：GET 一律 405（不能被链接预取之类触发安装）", async () => {
+  const { routes, calls, stub } = mountForUpdate();
+  try {
+    const out = await rawRoute(routes, "/dsh-usage/update", "GET");
+    assert.equal(out.status, 405);
+    assert.deepEqual(calls, []);
+  } finally {
+    stub.restore();
+  }
+});
+
+await test("/dsh-usage/version 暴露安装渠道与可否一键更新", async () => {
+  const git = mountForUpdate();
+  const linked = mountForUpdate({ dependency: "link:/tmp/dev/plugin" });
+  try {
+    const gitBody = (await callRoute(git.routes, "/dsh-usage/version"));
+    assert.equal(gitBody.installKind, "git");
+    assert.equal(gitBody.canInstall, true);
+    assert.equal(gitBody.spec, "git+https://github.com/xavier711/dsh-deepseek-usage.git#v9.9.9");
+    const linkedBody = (await callRoute(linked.routes, "/dsh-usage/version"));
+    assert.equal(linkedBody.installKind, "link");
+    assert.equal(linkedBody.canInstall, false);
+    assert.equal(linkedBody.spec, null);
+  } finally {
+    git.stub.restore();
+    linked.stub.restore();
   }
 });
 
