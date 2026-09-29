@@ -1,6 +1,6 @@
 {
   "name": "@xavier711/dsh-deepseek-usage",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "DeepSeek usage panel for the DSH Web GUI: account balance (official /user/balance API) plus per-model and per-workspace local session token statistics",
   "keywords": [
     "deepseek",
@@ -46,9 +46,9 @@
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/dsh-credentials": "^0.1.0-rc.6",
-    "@deepseek-ai/dsh-session-persistence": "^0.1.0-rc.6",
-    "@deepseek-ai/dsh-host-webserver": "^0.1.0-rc.6"
+    "@deepseek-ai/dsh-credentials": ">=0.1.0-rc.6",
+    "@deepseek-ai/dsh-session-persistence": ">=0.1.0-rc.6",
+    "@deepseek-ai/dsh-host-webserver": ">=0.1.0-rc.6"
   },
   "files": [
     "lib",

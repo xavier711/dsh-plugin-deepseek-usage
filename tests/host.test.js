@@ -927,6 +927,23 @@ await test("/dsh-usage/version 暴露安装渠道与可否一键更新", async (
   }
 });
 
+await test("dsh-* 的 peerDependencies 不能有版本上限（否则 DSH 一升 minor 就被判不兼容）", async () => {
+  // DSH 0.2.0-rc.1 起会校验 peerDependencies 里的 @deepseek-ai/dsh / @deepseek-ai/dsh-* 范围：
+  // 用运行时版本做 semver.satisfies（含预发布），不满足就直接拒绝加载插件、面板里那个插件消失。
+  // 0.x 的 caret 上限是 0.2.0，所以 `^0.1.0-rc.6` 在 DSH 升到 0.2.0-rc.1 后立刻变成「不兼容」——
+  // 用户实测就是这样被拦下的。这里守住「只写下界、不写上限」这条规则。
+  const manifest = JSON.parse(readFileSync(new URL("../package.json", import.meta.url), "utf8"));
+  const peers = manifest.peerDependencies ?? {};
+  const dshPeers = Object.entries(peers).filter(
+    ([name]) => name === "@deepseek-ai/dsh" || name.startsWith("@deepseek-ai/dsh-")
+  );
+  assert.ok(dshPeers.length > 0, "至少要声明 dsh-* 的 peer：DSH 靠它判断插件兼容性");
+  const bounded = dshPeers
+    .filter(([, range]) => typeof range !== "string" || !range.startsWith(">=") || range.includes("<"))
+    .map(([name, range]) => `${name}@${range}`);
+  assert.deepEqual(bounded, [], "这些 dsh-* peer 带上了上限，DSH 会把插件判成不兼容");
+});
+
 /* ── report ──────────────────────────────────────────────────────────────── */
 
 if (failures.length > 0) {
